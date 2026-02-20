@@ -1,19 +1,23 @@
-import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "@/lib/utils";
+import * as React from "react";
 import { useState } from "react";
-
+import { cn } from "@/lib/utils";
 
 const TextareaVariants = cva(
   "px-3 py-2 w-[346px] h-[122px] text-gi-primary rounded-3xl  h-30.5 ",
   {
     variants: {
       variant: {
-        default: "text-gi-primary border-[1px] border-gi-primary/10                                         focus:ring-0 focus:outline-none",
-        hover: "text-gi-primary border-[1px] border-gi-primary/10 hover:border-gi-primary/20                focus:ring-0 focus:outline-none",
-        focus: "text-gi-primary border-[1px] border-gi-primary/10 hover:border-gi-primary/20 focus:border-[2px] focus:border-gi-primary/20 focus:ring-0 focus:outline-none",
-        disabled: "text-gi-primary border-[1px] focus:ring-0 focus:outline-none",
-        error: "text-gi-primary border-[1px] border-gi-red                                                  focus:ring-0 focus:outline-none",
+        default:
+          "text-gi-primary border-[1px] border-gi-primary/10                                         focus:ring-0 focus:outline-none",
+        hover:
+          "text-gi-primary border-[1px] border-gi-primary/10 hover:border-gi-primary/20                focus:ring-0 focus:outline-none",
+        focus:
+          "text-gi-primary border-[1px] border-gi-primary/10 hover:border-gi-primary/20 focus:border-gi-primary/20 focus:ring-0 focus:outline-1",
+        disabled:
+          "text-gi-primary border-[1px] focus:ring-0 focus:outline-none cursor-not-allowed",
+        error:
+          "text-gi-primary border-[1px] border-gi-red                            focus:ring-0 focus:outline-none",
       },
     },
     defaultVariants: {
@@ -25,34 +29,46 @@ const TextareaVariants = cva(
 const labelVariants: Record<string, string> = {
   default: "text-gi-primary",
   error: "text-gi-primary",
-  disabled: "text-gray-400"
+  disabled: "text-gray-400",
 };
 
 function Textarea({
   className,
   variant,
-  error,
-  errorText,
+  isError,
   label,
-  disabled,
-  correctData,
-  required,
+  isDisabled,
+  helper,
+  isRequired,
+  value,
+  onChange,
+  characterLimit,
+  characterLimitVisibility,
   ...props
-}: 
-
-React.ComponentProps<"textarea"> & VariantProps<typeof TextareaVariants> & { required?: boolean; label?: boolean; error?: boolean; disabled?: boolean; errorText?: boolean; correctData?: boolean;}) {
+}: React.ComponentProps<"textarea"> & VariantProps<typeof TextareaVariants> & {
+    characterLimitVisibility?: boolean;  
+    characterLimit?: number;
+    label?: string;
+    isRequired?: boolean;
+    isError?: string;
+    helper?: string;
+    isDisabled?: boolean;
+  }) {
   const [text, setText] = useState("");
-  const maxLength = 500;
+  const currentLength = (value !== undefined ? String(value) : text).length;
+  const maxLength = characterLimit;
+  const footerText = isError ? isError : isError || helper ? helper : '';
+  const isRed = Boolean(isError);
+
 
   return (
     <div>
-     {label && <p className={cn("text-[16px]", labelVariants[variant ?? "default"])}>Label</p>}
-     {required && <p className={cn("text-[16px] text-gi-primary")}>Label<span className="text-gi-red">*</span></p>}
-    <textarea value={text} onChange={(e) => setText(e.target.value)} maxLength={500} data-slot="textarea" disabled={disabled} className={cn(TextareaVariants({ variant, className }))} {...props} />
-     {error && <p className="text-gi-red text-[14px] h-4.25" >Error Message</p>}
-     {errorText && <p className="text-gi-red text-[14px] h-4.25" >Text used to help user input correct data</p>}
-     {correctData && <p className="text-gi-primary/50 text-[14px] h-4.25" >Text used to help user input correct data</p>}
-      <p className="text-gi-primary/50  h-4.25 text-[14px]">{text.length}/{maxLength}</p>
+      <p className={cn("text-[16px]", labelVariants[variant ?? "default"])}>{label}{isRequired &&<span className="text-red-500 ml-1 size-4">*</span>} </p>
+      <textarea value={text} onChange={(e) => setText(e.target.value)} maxLength={maxLength} data-slot="textarea" disabled={isDisabled} className={cn(TextareaVariants({ variant, className }))}{...props}/>
+      <div className="flex justify-between items-start text-[14px] h-4.25">
+        <p className={cn(isRed ? "text-gi-red text-[14px]" : "text-gi-primary/50 text-[14px]")}>{footerText}</p>
+        { characterLimitVisibility && <p className="text-gi-primary/50  h-4.25 text-[14px] flex justify-end">{currentLength}/{maxLength}</p>}
+      </div>
     </div>
   );
 }

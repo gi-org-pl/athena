@@ -16,7 +16,11 @@ const meta = {
   tags: ["autodocs"],
   args: {
     variant: "default",
-    placeholder: "Placeholder"
+    placeholder: "Placeholder",
+    characterLimit: 500,
+    characterLimitVisibility: true,
+    label: "Label",
+    isRequired: false,
   },
 } satisfies Meta<typeof Textarea>;
 
@@ -31,7 +35,6 @@ export const Default: Story = {
 export const hover: Story = {
   args: {
     variant: "hover",
-    label: true
   },
 };
 export const focus: Story = {
@@ -42,13 +45,10 @@ export const focus: Story = {
 export const disabled: Story = {
   args: {
     variant: "disabled",
-    disabled: true,
   },
 };
 export const error: Story = {
   args: {
     variant: "error",
-    error: true,
-    errorText: true
   },
 };
