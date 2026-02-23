@@ -4,6 +4,8 @@ import { fn } from "storybook/test";
 
 import { Button } from "./Button";
 
+ import Crown from "@/assets/icons/crown.svg"; 
+
 const meta = {
   title: "Button",
   component: Button,
@@ -12,11 +14,18 @@ const meta = {
   },
   argTypes: {
     children: { control: "text" },
+    
+    isLoading: { control: "boolean" },
+    
+    
+    leftIcon: { control: false }, 
+    rightIcon: { control: false },
+    
     variant: {
       control: "select",
       options: [
         "default",
-        "destructive",
+        "danger",
         "outline",
         "secondary",
         "ghost",
@@ -42,9 +51,35 @@ export const Default: Story = {
   },
 };
 
-export const Destructive: Story = {
+export const LeftIcon: Story = {
   args: {
-    variant: "destructive",
+    variant: "default",
+    children: "Primary",
+    leftIcon: <Crown />,
+  },
+};
+
+
+export const RightIcon: Story = {
+  args: {
+    variant: "default",
+    children: "Primary",
+    rightIcon: <Crown />,
+  },
+};
+
+
+export const Loading: Story = {
+  args: {
+    variant: "default",
+    children: "Primary",
+    isLoading: true,
+  },
+};
+
+export const Danger: Story = {
+  args: {
+    variant: "danger",
   },
 };
 

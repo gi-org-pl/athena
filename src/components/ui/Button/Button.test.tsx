@@ -24,8 +24,8 @@ describe("<Button />", () => {
       expect(button).toBeInTheDocument();
     });
 
-    it("should render destructive variant", () => {
-      render(<Button variant="destructive">Destructive</Button>);
+    it("should render danger variant", () => {
+      render(<Button variant="danger">danger</Button>);
       const button = screen.getByRole("button");
       expect(button).toBeInTheDocument();
     });
