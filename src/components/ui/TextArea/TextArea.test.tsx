@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { TextArea } from "./TextArea";
 
-describe("<Textarea />", () => {
+describe("<TextArea />", () => {
   const baseProps = {
     placeholder: "Type here...",
     onChange: vi.fn(),
@@ -159,7 +159,7 @@ describe("<Textarea />", () => {
     });
 
     it("does not call onChange when isDisabled is true", () => {
-      render(<TextArea {...baseProps} isDisabled />);
+      render(<TextArea {...baseProps} disabled />);
 
       const textarea = screen.getByRole("textbox");
       expect(textarea).toBeDisabled();

@@ -40,12 +40,12 @@ export interface TextAreaProps {
   isRequired?: boolean;
   isError?: boolean;
   errorText?: string;
-  helper?: string;
-  isDisabled?: boolean;
+  helper?: React.ReactNode;
+  disabled?: boolean;
   variant?: TextAreaVariant;
   value?: string;
   onChange: (value: string) => void;
-  placeholder: string;
+  placeholder?: string;
   dataTestId?: string;
 }
 
@@ -54,7 +54,7 @@ export function TextArea({
   variant,
   isError,
   label,
-  isDisabled,
+  disabled,
   errorText,
   helper,
   isRequired,
@@ -68,7 +68,9 @@ export function TextArea({
   const shouldShowErrorText = Boolean(isError && errorText);
   const footerText = shouldShowErrorText ? errorText : helper;
   const hasCharacterLimit = typeof characterLimit === "number";
-  const effectiveCharacterLimit = hasCharacterLimit ? characterLimit : undefined;
+  const effectiveCharacterLimit = hasCharacterLimit
+    ? characterLimit
+    : undefined;
   const rawValue = value ?? "";
   const normalizedValue =
     hasCharacterLimit && typeof effectiveCharacterLimit === "number"
@@ -80,7 +82,7 @@ export function TextArea({
     Boolean(characterLimitVisibility) && hasCharacterLimit;
 
   function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>): void {
-    if (isDisabled) {
+    if (disabled) {
       return;
     }
     const nextRawValue = event.target.value;
@@ -105,12 +107,14 @@ export function TextArea({
         {""}
       </p>
       <textarea
+        disabled={disabled}
         value={normalizedValue}
+        required={isRequired}
         onChange={handleChange}
         maxLength={hasCharacterLimit ? characterLimit : undefined}
         data-slot="textarea"
         data-test-id={dataTestId}
-        disabled={isDisabled}
+       
         className={cn(
           TextAreaVariants({
             variant: isError ? "error" : "default",

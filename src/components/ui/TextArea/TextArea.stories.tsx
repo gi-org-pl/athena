@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useArgs } from "storybook/internal/preview-api";
-import { type TextAreaProps, TextArea } from "./TextArea";
+import { TextArea, type TextAreaProps } from "./TextArea";
 
 const meta = {
   title: "TextArea",
