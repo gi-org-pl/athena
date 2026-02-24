@@ -1,10 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { fn } from "storybook/test";
-
+import Crown from "@/assets/icons/crown.svg";
 import { Button } from "./Button";
-
- import Crown from "@/assets/icons/crown.svg"; 
 
 const meta = {
   title: "Button",
@@ -14,23 +12,15 @@ const meta = {
   },
   argTypes: {
     children: { control: "text" },
-    
+
     isLoading: { control: "boolean" },
-    
-    
-    leftIcon: { control: false }, 
+
+    leftIcon: { control: false },
     rightIcon: { control: false },
-    
+
     variant: {
       control: "select",
-      options: [
-        "default",
-        "danger",
-        "outline",
-        "secondary",
-        "ghost",
-        "link",
-      ],
+      options: ["default", "danger", "outline", "secondary", "ghost", "link"],
     },
     size: {
       control: "select",
@@ -59,7 +49,6 @@ export const LeftIcon: Story = {
   },
 };
 
-
 export const RightIcon: Story = {
   args: {
     variant: "default",
@@ -67,7 +56,6 @@ export const RightIcon: Story = {
     rightIcon: <Crown />,
   },
 };
-
 
 export const Loading: Story = {
   args: {

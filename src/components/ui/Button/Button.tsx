@@ -51,68 +51,69 @@ const buttonVariants = cva(
   },
 );
 
-interface ButtonProps
-  extends React.ComponentProps<"button">,
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
-  leftIcon?: React.ReactNode;  
-  rightIcon?: React.ReactNode; 
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
   isLoading?: boolean;
-  
 }
 
-function Button({
-  className,
-  variant,
-  size,
-  asChild = false,
-  leftIcon,   
-  rightIcon,  
-  isLoading = false, 
-  children,   
-  disabled,
-  ...props
-}: ButtonProps) {
-  const Comp = asChild ? Slot : "button";
-
-  return (
-    <Comp
-      data-slot="button"
-      
-      disabled={disabled || isLoading} 
-      className={cn(
-        buttonVariants({ variant, size, className }),
-        isLoading && "opacity-70 cursor-wait" 
-      )}
-      {...props}
-    >
-      {isLoading ? (
-        
-        <svg 
-          className="animate-spin" 
-          xmlns="http://www.w3.org" 
-          width="16" 
-          height="16" 
-          viewBox="0 0 24 24" 
-          fill="none" 
-          stroke="currentColor" 
-          strokeWidth="2.5" 
-          strokeLinecap="round" 
-          strokeLinejoin="round"
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant, size, asChild = false, leftIcon, rightIcon, isLoading, children, disabled, ...props }, ref) => {
+    
+    if (asChild) {
+      return (
+        <Slot
+          className={cn(buttonVariants({ variant, size, className }))}
+          ref={ref}
+          data-slot="button" // <--- DODAJ TO TUTAJ
+          {...props}
         >
-          <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-        </svg>
-      ) : (
-        leftIcon
-      )}
-      
-      {children}
-      {!isLoading && rightIcon} 
-    </Comp>
-  );
-}
+          {children}
+        </Slot>
+      );
+    }
+
+    return (
+      <button
+        className={cn(
+          buttonVariants({ variant, size, className }),
+          isLoading && "opacity-70 cursor-wait"
+        )}
+        ref={ref}
+        disabled={disabled || isLoading}
+        data-slot="button"
+        {...props}
+      >
+        {isLoading ? (
+          <svg 
+            className="animate-spin" 
+            width="16" 
+            height="16" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2.5" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+          >
+            <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+          </svg>
+        ) : (
+          leftIcon
+        )}
+        {children}
+        {!isLoading && rightIcon}
+      </button>
+    );
+  }
+);
+Button.displayName = "Button";
 
 export { Button, buttonVariants };
+
 
 
 
