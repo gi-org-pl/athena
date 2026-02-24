@@ -1,7 +1,7 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-const TextareaVariants = cva(
+const TextAreaVariants = cva(
   "px-3 py-2 w-[346px] h-[122px] text-gi-primary rounded-3xl  h-30.5 ",
   {
     variants: {
@@ -24,7 +24,7 @@ const TextareaVariants = cva(
   },
 );
 
-type TextareaVariant = VariantProps<typeof TextareaVariants>["variant"];
+type TextAreaVariant = VariantProps<typeof TextAreaVariants>["variant"];
 
 const labelVariants: Record<string, string> = {
   default: "text-gi-primary",
@@ -33,7 +33,7 @@ const labelVariants: Record<string, string> = {
 };
 
 export interface TextAreaProps {
-  className?: string
+  className?: string;
   characterLimitVisibility?: boolean;
   characterLimit?: number;
   label?: string;
@@ -42,14 +42,14 @@ export interface TextAreaProps {
   errorText?: string;
   helper?: string;
   isDisabled?: boolean;
-  variant?: TextareaVariant;
+  variant?: TextAreaVariant;
   value?: string;
-  onChange: (value: string) => void
+  onChange: (value: string) => void;
   placeholder: string;
+  dataTestId?: string;
 }
 
-
-export function Textarea({
+export function TextArea({
   className,
   variant,
   isError,
@@ -62,20 +62,24 @@ export function Textarea({
   onChange,
   characterLimit,
   characterLimitVisibility,
+  dataTestId,
   ...props
 }: TextAreaProps) {
   const shouldShowErrorText = Boolean(isError && errorText);
   const footerText = shouldShowErrorText ? errorText : helper;
-  const effectiveCharacterLimit = typeof characterLimit === "number" ? characterLimit : 500;
-  const hasCharacterLimit = typeof effectiveCharacterLimit === "number";
+  const hasCharacterLimit = typeof characterLimit === "number";
+  const effectiveCharacterLimit = hasCharacterLimit ? characterLimit : undefined;
   const rawValue = value ?? "";
-  const normalizedValue = hasCharacterLimit ? rawValue.slice(0, effectiveCharacterLimit) : rawValue;
+  const normalizedValue =
+    hasCharacterLimit && typeof effectiveCharacterLimit === "number"
+      ? rawValue.slice(0, effectiveCharacterLimit)
+      : rawValue;
   const currentLength = normalizedValue.length;
   const isFooterError = shouldShowErrorText;
+  const shouldShowCounter =
+    Boolean(characterLimitVisibility) && hasCharacterLimit;
 
-  function handleChange(
-    event: React.ChangeEvent<HTMLTextAreaElement>,
-  ): void {
+  function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>): void {
     if (isDisabled) {
       return;
     }
@@ -97,20 +101,27 @@ export function Textarea({
     <div>
       <p className={cn("text-[16px]", labelVariants[variant ?? "default"])}>
         {label}
-        {isRequired && <span className="text-red-500 ml-1 size-4">*</span>}{""}
+        {isRequired && <span className="text-red-500 ml-1 size-4">*</span>}
+        {""}
       </p>
       <textarea
         value={normalizedValue}
         onChange={handleChange}
         maxLength={hasCharacterLimit ? characterLimit : undefined}
         data-slot="textarea"
+        data-test-id={dataTestId}
         disabled={isDisabled}
-        className={cn(TextareaVariants({ variant: isError ? "error" : "default", className }))}
+        className={cn(
+          TextAreaVariants({
+            variant: isError ? "error" : "default",
+            className,
+          }),
+        )}
         {...props}
       />
       <div className="flex justify-between items-start text-[14px] mt-1 min-h-4">
         <p className={footerClassName}>{footerText}</p>
-        {hasCharacterLimit ? (
+        {shouldShowCounter ? (
           <p className="text-gi-primary/50 text-[14px]">
             {currentLength}/{effectiveCharacterLimit}
           </p>

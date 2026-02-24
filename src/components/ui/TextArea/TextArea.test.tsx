@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { Textarea } from "./TextArea";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { TextArea } from "./TextArea";
 
 describe("<Textarea />", () => {
   const baseProps = {
@@ -13,7 +13,7 @@ describe("<Textarea />", () => {
 
   describe("rendering", () => {
     it("renders with default props and empty value", () => {
-      render(<Textarea {...baseProps} />);
+      render(<TextArea {...baseProps} />);
 
       const textarea = screen.getByRole("textbox", { name: "" });
       expect(textarea).toBeInTheDocument();
@@ -22,14 +22,15 @@ describe("<Textarea />", () => {
       expect(textarea).toHaveValue("");
     });
 
+    it("passes dataTestId to textarea as data-test-id", () => {
+      render(<TextArea {...baseProps} dataTestId="my-textarea" />);
+
+      const textarea = screen.getByRole("textbox");
+      expect(textarea).toHaveAttribute("data-test-id", "my-textarea");
+    });
+
     it("renders label and required asterisk when isRequired is true", () => {
-      render(
-        <Textarea
-          {...baseProps}
-          label="Opis"
-          isRequired
-        />,
-      );
+      render(<TextArea {...baseProps} label="Opis" isRequired />);
 
       const label = screen.getByText("Opis", { selector: "p" });
       expect(label).toBeInTheDocument();
@@ -37,26 +38,14 @@ describe("<Textarea />", () => {
     });
 
     it("applies disabled label style when variant is disabled", () => {
-      render(
-        <Textarea
-          {...baseProps}
-          label="Opis"
-          variant="disabled"
-        />,
-      );
+      render(<TextArea {...baseProps} label="Opis" variant="disabled" />);
 
       const label = screen.getByText("Opis", { selector: "p" });
       expect(label).toHaveClass("text-gray-400");
     });
 
     it("applies error label style when variant is error", () => {
-      render(
-        <Textarea
-          {...baseProps}
-          label="Opis"
-          variant="error"
-        />,
-      );
+      render(<TextArea {...baseProps} label="Opis" variant="error" />);
 
       const label = screen.getByText("Opis", { selector: "p" });
       expect(label).toHaveClass("text-gi-primary");
@@ -64,27 +53,23 @@ describe("<Textarea />", () => {
   });
 
   describe("character limit", () => {
-    it("uses default 500 character limit when characterLimit is not provided", () => {
-      render(
-        <Textarea
-          {...baseProps}
-          value="abc"
-        />,
-      );
+    it("does not apply character limit or show counter when characterLimit is not provided", () => {
+      render(<TextArea {...baseProps} value="abc" />);
 
       const textarea = screen.getByRole("textbox");
       expect(textarea).not.toHaveAttribute("maxLength");
 
-      const counter = screen.getByText("3/500");
-      expect(counter).toBeInTheDocument();
+      const counter = screen.queryByText("3/500");
+      expect(counter).not.toBeInTheDocument();
     });
 
-    it("shows character counter and maxLength when characterLimit is provided", () => {
+    it("shows character counter and maxLength when characterLimit is provided and characterLimitVisibility is true", () => {
       render(
-        <Textarea
+        <TextArea
           {...baseProps}
           value="abc"
           characterLimit={10}
+          characterLimitVisibility
         />,
       );
 
@@ -95,13 +80,31 @@ describe("<Textarea />", () => {
       expect(counter).toBeInTheDocument();
     });
 
-    it("truncates initial value to the provided characterLimit", () => {
+    it("does not show character counter when characterLimitVisibility is false, but still applies maxLength", () => {
+      render(
+        <TextArea
+          {...baseProps}
+          value="abc"
+          characterLimit={10}
+          characterLimitVisibility={false}
+        />,
+      );
+
+      const textarea = screen.getByRole("textbox");
+      expect(textarea).toHaveAttribute("maxLength", "10");
+
+      const counter = screen.queryByText("3/10");
+      expect(counter).not.toBeInTheDocument();
+    });
+
+    it("truncates initial value to the provided characterLimit and updates counter when visible", () => {
       const longValue = "a".repeat(20);
       render(
-        <Textarea
+        <TextArea
           {...baseProps}
           value={longValue}
           characterLimit={10}
+          characterLimitVisibility
         />,
       );
 
@@ -115,12 +118,7 @@ describe("<Textarea />", () => {
 
   describe("footer text and error state", () => {
     it("shows helper text when not in error state", () => {
-      render(
-        <Textarea
-          {...baseProps}
-          helper="Pomocniczy tekst"
-        />,
-      );
+      render(<TextArea {...baseProps} helper="Pomocniczy tekst" />);
 
       const footer = screen.getByText("Pomocniczy tekst");
       expect(footer).toBeInTheDocument();
@@ -128,13 +126,7 @@ describe("<Textarea />", () => {
     });
 
     it("shows error text and error styling when isError is true and errorText is provided", () => {
-      render(
-        <Textarea
-          {...baseProps}
-          isError
-          errorText="Błąd pola"
-        />,
-      );
+      render(<TextArea {...baseProps} isError errorText="Błąd pola" />);
 
       const footer = screen.getByText("Błąd pola");
       expect(footer).toBeInTheDocument();
@@ -147,7 +139,7 @@ describe("<Textarea />", () => {
 
   describe("onChange behavior", () => {
     it("calls onChange with new value when not disabled", () => {
-      render(<Textarea {...baseProps} />);
+      render(<TextArea {...baseProps} />);
 
       const textarea = screen.getByRole("textbox");
       fireEvent.change(textarea, { target: { value: "nowy tekst" } });
@@ -157,12 +149,7 @@ describe("<Textarea />", () => {
     });
 
     it("truncates value passed to onChange according to characterLimit", () => {
-      render(
-        <Textarea
-          {...baseProps}
-          characterLimit={5}
-        />,
-      );
+      render(<TextArea {...baseProps} characterLimit={5} />);
 
       const textarea = screen.getByRole("textbox");
       fireEvent.change(textarea, { target: { value: "123456789" } });
@@ -172,12 +159,7 @@ describe("<Textarea />", () => {
     });
 
     it("does not call onChange when isDisabled is true", () => {
-      render(
-        <Textarea
-          {...baseProps}
-          isDisabled
-        />,
-      );
+      render(<TextArea {...baseProps} isDisabled />);
 
       const textarea = screen.getByRole("textbox");
       expect(textarea).toBeDisabled();
@@ -187,4 +169,3 @@ describe("<Textarea />", () => {
     });
   });
 });
-

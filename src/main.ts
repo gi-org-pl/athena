@@ -9,4 +9,4 @@ export {
 export { RadioGroup } from "./components/ui/RadioGroup/RadioGroup";
 export { RadioGroupItem } from "./components/ui/RadioGroup/RadioGroupItem/RadioGroupItem";
 export { Switch } from "./components/ui/Switch/Switch";
-export { Textarea } from "./components/ui/TextArea/TextArea"
+export { TextArea } from "./components/ui/TextArea/TextArea";
