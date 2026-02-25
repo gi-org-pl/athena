@@ -8,7 +8,8 @@ const TextAreaVariants = cva(
       variant: {
         default:
           "border-gi-primary/10 hover:border-gi-primary/20 focus:border-gi-primary/20 focus:outline-1 duration-300 ease-in-out",
-        disabled: "focus:ring-0 focus:outline-none text-gi-gray cursor-not-allowed",
+        disabled:
+          "focus:ring-0 focus:outline-none text-gi-gray cursor-not-allowed",
         error: "border-gi-red focus:ring-0 focus:outline-none",
       },
     },
@@ -71,7 +72,7 @@ export function TextArea({
   const isFooterError = shouldShowErrorText;
   const shouldShowCounter =
     Boolean(characterLimitVisibility) && hasCharacterLimit;
-  const computedVariant = disabled ? "disabled" : isError ? "error" : "default"
+  const computedVariant = disabled ? "disabled" : isError ? "error" : "default";
 
   function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>): void {
     if (disabled) {
@@ -93,7 +94,9 @@ export function TextArea({
 
   return (
     <div>
-      <p className={cn("font-bold", labelVariants[computedVariant ?? "default"])}>
+      <p
+        className={cn("font-bold", labelVariants[computedVariant ?? "default"])}
+      >
         {label}
         {isRequired && <span className="text-gi-red ml-1 size-4">*</span>}
         {""}

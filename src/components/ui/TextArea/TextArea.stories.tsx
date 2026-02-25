@@ -8,10 +8,15 @@ const meta = {
   parameters: {
     layout: "centered",
   },
-  argTypes: {},
+  argTypes: {
+    helper: {
+      control: "text",
+  },
+  },
   tags: ["autodocs"],
   args: {
     placeholder: "Placeholder",
+    helper: "Helper text",
     value: "Test text",
     characterLimit: 500,
     characterLimitVisibility: true,
@@ -40,8 +45,7 @@ export default meta;
 type Story = StoryObj<typeof TextArea>;
 
 export const Default: Story = {
-  args: {
-  },
+  args: {},
 };
 export const disabled: Story = {
   args: {
