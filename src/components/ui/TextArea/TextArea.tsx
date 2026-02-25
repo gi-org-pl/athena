@@ -8,10 +8,8 @@ const TextAreaVariants = cva(
       variant: {
         default:
           "border-gi-primary/10 hover:border-gi-primary/20 focus:border-gi-primary/20 focus:outline-1 duration-300 ease-in-out",
-        disabled:
-          "focus:ring-0 focus:outline-none cursor-not-allowed",
-        error:
-          "border-gi-red focus:ring-0 focus:outline-none",
+        disabled: "focus:ring-0 focus:outline-none cursor-not-allowed",
+        error: "border-gi-red focus:ring-0 focus:outline-none",
       },
     },
     defaultVariants: {
@@ -113,7 +111,11 @@ export function TextArea({
         data-test-id={dataTestId}
         className={cn(
           TextAreaVariants({
-            variant: isError ? "error" : "default",
+            variant: disabled
+              ? "disabled"
+              : isError
+                ? "error"
+                : variant || "default",
             className,
           }),
         )}
