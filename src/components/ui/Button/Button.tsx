@@ -1,6 +1,6 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import { Loader2 } from "lucide-react"; 
+import { Loader2 } from "lucide-react";
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
@@ -67,6 +67,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       className,
       variant,
       size,
+      isIconButton,
       asChild = false,
       leftIcon,
       rightIcon,
@@ -77,16 +78,30 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref,
   ) => {
-    
+    const isDisabled = disabled || isLoading;
+    const content = (
+      <>
+        {isLoading ? <Loader2 className="animate-spin" /> : leftIcon}
+        {children}
+        {!isLoading && rightIcon}
+      </>
+    );
+
     if (asChild) {
       return (
         <Slot
-          className={cn(buttonVariants({ variant, size, className }))}
+          className={cn(
+            buttonVariants({ variant, size, isIconButton, className }),
+            isLoading && "opacity-70 cursor-wait"
+          )}
           ref={ref}
           data-slot="button"
-          {...props}
+          {...{ ...props, disabled: isDisabled }}
         >
-          {children}
+          
+          {React.isValidElement(children)
+            ? React.cloneElement(children, (children.props as any), content)
+            : children}
         </Slot>
       );
     }
@@ -94,22 +109,15 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         className={cn(
-          buttonVariants({ variant, size, className }),
+          buttonVariants({ variant, size, isIconButton, className }),
           isLoading && "opacity-70 cursor-wait",
         )}
         ref={ref}
-        disabled={disabled || isLoading}
+        disabled={isDisabled}
         data-slot="button"
         {...props}
       >
-
-        {isLoading ? (
-          <Loader2 className="animate-spin" />
-        ) : (
-          leftIcon
-        )}
-        {children}
-        {!isLoading && rightIcon}
+        {content}
       </button>
     );
   },
