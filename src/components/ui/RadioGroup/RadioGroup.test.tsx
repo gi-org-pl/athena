@@ -1,3 +1,4 @@
+import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import { RadioGroup } from "./RadioGroup";
 import { RadioGroupItem } from "./RadioGroupItem/RadioGroupItem";

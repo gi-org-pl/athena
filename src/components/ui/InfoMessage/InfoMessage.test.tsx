@@ -1,3 +1,4 @@
+import "@testing-library/jest-dom";
 import { render, screen, within } from "@testing-library/react";
 import { vi } from "vitest";
 import { InfoMessage } from "./InfoMessage";
