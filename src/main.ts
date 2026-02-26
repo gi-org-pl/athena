@@ -6,6 +6,10 @@ export {
   InfoMessage,
   infoMessageVariants,
 } from "./components/ui/InfoMessage/InfoMessage";
+export {
+  ProgressBar,
+  progressBarVariants,
+} from "./components/ui/ProgressBar/ProgressBar";
 export { RadioGroup } from "./components/ui/RadioGroup/RadioGroup";
 export { RadioGroupItem } from "./components/ui/RadioGroup/RadioGroupItem/RadioGroupItem";
 export { Switch } from "./components/ui/Switch/Switch";
