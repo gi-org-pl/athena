@@ -78,20 +78,14 @@ function Badge({
   const iconClassName = "size-[1em] [color:inherit]";
 
   const renderedIcon = LeftIcon ? (
-    React.isValidElement(LeftIcon) ? (
-      React.cloneElement(
-        LeftIcon as React.ReactElement<{ className?: string }>,
-        {
+    React.isValidElement(LeftIcon)
+      ? React.cloneElement(LeftIcon as React.ReactElement<{ className?: string }>, {
           className: cn(
-            (LeftIcon as React.ReactElement<{ className?: string }>).props
-              ?.className,
+            (LeftIcon as React.ReactElement<{ className?: string }>).props?.className,
             iconClassName,
           ),
-        },
-      )
-    ) : (
-      LeftIcon
-    )
+        })
+      : LeftIcon
   ) : (
     <span className={iconClassName}>
       <DefaultIcon />

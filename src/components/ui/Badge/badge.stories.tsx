@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Star } from "lucide-react";
+
 import { fn } from "storybook/test";
+import { Star } from "lucide-react";
 
 import { Badge } from "./Badge";
 
@@ -147,11 +148,7 @@ export const FullMatrix: Story = {
             (type) =>
               (["primary", "secondary", "outlined", "ghost"] as const).map(
                 (variant) => (
-                  <Badge
-                    key={`${type}-${variant}`}
-                    type={type}
-                    variant={variant}
-                  >
+                  <Badge key={`${type}-${variant}`} type={type} variant={variant}>
                     {type}-{variant}
                   </Badge>
                 ),
