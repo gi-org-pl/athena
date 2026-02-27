@@ -28,6 +28,7 @@ export function Section({
   return (
     <section
       data-test-id={dataTestId}
+      data-testid={dataTestId}
       className={cn("rounded-lg border bg-background p-4 shadow-xs", className)}
       {...rest}
     >
