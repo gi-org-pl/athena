@@ -1,12 +1,11 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { X } from "lucide-react";
 import * as React from "react";
-
+import CheckIcon from "@/assets/icons/check-icon.svg";
+import InfoIcon from "@/assets/icons/info-icon.svg";
+import WarningIcon from "@/assets/icons/warning-icon.svg";
+import XIcon from "@/assets/icons/x-icon.svg";
 import { cn } from "@/lib/utils";
-import CheckIcon from "../../../assets/icons/check-icon.svg";
-import InfoIcon from "../../../assets/icons/info-icon.svg";
-import WarningIcon from "../../../assets/icons/warning-icon.svg";
-import XIcon from "../../../assets/icons/x-icon.svg";
 
 const badgeVariants = cva(
   "inline-flex items-center gap-1.5 rounded-md font-medium [&_svg]:shrink-0 [&_svg]:size-[1em] [&_svg]:[color:inherit]",
@@ -78,14 +77,20 @@ function Badge({
   const iconClassName = "size-[1em] [color:inherit]";
 
   const renderedIcon = LeftIcon ? (
-    React.isValidElement(LeftIcon)
-      ? React.cloneElement(LeftIcon as React.ReactElement<{ className?: string }>, {
+    React.isValidElement(LeftIcon) ? (
+      React.cloneElement(
+        LeftIcon as React.ReactElement<{ className?: string }>,
+        {
           className: cn(
-            (LeftIcon as React.ReactElement<{ className?: string }>).props?.className,
+            (LeftIcon as React.ReactElement<{ className?: string }>).props
+              ?.className,
             iconClassName,
           ),
-        })
-      : LeftIcon
+        },
+      )
+    ) : (
+      LeftIcon
+    )
   ) : (
     <span className={iconClassName}>
       <DefaultIcon />
@@ -106,7 +111,7 @@ function Badge({
           type="button"
           aria-label="Dismiss"
           onClick={onDismiss}
-          className="ml-0.5 -mr-0.5 flex items-center justify-center rounded p-0.5 transition-[filter] hover:brightness-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 [color:inherit]"
+          className="ml-0.5 -mr-0.5 flex items-center justify-center rounded p-0.5 transition-[filter] hover:brightness-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 text-inherit"
         >
           <X className="size-3.5" strokeWidth={2.5} />
         </button>
