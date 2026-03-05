@@ -1,10 +1,17 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Modal } from "./Modal";
 import { useArgs } from "storybook/internal/preview-api";
+import { Modal } from "./Modal";
 
 const meta: Meta<typeof Modal> = {
   title: "Modal",
   component: Modal,
+  decorators: [
+    (Story) => (
+      <div className="w-[512px] h-[512px]">
+       <Story />
+       </div>
+    ),
+  ],
   tags: ["autodocs"],
   parameters: {
     layout: "centered",
@@ -30,7 +37,7 @@ export const Default: Story = {
 
   render: function Render(args) {
     const [{ isOpen }, updateArgs] = useArgs();
-  
+
     return (
       <Modal
         {...args}
@@ -38,5 +45,5 @@ export const Default: Story = {
         onClose={() => updateArgs({ isOpen: false })}
       />
     );
-  }
+  },
 };
