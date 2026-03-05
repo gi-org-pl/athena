@@ -4,19 +4,19 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const progressBarVariants = cva(
-  "min-w-[200px] w-full overflow-hidden rounded-full bg-border transition-width duration-300",
+  "min-w-[200px] w-full overflow-hidden rounded-full bg-border transition-[width] duration-300",
   {
     variants: {
       size: {
         small: "h-2",
         regular: "h-4",
       },
-  variant: {
-  default: "bg-slate-900",
-  info: "bg-blue-500",
-  success: "bg-green-500",
-  warning: "bg-yellow-500",
-  error: "bg-red-500",
+      variant: {
+        default: "bg-slate-900",
+        info: "bg-blue-500",
+        success: "bg-green-500",
+        warning: "bg-yellow-500",
+        error: "bg-red-500",
       },
     },
     defaultVariants: {
@@ -26,7 +26,7 @@ const progressBarVariants = cva(
   },
 );
 
-progressBarFillVariants = cva("h-full transition-width duration-300", {
+const progressBarFillVariants = cva("h-full transition-[width] duration-300", {
   variants: {
     variant: {
       default: "bg-primary",
