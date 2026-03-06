@@ -1,5 +1,6 @@
 import "./index.css";
 
+export * from "./components/ui/Badge/Badge";
 export { Button, buttonVariants } from "./components/ui/Button/Button";
 export { Checkbox } from "./components/ui/Checkbox/Checkbox";
 export {
