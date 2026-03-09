@@ -30,8 +30,8 @@ type Story = StoryObj<typeof Modal>;
 export const Default: Story = {
   args: {
     isOpen: true,
-    title: "Delete item?",
-    description: "This action cannot be undone.",
+    title: "Are you sure absolutely sure?",
+    description: "This action cannot be undone. This will permanently delete your account and remove your data from our servers.",
     children: "Are you sure you want to delete this item?",
   },
 

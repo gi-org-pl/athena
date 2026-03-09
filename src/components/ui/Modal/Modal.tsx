@@ -4,14 +4,33 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const overlayVariants = cva(
-  "fixed inset-0 z-50 flex items-center justify-center bg-black/10 transition-opacity duration-300 ease-in-out",
+  "fixed inset-0 z-50 flex items-center justify-center bg-black/10 transition-opacity duration-300 ease",
+  {
+    variants: {
+      state: {
+        open: "opacity-100",
+        closed: "opacity-0",
+      },
+    },
+  }
 );
 
 const modalVariants = cva(
-  "relative w-[512px] max-w-lg max-h-[85vh] overflow-y-auto rounded-3xl bg-white p-6 shadow-xl border border-gi-dark-ash transition-all duration-300 ease-in-out",
+  "relative w-[512px] max-w-lg max-h-[85vh] overflow-y-auto rounded-3xl bg-white p-6 shadow-xl border border-gi-dark-ash transition-all duration-300 ease",
+  {
+    variants: {
+      state: {
+        open: "opacity-100 scale-100",
+        closed: "opacity-0 scale-95",
+      },
+    },
+  }
 );
 
-const headerVariants = cva("flex items-start justify-between gap-4");
+const headerVariants = cva(
+  "flex items-start justify-between text-gi-primary"
+);
+
 const footerVariants = cva("flex justify-end mt-6");
 
 export interface ModalProps
@@ -42,11 +61,28 @@ export function Modal({
 }: ModalProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const titleId = React.useId();
-  const previouslyFocusedElement = React.useRef<HTMLElement | null>(null);
+  const [isRendered, setIsRendered] = React.useState(isOpen);
+
+  React.useEffect(() => {
+    if (isOpen) {
+      setIsRendered(true);
+    }
+  }, [isOpen]);
+
+  const handleTransitionEnd = (
+    event: React.TransitionEvent<HTMLDivElement>
+  ) => {
+    if (event.target !== event.currentTarget) return;
+    if (!isOpen) {
+      setIsRendered(false);
+    }
+  };
 
   React.useEffect(() => {
     if (!isOpen) return;
+
     document.body.style.overflow = "hidden";
+
     return () => {
       document.body.style.overflow = "";
     };
@@ -55,68 +91,23 @@ export function Modal({
   React.useEffect(() => {
     if (!isOpen) return;
 
-    previouslyFocusedElement.current = document.activeElement as HTMLElement;
-
-    const container = containerRef.current;
-    if (!container) return;
-
-    const focusableSelectors =
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-
-    const getFocusable = () =>
-      Array.from(
-        container.querySelectorAll<HTMLElement>(focusableSelectors),
-      ).filter((el) => !el.hasAttribute("disabled"));
-
-    const focusableElements = getFocusable();
-
-    if (focusableElements.length > 0) {
-      focusableElements[0].focus();
-    } else {
-      container.focus();
-    }
-
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        e.stopPropagation();
         onClose();
-        return;
-      }
-
-      if (e.key !== "Tab") return;
-
-      const elements = getFocusable();
-      if (elements.length === 0) return;
-
-      const first = elements[0];
-      const last = elements[elements.length - 1];
-
-      if (e.shiftKey) {
-        if (document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        }
-      } else {
-        if (document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
       }
     };
 
-    container.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
 
-    return () => {
-      container.removeEventListener("keydown", handleKeyDown);
-      previouslyFocusedElement.current?.focus();
-    };
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
+  if (!isRendered) return null;
 
   return (
     <div
-      className={overlayVariants()}
+      className={overlayVariants({ state: isOpen ? "open" : "closed" })}
+      onTransitionEnd={handleTransitionEnd}
       onClick={() => {
         if (isCloseOnOverlayClick) onClose();
       }}
@@ -126,20 +117,22 @@ export function Modal({
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        tabIndex={-1}
         data-testid={dataTestId}
-        className={cn(modalVariants(), className)}
+        className={cn(
+          modalVariants({ state: isOpen ? "open" : "closed" }),
+          className
+        )}
         onClick={(e) => e.stopPropagation()}
         {...rest}
       >
         <div className={headerVariants()}>
-          <div>
-            <h2 id={titleId} className="font-semibold">
+          <div className="flex-1 min-w-0">
+            <h2 id={titleId} className="font-semibold break-words">
               {title}
             </h2>
 
             {description && (
-              <p className="text-sm text-muted-foreground mt-2">
+              <p className="text-[14px] mt-2 break-words text-gi-gray">
                 {description}
               </p>
             )}
@@ -149,15 +142,14 @@ export function Modal({
             <button
               type="button"
               onClick={onClose}
-              aria-label="Close dialog"
-              className="opacity-70 hover:opacity-100 transition"
+              className="opacity-70 hover:opacity-100 transition shrink-0"
             >
               <XIcon className="size-5" />
             </button>
           )}
         </div>
 
-        {children && <div className="mt-4">{children}</div>}
+        {children && <div className="mt-4 break-words">{children}</div>}
 
         {actions && <div className={footerVariants()}>{actions}</div>}
       </div>
