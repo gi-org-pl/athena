@@ -68,7 +68,7 @@ function ProgressBar({
     <div
       data-slot="progress-bar"
       data-test-id={dataTestId}
-      className={cn(progressBarVariants({ size, variant, className }))}
+        className={cn(progressBarVariants({ size, className }))}
       role="progressbar"
       aria-valuenow={clampedValue}
       aria-valuemin={0}
