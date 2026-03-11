@@ -26,7 +26,7 @@ const progressBarVariants = cva(
   },
 );
 
-const progressBarFillVariants = cva("h-full transition-[width] duration-300", {
+const progressBarFillVariants = cva("h-full transition-[width] duration-300 rouned-full", {
   variants: {
     variant: {
       default: "bg-primary",
