@@ -120,9 +120,7 @@ describe("Modal", () => {
     render(
       <Modal
         {...baseProps}
-        actions={
-          <button type="button">Custom Action</button>
-        }
+        actions={<button type="button">Custom Action</button>}
       />,
     );
 

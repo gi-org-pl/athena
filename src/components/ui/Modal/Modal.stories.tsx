@@ -39,7 +39,9 @@ const meta: Meta<typeof Modal> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof Modal & { primaryAction?: string; secondaryAction?: string }>;
+type Story = StoryObj<
+  typeof Modal & { primaryAction?: string; secondaryAction?: string }
+>;
 
 export const Default: Story = {
   args: {
