@@ -149,6 +149,7 @@ export function Modal({
     >
       <div
         ref={containerRef}
+        {...rest}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
@@ -158,8 +159,10 @@ export function Modal({
           modalVariants({ state: isOpen ? "open" : "closed" }),
           className,
         )}
-        onClick={(e) => e.stopPropagation()}
-        {...rest}
+        onClick={(e) => {
+          e.stopPropagation();
+          rest.onClick?.(e);
+        }}
       >
         <div className={headerVariants()}>
           <div className="flex-1 min-w-0">
