@@ -116,6 +116,19 @@ describe("Modal", () => {
     expect(onClose).toHaveBeenCalled();
   });
 
+  it("renders custom actions", () => {
+    render(
+      <Modal
+        {...baseProps}
+        actions={
+          <button type="button">Custom Action</button>
+        }
+      />,
+    );
+
+    expect(screen.getByText("Custom Action")).toBeInTheDocument();
+  });
+
   it("applies data-testid", () => {
     render(<Modal {...baseProps} dataTestId="modal" />);
 

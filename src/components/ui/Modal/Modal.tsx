@@ -32,21 +32,17 @@ const headerVariants = cva("flex items-start justify-between text-gi-primary");
 
 const footerVariants = cva("flex justify-end gap-3 mt-6");
 
-type ButtonVariant = VariantProps<typeof buttonVariants>["variant"];
-
 export interface ModalProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   title: React.ReactNode;
   description?: React.ReactNode;
   children?: React.ReactNode;
-  actions?: boolean;
-  actionVariant?: ButtonVariant;
+  actions?: React.ReactNode;
 
   isOpen: boolean;
   isClosable?: boolean;
   isCloseOnOverlayClick?: boolean;
   onClose: () => void;
-
   dataTestId?: string;
 }
 
@@ -54,8 +50,7 @@ export function Modal({
   title,
   description,
   children,
-  actions = false,
-  actionVariant = "default",
+  actions,
   isOpen,
   isClosable = true,
   isCloseOnOverlayClick = true,
@@ -193,15 +188,7 @@ export function Modal({
 
         {children && <div className="mt-4 break-words">{children}</div>}
 
-        {actions && (
-          <div className={footerVariants()}>
-            <Button variant="secondary" onClick={onClose}>
-              Cancel
-            </Button>
-
-            <Button variant={actionVariant}>Confirm</Button>
-          </div>
-        )}
+        {actions && <div className={footerVariants()}>{actions}</div>}
       </div>
     </div>
   );
