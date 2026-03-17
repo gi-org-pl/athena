@@ -1,6 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { XIcon } from "lucide-react";
-import * as React from "react";
+import { useRef, useEffect, useId, useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/Button/Button.tsx";
 import { cn } from "@/lib/utils";
 
@@ -39,7 +39,6 @@ export interface ModalProps
   title: React.ReactNode;
   description?: React.ReactNode;
   children?: React.ReactNode;
-
   actions?: boolean;
   actionVariant?: ButtonVariant;
 
@@ -65,13 +64,13 @@ export function Modal({
   dataTestId,
   ...rest
 }: ModalProps) {
-  const containerRef = React.useRef<HTMLDivElement>(null);
-  const previouslyFocusedElement = React.useRef<HTMLElement | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const previouslyFocusedElement = useRef<HTMLElement | null>(null);
 
-  const titleId = React.useId();
-  const [isRendered, setIsRendered] = React.useState(isOpen);
+  const titleId = useId();
+  const [isRendered, setIsRendered] = useState(isOpen);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isOpen) setIsRendered(true);
   }, [isOpen]);
 
@@ -82,7 +81,7 @@ export function Modal({
     if (!isOpen) setIsRendered(false);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isOpen) return;
 
     document.body.style.overflow = "hidden";
@@ -91,7 +90,7 @@ export function Modal({
     };
   }, [isOpen]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isOpen) return;
 
     const modal = containerRef.current;
@@ -109,7 +108,7 @@ export function Modal({
     firstElement?.focus();
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
+      if (e.key === "Escape" && isClosable) {
         onClose();
         return;
       }
@@ -150,7 +149,7 @@ export function Modal({
       className={overlayVariants({ state: isOpen ? "open" : "closed" })}
       onTransitionEnd={handleTransitionEnd}
       onClick={() => {
-        if (isCloseOnOverlayClick) onClose();
+        if (isCloseOnOverlayClick && isClosable) onClose();
       }}
     >
       <div
