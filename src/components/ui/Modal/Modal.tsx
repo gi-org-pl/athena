@@ -1,8 +1,8 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { XIcon } from "lucide-react";
 import * as React from "react";
-import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/Button/Button.tsx";
+import { cn } from "@/lib/utils";
 
 const overlayVariants = cva(
   "fixed inset-0 z-50 flex items-center justify-center bg-black/10 transition-opacity duration-300 ease",

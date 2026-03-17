@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { Modal } from "./Modal";
@@ -53,11 +53,7 @@ describe("Modal", () => {
     const onClose = vi.fn();
 
     render(
-      <Modal
-        {...baseProps}
-        onClose={onClose}
-        isCloseOnOverlayClick={false}
-      />,
+      <Modal {...baseProps} onClose={onClose} isCloseOnOverlayClick={false} />,
     );
 
     const overlay = screen.getByRole("dialog").parentElement!;
