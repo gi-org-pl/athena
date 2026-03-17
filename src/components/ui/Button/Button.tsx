@@ -81,7 +81,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const isDisabled = disabled || isLoading;
 
     if (asChild && React.isValidElement(children)) {
-      const child = children as React.ReactElement<{ children?: React.ReactNode; disabled?: boolean }>;
+      const child = children as React.ReactElement<{
+        children?: React.ReactNode;
+        disabled?: boolean;
+      }>;
 
       return (
         <Slot

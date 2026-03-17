@@ -7,6 +7,7 @@ export {
   InfoMessage,
   infoMessageVariants,
 } from "./components/ui/InfoMessage/InfoMessage";
+export { Modal } from "./components/ui/Modal/Modal";
 export { RadioGroup } from "./components/ui/RadioGroup/RadioGroup";
 export { RadioGroupItem } from "./components/ui/RadioGroup/RadioGroupItem/RadioGroupItem";
 export { Switch } from "./components/ui/Switch/Switch";
