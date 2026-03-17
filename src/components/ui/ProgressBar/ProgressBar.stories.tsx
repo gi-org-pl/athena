@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { ProgressBar } from "./ProgressBar";
 
@@ -26,6 +26,7 @@ const meta = {
     dataTestId: { control: "text" },
   },
   tags: ["autodocs"],
+  render: (args) => <ProgressBar className="w-[200px] max-w-full" {...args} />,
   args: { value: 50 },
 } satisfies Meta<typeof ProgressBar>;
 
@@ -137,42 +138,50 @@ export const WithCustomClass: Story = {
 };
 
 export const AllVariants: Story = {
-  render: () => (
+  args: {
+    value: 70,
+    className: "max-w-sm",
+  },
+  render: (args) => (
     <div className="space-y-4 w-64">
       <div className="space-y-2">
         <p className="text-sm font-medium">Default</p>
-        <ProgressBar value={75} />
+        <ProgressBar {...args}/>
       </div>
       <div className="space-y-2">
         <p className="text-sm font-medium">Info</p>
-        <ProgressBar value={75} variant="info" />
+        <ProgressBar variant="info" {...args}/>
       </div>
       <div className="space-y-2">
         <p className="text-sm font-medium">Success</p>
-        <ProgressBar value={75} variant="success" />
+        <ProgressBar variant="success" {...args} />
       </div>
       <div className="space-y-2">
         <p className="text-sm font-medium">Warning</p>
-        <ProgressBar value={75} variant="warning" />
+        <ProgressBar variant="warning" {...args} />
       </div>
       <div className="space-y-2">
         <p className="text-sm font-medium">Error</p>
-        <ProgressBar value={75} variant="error" />
+        <ProgressBar variant="error" {...args} />
       </div>
     </div>
   ),
 };
 
 export const AllSizes: Story = {
-  render: () => (
+  args: {
+    value: 70,
+    className: "max-w-sm",
+  },
+  render: (args) => (
     <div className="space-y-4 w-64">
       <div className="space-y-2">
         <p className="text-sm font-medium">Small</p>
-        <ProgressBar value={60} size="small" />
+        <ProgressBar size="small" {...args}/>
       </div>
       <div className="space-y-2">
         <p className="text-sm font-medium">Regular</p>
-        <ProgressBar value={60} size="regular" />
+        <ProgressBar size="regular" {...args} />
       </div>
     </div>
   ),
