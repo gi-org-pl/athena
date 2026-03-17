@@ -1,6 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { XIcon } from "lucide-react";
-import { useRef, useEffect, useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/Button/Button.tsx";
 import { cn } from "@/lib/utils";
 
