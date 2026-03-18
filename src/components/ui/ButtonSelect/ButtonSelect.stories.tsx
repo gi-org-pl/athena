@@ -38,6 +38,7 @@ const meta = {
     ],
     isFullWidth: false,
     selectedOptionId: "1",
+    onSelectedOptionIdChange: () => {},
   },
   tags: ["autodocs"],
 } satisfies Meta<typeof ButtonSelect>;
