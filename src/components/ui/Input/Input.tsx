@@ -1,5 +1,5 @@
-import * as React from "react";
 import { cva } from "class-variance-authority";
+import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const inputVariants = cva(
@@ -15,7 +15,7 @@ const inputVariants = cva(
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
 
 export interface InputProps
@@ -52,9 +52,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       dataTestId,
       ...props
     },
-    ref
+    ref,
   ) => {
-    const computedVariant = disabled ? "disabled" : isError ? "error" : "default";
+    const computedVariant = disabled
+      ? "disabled"
+      : isError
+        ? "error"
+        : "default";
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       if (onChange) {
@@ -66,14 +70,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <div className="flex w-full flex-col gap-1.5 text-left">
         {/* Sekcja Label */}
         {label && (
-          <label 
+          <label
             className={cn(
-              "text-sm font-bold text-gi-primary flex items-center", 
-              disabled && "opacity-50"
+              "text-sm font-bold text-gi-primary flex items-center",
+              disabled && "opacity-50",
             )}
           >
             {label}
-            {isRequired && <span className="ml-1 text-gi-red font-bold">*</span>}
+            {isRequired && (
+              <span className="ml-1 text-gi-red font-bold">*</span>
+            )}
           </label>
         )}
 
@@ -97,7 +103,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               inputVariants({ variant: computedVariant }),
               (leftIcon || prefix) && "pl-10",
               (rightIcon || suffix) && "pr-10",
-              className
+              className,
             )}
             ref={ref}
             disabled={disabled}
@@ -121,10 +127,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
         {/* Sekcja Footer: ErrorText ma pierwszeństwo nad helperem */}
         {(isError && errorText) || helper ? (
-          <p 
+          <p
             className={cn(
-              "text-[14px] mt-1 min-h-[20px]", 
-              isError ? "text-gi-red font-medium" : "text-gi-primary/50"
+              "text-[14px] mt-1 min-h-[20px]",
+              isError ? "text-gi-red font-medium" : "text-gi-primary/50",
             )}
           >
             {isError && errorText ? errorText : helper}
@@ -132,7 +138,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         ) : null}
       </div>
     );
-  }
+  },
 );
 
 Input.displayName = "Input";
