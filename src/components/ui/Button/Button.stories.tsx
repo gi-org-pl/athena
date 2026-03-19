@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 import { fn } from "storybook/test";
 import Crown from "@/assets/icons/crown.svg";
 import { Button } from "./Button";
@@ -12,19 +11,22 @@ const meta = {
   },
   argTypes: {
     children: { control: "text" },
-
     isLoading: { control: "boolean" },
-
-    leftIcon: { control: false },
-    rightIcon: { control: false },
-
+    disabled: { control: "boolean" },
+    isIconButton: { control: "boolean" },
+    LeftIcon: { control: false },
+    RightIcon: { control: false },
+    type: {
+      control: "radio",
+      options: ["primary", "outlined", "ghost"],
+    },
     variant: {
-      control: "select",
-      options: ["default", "danger", "outline", "secondary", "ghost", "link"],
+      control: "radio",
+      options: ["primary", "secondary", "danger"],
     },
     size: {
-      control: "select",
-      options: ["default", "sm", "lg", "icon", "icon-sm", "icon-lg"],
+      control: "radio",
+      options: ["regular", "small"],
     },
     asChild: { control: "boolean" },
   },
@@ -35,81 +37,83 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+// Custom render function to generate the matrix layout
+const renderMatrix = (variant: "primary" | "secondary" | "danger") => (args: any) => (
+  <div className="flex flex-col gap-6 p-4 bg-white dark:bg-gray-900 rounded-lg">
+    <div className="flex gap-4 items-center">
+      <Button {...args} type="primary" variant={variant} />
+      <Button {...args} type="outlined" variant={variant} />
+      <Button {...args} type="ghost" variant={variant} />
+    </div>
+    <div className="flex gap-4 items-center">
+      <Button {...args} type="primary" variant={variant} disabled />
+      <Button {...args} type="outlined" variant={variant} disabled />
+      <Button {...args} type="ghost" variant={variant} disabled />
+    </div>
+  </div>
+);
+
+export const PrimaryTheme: Story = {
+  render: renderMatrix("primary"),
   args: {
-    variant: "default",
+    children: "Primary",
   },
 };
 
-export const LeftIcon: Story = {
+export const SecondaryTheme: Story = {
+  render: renderMatrix("secondary"),
   args: {
-    variant: "default",
-    children: "Primary",
-    leftIcon: <Crown />,
+    children: "Secondary",
   },
 };
 
-export const RightIcon: Story = {
+export const DangerTheme: Story = {
+  render: renderMatrix("danger"),
   args: {
-    variant: "default",
-    children: "Primary",
-    rightIcon: <Crown />,
+    children: "Danger",
   },
 };
 
-export const Loading: Story = {
+export const WithLeftIcon: Story = {
   args: {
-    variant: "default",
+    type: "primary",
+    variant: "primary",
     children: "Primary",
+    LeftIcon: <Crown />,
+  },
+};
+
+export const WithRightIcon: Story = {
+  args: {
+    type: "primary",
+    variant: "primary",
+    children: "Primary",
+    RightIcon: <Crown />,
+  },
+};
+
+export const LoadingState: Story = {
+  args: {
+    type: "primary",
+    variant: "primary",
     isLoading: true,
   },
 };
 
-export const Danger: Story = {
+export const SmallSize: Story = {
   args: {
-    variant: "danger",
+    size: "small",
+    type: "primary",
+    variant: "primary",
   },
 };
 
-export const Outline: Story = {
+export const IconButton: Story = {
   args: {
-    variant: "outline",
-  },
-};
-
-export const Secondary: Story = {
-  args: {
-    variant: "secondary",
-  },
-};
-
-export const Ghost: Story = {
-  args: {
-    variant: "ghost",
-  },
-};
-
-export const Link: Story = {
-  args: {
-    variant: "link",
-  },
-};
-
-export const Small: Story = {
-  args: {
-    size: "sm",
-  },
-};
-
-export const Large: Story = {
-  args: {
-    size: "lg",
-  },
-};
-
-export const Icon: Story = {
-  args: {
-    size: "icon",
-    children: "🚀",
+    type: "primary",
+    variant: "primary",
+    isIconButton: true,
+    LeftIcon: <Crown />,
+    children: undefined,
   },
 };
