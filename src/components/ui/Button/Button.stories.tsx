@@ -62,14 +62,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/* 1. Precision testing for text buttons */
 export const Default: Story = {
   args: {
     children: "Default Button",
   },
 };
 
-/* 2. Isolated demonstration for icon only usage */
 export const IconButton: Story = {
   args: {
     isIconButton: true,
@@ -78,9 +76,6 @@ export const IconButton: Story = {
   },
 };
 
-/**
- * Matrix Helper for visual regression testing
- */
 const ButtonMatrix = (args: any) => (
   <div className="flex flex-col gap-8 p-6 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800">
     {VARIANTS.map((variant) => (
