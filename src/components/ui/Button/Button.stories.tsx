@@ -3,6 +3,9 @@ import { fn } from "storybook/test";
 import Crown from "@/assets/icons/crown.svg";
 import { Button } from "./Button";
 
+const TYPES = ["primary", "outlined", "ghost"] as const;
+const VARIANTS = ["primary", "secondary", "danger"] as const;
+
 const meta = {
   title: "Button",
   component: Button,
@@ -14,107 +17,108 @@ const meta = {
     isLoading: { control: "boolean" },
     disabled: { control: "boolean" },
     isIconButton: { control: "boolean" },
-    LeftIcon: { control: false },
-    RightIcon: { control: false },
+    LeftIcon: {
+      options: ["None", "Crown"],
+      mapping: {
+        None: undefined,
+        Crown: <Crown />,
+      },
+      control: { type: "select" },
+    },
+    RightIcon: {
+      options: ["None", "Crown"],
+      mapping: {
+        None: undefined,
+        Crown: <Crown />,
+      },
+      control: { type: "select" },
+    },
     type: {
-      control: "radio",
-      options: ["primary", "outlined", "ghost"],
+      control: "inline-radio",
+      options: TYPES,
     },
     variant: {
-      control: "radio",
-      options: ["primary", "secondary", "danger"],
+      control: "inline-radio",
+      options: VARIANTS,
     },
     size: {
-      control: "radio",
+      control: "inline-radio",
       options: ["regular", "small"],
     },
     asChild: { control: "boolean" },
   },
   tags: ["autodocs"],
-  args: { onClick: fn(), children: "Button" },
+  args: { 
+    onClick: fn(), 
+    children: "Button",
+    LeftIcon: "None",
+    RightIcon: "None",
+    size: "regular",
+    type: "primary",
+    variant: "primary",
+  },
 } satisfies Meta<typeof Button>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Custom render function to generate the matrix layout
-const renderMatrix =
-  (variant: "primary" | "secondary" | "danger") => (args: any) => (
-    <div className="flex flex-col gap-6 p-4 bg-white dark:bg-gray-900 rounded-lg">
-      <div className="flex gap-4 items-center">
-        <Button {...args} type="primary" variant={variant} />
-        <Button {...args} type="outlined" variant={variant} />
-        <Button {...args} type="ghost" variant={variant} />
-      </div>
-      <div className="flex gap-4 items-center">
-        <Button {...args} type="primary" variant={variant} disabled />
-        <Button {...args} type="outlined" variant={variant} disabled />
-        <Button {...args} type="ghost" variant={variant} disabled />
-      </div>
-    </div>
-  );
-
-export const PrimaryTheme: Story = {
-  render: renderMatrix("primary"),
+/* 1. Precision testing for text buttons */
+export const Default: Story = {
   args: {
-    children: "Primary",
+    children: "Default Button",
   },
 };
 
-export const SecondaryTheme: Story = {
-  render: renderMatrix("secondary"),
-  args: {
-    children: "Secondary",
-  },
-};
-
-export const DangerTheme: Story = {
-  render: renderMatrix("danger"),
-  args: {
-    children: "Danger",
-  },
-};
-
-export const WithLeftIcon: Story = {
-  args: {
-    type: "primary",
-    variant: "primary",
-    children: "Primary",
-    LeftIcon: <Crown />,
-  },
-};
-
-export const WithRightIcon: Story = {
-  args: {
-    type: "primary",
-    variant: "primary",
-    children: "Primary",
-    RightIcon: <Crown />,
-  },
-};
-
-export const LoadingState: Story = {
-  args: {
-    type: "primary",
-    variant: "primary",
-    isLoading: true,
-  },
-};
-
-export const SmallSize: Story = {
-  args: {
-    size: "small",
-    type: "primary",
-    variant: "primary",
-  },
-};
-
+/* 2. Isolated demonstration for icon only usage */
 export const IconButton: Story = {
   args: {
-    type: "primary",
-    variant: "primary",
     isIconButton: true,
-    LeftIcon: <Crown />,
+    LeftIcon: "Crown",
     children: undefined,
+  },
+};
+
+/**
+ * Matrix Helper for visual regression testing
+ */
+const ButtonMatrix = (args: any) => (
+  <div className="flex flex-col gap-8 p-6 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800">
+    {VARIANTS.map((variant) => (
+      <div key={variant} className="flex flex-col gap-3">
+        <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400">
+          {variant} Variant
+        </h3>
+        <div className="flex gap-4 items-center">
+          {TYPES.map((type) => (
+            <div key={`${variant}-${type}`} className="flex flex-col gap-2 items-center">
+              <Button {...args} type={type} variant={variant} />
+              <span className="text-[10px] text-gray-400 font-mono">{type}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
+/* 3. System wide variations */
+export const AllVariations: Story = {
+  render: (args) => <ButtonMatrix {...args} />,
+  name: "System Matrix",
+};
+
+export const IconButtonMatrix: Story = {
+  render: (args) => <ButtonMatrix {...args} />,
+  args: {
+    isIconButton: true,
+    LeftIcon: "Crown",
+    children: undefined,
+  },
+};
+
+export const LoadingMatrix: Story = {
+  render: (args) => <ButtonMatrix {...args} />,
+  args: {
+    isLoading: true,
   },
 };
