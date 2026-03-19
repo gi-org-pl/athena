@@ -101,7 +101,7 @@ describe("<ProgressBar />", () => {
       expect(progressBar).toBeInTheDocument();
 
       const fillElement = progressBar.firstChild as HTMLElement;
-      expect(fillElement).toHaveClass("bg-primary");
+      expect(fillElement).toHaveClass("bg-gi-primary");
     });
 
     it("should render info variant", () => {

@@ -18,20 +18,23 @@ const progressBarVariants = cva(
   },
 );
 
-const progressBarFillVariants = cva("h-full transition-[width] duration-300 ease rounded-full", {
-  variants: {
-    variant: {
-      default: "bg-gi-primary",
-      info: "bg-gi-blue",
-      success: "bg-gi-green",
-      warning: "bg-gi-orange",
-      error: "bg-gi-red",
+const progressBarFillVariants = cva(
+  "h-full transition-[width] duration-300 ease rounded-full",
+  {
+    variants: {
+      variant: {
+        default: "bg-gi-primary",
+        info: "bg-gi-blue",
+        success: "bg-gi-green",
+        warning: "bg-gi-orange",
+        error: "bg-gi-red",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
     },
   },
-  defaultVariants: {
-    variant: "default",
-  },
-});
+);
 
 interface ProgressBarProps
   extends React.HTMLAttributes<HTMLDivElement>,

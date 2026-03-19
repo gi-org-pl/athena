@@ -146,11 +146,11 @@ export const AllVariants: Story = {
     <div className="space-y-4 w-64">
       <div className="space-y-2">
         <p className="text-sm font-medium">Default</p>
-        <ProgressBar {...args}/>
+        <ProgressBar {...args} />
       </div>
       <div className="space-y-2">
         <p className="text-sm font-medium">Info</p>
-        <ProgressBar variant="info" {...args}/>
+        <ProgressBar variant="info" {...args} />
       </div>
       <div className="space-y-2">
         <p className="text-sm font-medium">Success</p>
@@ -177,7 +177,7 @@ export const AllSizes: Story = {
     <div className="space-y-4 w-64">
       <div className="space-y-2">
         <p className="text-sm font-medium">Small</p>
-        <ProgressBar size="small" {...args}/>
+        <ProgressBar size="small" {...args} />
       </div>
       <div className="space-y-2">
         <p className="text-sm font-medium">Regular</p>
