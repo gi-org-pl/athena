@@ -30,47 +30,56 @@ const buttonVariants = cva(
       {
         type: "primary",
         variant: "primary",
-        className: "bg-gi-primary text-white hover:bg-gi-primary-hover disabled:bg-gi-gray disabled:text-white",
+        className:
+          "bg-gi-primary text-white hover:bg-gi-primary-hover disabled:bg-gi-gray disabled:text-white",
       },
       {
         type: "primary",
         variant: "secondary",
-        className: "bg-gi-secondary text-white hover:bg-gi-secondary-hover disabled:bg-gi-gray-hover disabled:text-white",
+        className:
+          "bg-gi-secondary text-white hover:bg-gi-secondary-hover disabled:bg-gi-gray-hover disabled:text-white",
       },
       {
         type: "primary",
         variant: "danger",
-        className: "bg-gi-red text-white hover:bg-gi-red-hover disabled:bg-gi-gray-hover disabled:text-white",
+        className:
+          "bg-gi-red text-white hover:bg-gi-red-hover disabled:bg-gi-gray-hover disabled:text-white",
       },
       {
         type: "outlined",
         variant: "primary",
-        className: "border-gi-primary text-gi-primary bg-transparent hover:bg-gi-ash disabled:border-gi-gray disabled:text-gi-gray",
+        className:
+          "border-gi-primary text-gi-primary bg-transparent hover:bg-gi-ash disabled:border-gi-gray disabled:text-gi-gray",
       },
       {
         type: "outlined",
         variant: "secondary",
-        className: "border-gi-secondary text-gi-secondary bg-transparent hover:bg-gi-secondary/10 disabled:border-gi-gray-hover disabled:text-gi-gray",
+        className:
+          "border-gi-secondary text-gi-secondary bg-transparent hover:bg-gi-secondary/10 disabled:border-gi-gray-hover disabled:text-gi-gray",
       },
       {
         type: "outlined",
         variant: "danger",
-        className: "border-gi-red text-gi-red bg-transparent hover:bg-gi-red/10 disabled:border-gi-gray-hover disabled:text-gi-gray",
+        className:
+          "border-gi-red text-gi-red bg-transparent hover:bg-gi-red/10 disabled:border-gi-gray-hover disabled:text-gi-gray",
       },
       {
         type: "ghost",
         variant: "primary",
-        className: "bg-gi-ash text-gi-primary hover:bg-gi-dark-ash disabled:bg-gi-gray/10 disabled:text-gi-dark-gray",
+        className:
+          "bg-gi-ash text-gi-primary hover:bg-gi-dark-ash disabled:bg-gi-gray/10 disabled:text-gi-dark-gray",
       },
       {
         type: "ghost",
         variant: "secondary",
-        className: "bg-gi-secondary/10 text-gi-secondary hover:bg-gi-secondary/33 disabled:bg-gi-gray/10 disabled:text-gi-gray",
+        className:
+          "bg-gi-secondary/10 text-gi-secondary hover:bg-gi-secondary/33 disabled:bg-gi-gray/10 disabled:text-gi-gray",
       },
       {
         type: "ghost",
         variant: "danger",
-        className: "bg-gi-red/10 text-gi-red hover:bg-gi-red/33 disabled:bg-gi-gray/10 disabled:text-gi-gray",
+        className:
+          "bg-gi-red/10 text-gi-red hover:bg-gi-red/33 disabled:bg-gi-gray/10 disabled:text-gi-gray",
       },
       {
         isIconButton: true,
@@ -160,7 +169,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         <Slot
           className={cn(
             buttonVariants({ type, variant, size, isIconButton, className }),
-            isLoading && "cursor-wait"
+            isLoading && "cursor-wait",
           )}
           ref={ref}
           data-slot="button"
@@ -179,7 +188,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         type={htmlType}
         className={cn(
           buttonVariants({ type, variant, size, isIconButton, className }),
-          isLoading && "cursor-wait"
+          isLoading && "cursor-wait",
         )}
         ref={ref}
         disabled={isDisabled}

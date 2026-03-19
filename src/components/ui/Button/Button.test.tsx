@@ -88,12 +88,16 @@ describe("<Button />", () => {
     });
 
     it("should render LeftIcon", () => {
-      render(<Button LeftIcon={<span data-testid="left">L</span>}>Text</Button>);
+      render(
+        <Button LeftIcon={<span data-testid="left">L</span>}>Text</Button>,
+      );
       expect(screen.getByTestId("left")).toBeInTheDocument();
     });
 
     it("should render RightIcon", () => {
-      render(<Button RightIcon={<span data-testid="right">R</span>}>Text</Button>);
+      render(
+        <Button RightIcon={<span data-testid="right">R</span>}>Text</Button>,
+      );
       expect(screen.getByTestId("right")).toBeInTheDocument();
     });
   });
@@ -112,10 +116,12 @@ describe("<Button />", () => {
       render(
         <Button isIconButton isLoading>
           <span data-testid="hidden-child">Hidden</span>
-        </Button>
+        </Button>,
       );
       expect(screen.queryByTestId("hidden-child")).not.toBeInTheDocument();
-      expect(screen.getByRole("button").querySelector(".animate-spin")).toBeInTheDocument();
+      expect(
+        screen.getByRole("button").querySelector(".animate-spin"),
+      ).toBeInTheDocument();
     });
   });
 
@@ -159,21 +165,21 @@ describe("<Button />", () => {
       expect(link).toBeInTheDocument();
       expect(link).toHaveAttribute("data-slot", "button");
     });
-    
+
     it("should apply loading classes and disabled state when asChild and isLoading are true", () => {
       render(
         <Button asChild isLoading className="custom-slot-class">
           <button>Custom Child</button>
-        </Button>
+        </Button>,
       );
-      
+
       const childBtn = screen.getByRole("button");
-      
+
       expect(childBtn).toHaveClass("custom-slot-class");
       expect(childBtn).toHaveClass("cursor-wait");
-      
+
       expect(childBtn).toBeDisabled();
-      
+
       expect(childBtn.querySelector(".animate-spin")).toBeInTheDocument();
     });
   });

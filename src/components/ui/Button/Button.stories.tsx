@@ -38,20 +38,21 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // Custom render function to generate the matrix layout
-const renderMatrix = (variant: "primary" | "secondary" | "danger") => (args: any) => (
-  <div className="flex flex-col gap-6 p-4 bg-white dark:bg-gray-900 rounded-lg">
-    <div className="flex gap-4 items-center">
-      <Button {...args} type="primary" variant={variant} />
-      <Button {...args} type="outlined" variant={variant} />
-      <Button {...args} type="ghost" variant={variant} />
+const renderMatrix =
+  (variant: "primary" | "secondary" | "danger") => (args: any) => (
+    <div className="flex flex-col gap-6 p-4 bg-white dark:bg-gray-900 rounded-lg">
+      <div className="flex gap-4 items-center">
+        <Button {...args} type="primary" variant={variant} />
+        <Button {...args} type="outlined" variant={variant} />
+        <Button {...args} type="ghost" variant={variant} />
+      </div>
+      <div className="flex gap-4 items-center">
+        <Button {...args} type="primary" variant={variant} disabled />
+        <Button {...args} type="outlined" variant={variant} disabled />
+        <Button {...args} type="ghost" variant={variant} disabled />
+      </div>
     </div>
-    <div className="flex gap-4 items-center">
-      <Button {...args} type="primary" variant={variant} disabled />
-      <Button {...args} type="outlined" variant={variant} disabled />
-      <Button {...args} type="ghost" variant={variant} disabled />
-    </div>
-  </div>
-);
+  );
 
 export const PrimaryTheme: Story = {
   render: renderMatrix("primary"),
