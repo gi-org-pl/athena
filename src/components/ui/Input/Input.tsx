@@ -21,7 +21,7 @@ const inputVariants = cva(
 export interface InputProps
   extends Omit<React.ComponentProps<"input">, "onChange"> {
   label?: string;
-  helper?: React.ReactNode;
+  helper?: React.ReactNode; // Przyjmuje string lub JSX
   errorText?: string;
   isError?: boolean;
   isRequired?: boolean;
@@ -68,7 +68,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div className="flex w-full flex-col gap-1.5 text-left">
-        {/* Sekcja Label */}
         {label && (
           <label
             className={cn(
@@ -83,9 +82,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           </label>
         )}
 
-        {/* Kontener Inputa */}
         <div className="relative flex items-center w-full">
-          {/* Lewa strona: Ikona LUB Prefix */}
           {leftIcon && !prefix && (
             <div className="absolute left-3 flex items-center justify-center text-gi-primary/50 pointer-events-none">
               {leftIcon}
@@ -112,7 +109,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {...props}
           />
 
-          {/* Prawa strona: Suffix LUB Ikona */}
           {suffix && (
             <span className="absolute right-4 text-gi-primary/50 text-sm pointer-events-none">
               {suffix}
@@ -125,7 +121,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           )}
         </div>
 
-        {/* Sekcja Footer: ErrorText ma pierwszeństwo nad helperem */}
         {(isError && errorText) || helper ? (
           <p
             className={cn(
