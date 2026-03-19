@@ -48,8 +48,8 @@ const meta = {
     asChild: { control: "boolean" },
   },
   tags: ["autodocs"],
-  args: { 
-    onClick: fn(), 
+  args: {
+    onClick: fn(),
     children: "Button",
     LeftIcon: "None",
     RightIcon: "None",
@@ -90,9 +90,14 @@ const ButtonMatrix = (args: any) => (
         </h3>
         <div className="flex gap-4 items-center">
           {TYPES.map((type) => (
-            <div key={`${variant}-${type}`} className="flex flex-col gap-2 items-center">
+            <div
+              key={`${variant}-${type}`}
+              className="flex flex-col gap-2 items-center"
+            >
               <Button {...args} type={type} variant={variant} />
-              <span className="text-[10px] text-gray-400 font-mono">{type}</span>
+              <span className="text-[10px] text-gray-400 font-mono">
+                {type}
+              </span>
             </div>
           ))}
         </div>
