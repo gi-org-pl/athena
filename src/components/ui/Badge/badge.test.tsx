@@ -185,6 +185,19 @@ describe("<Badge />", () => {
         within(container).queryByTestId("icon-info"),
       ).not.toBeInTheDocument();
     });
+    it("should render LeftIcon directly if it is not a valid React element", () => {
+          render(
+            <Badge type="info" LeftIcon="★">
+              Fallback Text
+            </Badge>
+          );
+          
+          const badge = screen.getByText(/Fallback Text/).closest('[data-slot="badge"]');
+          expect(badge).toBeInTheDocument();
+          
+          expect(within(badge as HTMLElement).getByText(/★/)).toBeInTheDocument();
+          expect(within(badge as HTMLElement).queryByTestId("icon-info")).not.toBeInTheDocument();
+    });
   });
 
   describe("when isDismissible is true", () => {

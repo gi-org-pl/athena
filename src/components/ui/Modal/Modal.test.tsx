@@ -132,4 +132,70 @@ describe("Modal", () => {
 
     expect(screen.getByTestId("modal")).toBeInTheDocument();
   });
+
+  it("ignores transition events from child elements", () => {
+    const { rerender } = render(<Modal {...baseProps} />);
+    const overlay = screen.getByRole("dialog").parentElement!;
+    
+    const child = document.createElement("div");
+    overlay.appendChild(child);
+
+    rerender(<Modal {...baseProps} isOpen={false} />);
+
+    fireEvent.transitionEnd(child);
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    
+    fireEvent.transitionEnd(overlay);
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("handles Tab key when modal has zero focusable elements", () => {
+    render(<Modal {...baseProps} isClosable={false} />);
+    const dialog = screen.getByRole("dialog");
+    
+    document.body.focus();
+    
+    fireEvent.keyDown(document, { key: "Tab" });
+    
+    expect(dialog).toHaveFocus();
+  });
+
+  it("traps focus backwards with Shift+Tab", async () => {
+    render(
+      <Modal {...baseProps}>
+        <button>First</button>
+        <button>Last</button>
+      </Modal>,
+    );
+
+    const closeButton = screen.getByRole("button", { name: /close modal/i });
+    const first = screen.getByText("First");
+    const last = screen.getByText("Last");
+
+    expect(closeButton).toHaveFocus();
+
+    await userEvent.keyboard("{Shift>}{Tab}{/Shift}");
+    expect(last).toHaveFocus();
+    
+    await userEvent.keyboard("{Shift>}{Tab}{/Shift}");
+    expect(first).toHaveFocus();
+  });
+
+  it("handles lifecycle when transitioning from closed to open", () => {
+    const { rerender } = render(<Modal {...baseProps} isOpen={false} />);
+    
+    rerender(<Modal {...baseProps} isOpen={true} />);
+    
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+  });
+
+  it("maintains visibility when the open transition finishes", () => {
+    render(<Modal {...baseProps} isOpen={true} />);
+    
+    const overlay = screen.getByRole("dialog").parentElement!;
+    
+    fireEvent.transitionEnd(overlay);
+    
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+  });
 });
