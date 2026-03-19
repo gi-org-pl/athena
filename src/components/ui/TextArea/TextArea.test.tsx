@@ -22,8 +22,6 @@ describe("<TextArea />", () => {
       expect(textarea).toHaveValue("");
     });
 
-    
-
     it("passes dataTestId to textarea as data-test-id", () => {
       render(<TextArea {...baseProps} dataTestId="my-textarea" />);
 

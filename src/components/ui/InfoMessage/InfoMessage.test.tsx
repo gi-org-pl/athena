@@ -99,10 +99,10 @@ describe("<InfoMessage />", () => {
     it("should render default icon when an invalid variant is forced at runtime", () => {
       render(
         // @ts-expect-error Forcing an invalid string to test the runtime fallback branch
-        <InfoMessage variant="garbage_string">Invalid</InfoMessage>
+        <InfoMessage variant="garbage_string">Invalid</InfoMessage>,
       );
       const container = getContainer("Invalid");
-      
+
       const icon = within(container).getByTestId("icon-info");
       expect(icon).toBeInTheDocument();
     });

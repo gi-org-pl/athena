@@ -136,7 +136,7 @@ describe("Modal", () => {
   it("ignores transition events from child elements", () => {
     const { rerender } = render(<Modal {...baseProps} />);
     const overlay = screen.getByRole("dialog").parentElement!;
-    
+
     const child = document.createElement("div");
     overlay.appendChild(child);
 
@@ -144,7 +144,7 @@ describe("Modal", () => {
 
     fireEvent.transitionEnd(child);
     expect(screen.getByRole("dialog")).toBeInTheDocument();
-    
+
     fireEvent.transitionEnd(overlay);
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
@@ -152,11 +152,11 @@ describe("Modal", () => {
   it("handles Tab key when modal has zero focusable elements", () => {
     render(<Modal {...baseProps} isClosable={false} />);
     const dialog = screen.getByRole("dialog");
-    
+
     document.body.focus();
-    
+
     fireEvent.keyDown(document, { key: "Tab" });
-    
+
     expect(dialog).toHaveFocus();
   });
 
@@ -176,26 +176,26 @@ describe("Modal", () => {
 
     await userEvent.keyboard("{Shift>}{Tab}{/Shift}");
     expect(last).toHaveFocus();
-    
+
     await userEvent.keyboard("{Shift>}{Tab}{/Shift}");
     expect(first).toHaveFocus();
   });
 
   it("handles lifecycle when transitioning from closed to open", () => {
     const { rerender } = render(<Modal {...baseProps} isOpen={false} />);
-    
+
     rerender(<Modal {...baseProps} isOpen={true} />);
-    
+
     expect(screen.getByRole("dialog")).toBeInTheDocument();
   });
 
   it("maintains visibility when the open transition finishes", () => {
     render(<Modal {...baseProps} isOpen={true} />);
-    
+
     const overlay = screen.getByRole("dialog").parentElement!;
-    
+
     fireEvent.transitionEnd(overlay);
-    
+
     expect(screen.getByRole("dialog")).toBeInTheDocument();
   });
 });
