@@ -85,7 +85,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     if (asChild && React.isValidElement(children)) {
       const child = children as React.ReactElement<
-        React.HTMLAttributes<HTMLElement> & { disabled?: boolean; "data-slot"?: string }
+        React.HTMLAttributes<HTMLElement> & {
+          disabled?: boolean;
+          "data-slot"?: string;
+        }
       >;
 
       return React.cloneElement(child, {
