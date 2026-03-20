@@ -1,11 +1,11 @@
-import * as React from "react"
-import * as TooltipPrimitive from "@radix-ui/react-tooltip"
+import * as TooltipPrimitive from "@radix-ui/react-tooltip";
+import * as React from "react";
 import {
   Tooltip as ShadcnTooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "./tooltip-base"
+} from "./tooltip-base";
 
 export interface TooltipProps {
   children: React.ReactNode;
@@ -41,7 +41,7 @@ const Tooltip = ({
         </TooltipContent>
       </ShadcnTooltip>
     </TooltipProvider>
-  )
-}
+  );
+};
 
-export { Tooltip }
+export { Tooltip };

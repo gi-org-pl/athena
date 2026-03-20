@@ -25,7 +25,11 @@ type Story = StoryObj<typeof Tooltip>;
 
 export const Default: Story = {
   args: {
-    children: <button className="px-4 py-2 border rounded-md hover:bg-slate-50">Hover me</button>,
+    children: (
+      <button className="px-4 py-2 border rounded-md hover:bg-slate-50">
+        Hover me
+      </button>
+    ),
     content: "This is a default tooltip",
     side: "top",
   },
@@ -55,7 +59,9 @@ export const InlineText: Story = {
     <p className="text-sm">
       Tooltips are great because you can hide them even in the{" "}
       <Tooltip content="Additional information inside text" side="top">
-        <span className="font-bold underline cursor-help text-[#003c47]">middle of a sentence</span>
+        <span className="font-bold underline cursor-help text-[#003c47]">
+          middle of a sentence
+        </span>
       </Tooltip>
       , which doesn't clutter the UI.
     </p>
@@ -64,7 +70,9 @@ export const InlineText: Story = {
 
 export const LongDelay: Story = {
   args: {
-    children: <button className="px-4 py-2 border rounded-md">Delayed tooltip</button>,
+    children: (
+      <button className="px-4 py-2 border rounded-md">Delayed tooltip</button>
+    ),
     content: "Patience is a virtue!",
     delay: 1000,
   },
