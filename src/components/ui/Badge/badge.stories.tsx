@@ -162,6 +162,7 @@ export const FullMatrix: Story = {
       <div>
         <h3 className="mb-2 text-sm font-medium">Sizes</h3>
         <div className="flex flex-wrap items-center gap-2">
+          
           <Badge type="success" size="small">
             Small
           </Badge>
