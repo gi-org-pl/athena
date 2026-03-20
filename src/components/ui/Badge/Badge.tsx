@@ -91,7 +91,7 @@ function Badge({
   const iconClassName =
     "[color:inherit] shrink-0 flex items-center justify-center";
 
-const renderedIcon = React.useMemo(() => {
+  const renderedIcon = React.useMemo(() => {
     if (LeftIcon) {
       return React.isValidElement(LeftIcon) ? (
         React.cloneElement(
@@ -104,7 +104,7 @@ const renderedIcon = React.useMemo(() => {
         <span className={iconClassName}>{LeftIcon}</span>
       );
     }
-    
+
     if (type === "default") return null;
 
     const Icon = typeIconMap[type as keyof typeof typeIconMap];
@@ -138,15 +138,15 @@ const renderedIcon = React.useMemo(() => {
           }}
           className={cn(
             "flex items-center justify-center transition-all outline-none",
-            "text-[#D3D9DA] hover:brightness-90", 
-              size === "small" ? "size-4" : size === "big" ? "size-6" : "size-5",
-            )}
-          >
-            <CustomDismissIcon
-              className={cn(
-                size === "small"
-                  ? "size-3.5"
-                  : size === "big"
+            "text-[#D3D9DA] hover:brightness-90",
+            size === "small" ? "size-4" : size === "big" ? "size-6" : "size-5",
+          )}
+        >
+          <CustomDismissIcon
+            className={cn(
+              size === "small"
+                ? "size-3.5"
+                : size === "big"
                   ? "size-5"
                   : "size-4.5",
               "cursor-pointer",
