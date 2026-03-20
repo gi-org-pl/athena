@@ -9,6 +9,7 @@ export {
 } from "./components/ui/InfoMessage/InfoMessage";
 export { Input } from "./components/ui/Input/Input";
 export { Modal } from "./components/ui/Modal/Modal";
+export { ProgressBar } from "./components/ui/ProgressBar/ProgressBar";
 export { RadioGroup } from "./components/ui/RadioGroup/RadioGroup";
 export { RadioGroupItem } from "./components/ui/RadioGroup/RadioGroupItem/RadioGroupItem";
 export { Switch } from "./components/ui/Switch/Switch";
