@@ -10,7 +10,7 @@ const RadioGroup = React.forwardRef<
     <RadioGroupPrimitive.Root
       data-slot="radio-group"
       orientation={orientation}
-      ref={ref} 
+      ref={ref}
       className={cn(
         "grid gap-2 text-gi-primary",
         orientation === "horizontal"

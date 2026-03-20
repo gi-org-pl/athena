@@ -16,12 +16,11 @@ describe("<RadioGroup />", () => {
     expect(group).toHaveClass("custom-class");
   });
 
-
   describe("Orientation", () => {
     it("should apply vertical styles by default", () => {
       render(<RadioGroup>Children</RadioGroup>);
       const group = screen.getByRole("radiogroup");
-    
+
       expect(group).toHaveAttribute("aria-orientation", "vertical");
       expect(group).toHaveClass("grid-cols-1");
       expect(group).not.toHaveClass("grid-flow-col");
@@ -30,7 +29,7 @@ describe("<RadioGroup />", () => {
     it("should apply horizontal styles when orientation is set to horizontal", () => {
       render(<RadioGroup orientation="horizontal">Children</RadioGroup>);
       const group = screen.getByRole("radiogroup");
-      
+
       expect(group).toHaveAttribute("aria-orientation", "horizontal");
       expect(group).toHaveClass("grid-flow-col", "auto-cols-max");
       expect(group).not.toHaveClass("grid-cols-1");
