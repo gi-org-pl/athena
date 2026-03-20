@@ -12,6 +12,11 @@ _Describe how to test the changes manually_
 - ...
 - ...
 
+## Visual Preview
+_How your change looks_
+
+_*1-3 Screenshots*
+
 ## Checklist
 _Check if the code follows the standards_
 
