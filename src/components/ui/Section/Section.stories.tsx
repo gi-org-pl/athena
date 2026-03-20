@@ -1,23 +1,19 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Section } from './Section';
-import { Button } from '../Button/Button';
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Button } from "../Button/Button";
+import { Section } from "./Section";
 
 const ActionButtons = () => (
   <>
-    <Button >
-      Action 1
-    </Button>
-    <Button >
-      Action 2
-    </Button>
+    <Button>Action 1</Button>
+    <Button>Action 2</Button>
   </>
 );
 
 const meta = {
-  title: 'Section',
+  title: "Section",
   component: Section,
   parameters: {
-    layout: 'padded',
+    layout: "padded",
   },
   decorators: [
     (Story) => (
@@ -27,11 +23,17 @@ const meta = {
     ),
   ],
   args: {
-    title: <div>News <span className='font-medium' >(3)</span></div>,
-    children: <div>
-      <p className='font-extrabold text-[16px]'>First news:</p>
-      <p>It’s great to be a part of the GI foundation!</p> 
-    </div>,
+    title: (
+      <div>
+        News <span className="font-medium">(3)</span>
+      </div>
+    ),
+    children: (
+      <div>
+        <p className="font-extrabold text-[16px]">First news:</p>
+        <p>It’s great to be a part of the GI foundation!</p>
+      </div>
+    ),
   },
 } satisfies Meta<typeof Section>;
 
@@ -43,13 +45,13 @@ export const Default: Story = {};
 export const RightActions: Story = {
   args: {
     actions: <ActionButtons />,
-    actionsPosition: 'right',
+    actionsPosition: "right",
   },
 };
 
 export const BottomActions: Story = {
   args: {
     actions: <ActionButtons />,
-    actionsPosition: 'bottom',
+    actionsPosition: "bottom",
   },
 };
