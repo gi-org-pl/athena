@@ -73,7 +73,7 @@ describe("Badge Component", () => {
 
   describe("Type Icon Mapping Branch", () => {
     it("should render the mapped icon inside a span wrapper when a valid type is provided", () => {
-      const { container } = render(<Badge type="info">Info</Badge>);
+      const {  } = render(<Badge type="info">Info</Badge>);
       const svg = screen.getByTestId("info-icon");
       const iconWrapper = svg.parentElement;
 
