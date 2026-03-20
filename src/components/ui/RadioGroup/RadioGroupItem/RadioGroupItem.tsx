@@ -20,10 +20,10 @@ function RadioGroupItem({
         data-slot="radio-group-indicator"
         className="relative flex items-center justify-center"
       >
-        <CircleIcon 
+        <CircleIcon
           className={cn(
             "absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2",
-            "fill-gi-primary text-gi-primary" // Forces both the inside and the stroke
+            "fill-gi-primary text-gi-primary", // Forces both the inside and the stroke
           )}
           strokeWidth={1} // Keeps the shape crisp
         />

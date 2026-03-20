@@ -13,8 +13,10 @@ const RadioGroup = React.forwardRef<
       className={cn(
         "grid gap-2",
         // Logic to handle visual orientation
-        orientation === "horizontal" ? "grid-flow-col auto-cols-max" : "grid-cols-1",
-        className
+        orientation === "horizontal"
+          ? "grid-flow-col auto-cols-max"
+          : "grid-cols-1",
+        className,
       )}
       {...ref}
       {...props}
