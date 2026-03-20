@@ -31,7 +31,6 @@ interface AvatarProps
 }
 
 const getInitials = (name: string) => {
-  // Usuwamy znaki specjalne, zostawiamy litery, cyfry i spacje
   const cleanName = name.replace(/[^a-zA-Z0-9\s]/g, "").trim();
   const parts = cleanName.split(/\s+/).filter(Boolean);
 
