@@ -53,7 +53,6 @@ const meta = {
   },
   args: {
     columns: MOCK_COLUMNS,
-    // We provide these here to satisfy Meta<typeof Table> requirement
     data: [],
     getRowKey: (row: RowData) => row.id,
     isSelectable: true,
