@@ -6,11 +6,11 @@ import { Checkbox } from "../Checkbox/Checkbox";
 import { Pagination } from "../Pagination/Pagination";
 
 const tableContainerVariants = cva(
-  "w-full bg-transparent overflow-x-auto scroll-smooth",
+  "w-full bg-transparent overflow-x-auto scroll-smooth @container",
   {
     variants: {
       isMobileScrollable: {
-        true: "snap-x snap-mandatory",
+        true: "snap-x snap-mandatory scroll-p-0",
         false: "overflow-hidden",
       },
     },
@@ -21,7 +21,7 @@ const tableContainerVariants = cva(
 );
 
 const tableCellVariants = cva(
-  "px-4 py-5 transition-colors duration-300 ease font-bold whitespace-nowrap snap-center",
+  "px-4 py-5 transition-colors duration-300 ease font-bold whitespace-nowrap snap-start snap-always",
   {
     variants: {
       align: {
@@ -34,7 +34,8 @@ const tableCellVariants = cva(
         body: "text-gi-primary font-normal",
       },
       mobileFullWidth: {
-        true: "min-w-[100vw] w-[100vw] sm:min-w-0 sm:w-auto",
+        // Corrected the sm breakpoint logic here
+        true: "min-w-[100cqw] w-[100cqw] sm:min-w-0 sm:w-auto",
         false: "min-w-fit",
       },
     },
@@ -105,21 +106,21 @@ function Table<T>({
   return (
     <div
       data-slot="table-root"
-      // FIX: Standardize to data-testid for Vitest/Testing Library compatibility
       data-testid={dataTestId || "table-root"}
       className={cn("flex flex-col w-full gap-4", className)}
       {...props}
     >
       <div className={tableContainerVariants({ isMobileScrollable })}>
-        <table className="w-max border-separate border-spacing-y-0 text-sm">
+        <table className="w-max min-w-full border-separate border-spacing-y-0 text-sm">
           <thead>
             <tr className="bg-gi-ash">
               {isSelectable && (
                 <th
-                  className={cn(
-                    tableCellVariants({ variant: "header" }),
-                    "w-12",
-                  )}
+                  // Hardcoded mobileFullWidth to false to keep it narrow
+                  className={tableCellVariants({ 
+                    variant: "header",
+                    mobileFullWidth: false 
+                  })}
                 />
               )}
               {columns.map((column) => (
@@ -140,6 +141,7 @@ function Table<T>({
                   className={tableCellVariants({
                     align: "right",
                     variant: "header",
+                    mobileFullWidth: isMobileScrollable,
                   })}
                 />
               )}
@@ -171,7 +173,11 @@ function Table<T>({
                     {isSelectable && (
                       <td
                         className={cn(
-                          "px-4 py-5 w-12 border-b border-gi-dark-ash",
+                          // Hardcoded mobileFullWidth to false here as well
+                          tableCellVariants({
+                            mobileFullWidth: false,
+                          }),
+                          "px-4 py-5 border-b border-gi-dark-ash",
                           index === 0 && "border-t border-gi-dark-ash",
                         )}
                       >
@@ -205,7 +211,12 @@ function Table<T>({
                     {actions && (
                       <td
                         className={cn(
-                          "px-4 py-5 text-right border-b border-gi-dark-ash font-medium text-gi-primary",
+                          tableCellVariants({
+                            align: "right",
+                            variant: "body",
+                            mobileFullWidth: isMobileScrollable,
+                          }),
+                          "px-4 py-5 border-b border-gi-dark-ash font-medium text-gi-primary",
                           index === 0 && "border-t border-gi-dark-ash",
                         )}
                       >
