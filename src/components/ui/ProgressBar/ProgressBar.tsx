@@ -73,4 +73,4 @@ function ProgressBar({
   );
 }
 
-export { ProgressBar, progressBarVariants, progressBarFillVariants };
+export { ProgressBar, progressBarFillVariants, progressBarVariants };

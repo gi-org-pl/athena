@@ -10,36 +10,34 @@ export declare function Badge({ className, type, variant, size, children, LeftIc
 
 export declare interface BadgeProps extends Omit<React_2.ComponentProps<"span">, "children">, VariantProps<typeof badgeVariants> {
     children: React_2.ReactNode;
-    LeftIcon?: React_2.ReactElement;
+    LeftIcon?: React_2.ReactNode;
     isDismissible?: boolean;
     onDismiss?: () => void;
     dataTestId?: string;
 }
 
-export declare type BadgeSize = "regular" | "small" | "big";
-
 export declare type BadgeType = "default" | "info" | "success" | "warning" | "error";
-
-export declare type BadgeVariant = "primary" | "secondary" | "outlined" | "ghost";
 
 export declare const badgeVariants: (props?: ({
     type?: "default" | "info" | "success" | "warning" | "error" | null | undefined;
     variant?: "primary" | "secondary" | "outlined" | "ghost" | null | undefined;
-    size?: "regular" | "small" | "big" | null | undefined;
+    size?: "small" | "regular" | "big" | null | undefined;
 } & ClassProp) | undefined) => string;
 
 export declare const Button: React_2.ForwardRefExoticComponent<ButtonProps & React_2.RefAttributes<HTMLButtonElement>>;
 
-declare interface ButtonProps extends React_2.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
+declare interface ButtonProps extends Omit<React_2.ButtonHTMLAttributes<HTMLButtonElement>, "type">, VariantProps<typeof buttonVariants> {
     asChild?: boolean;
-    leftIcon?: React_2.ReactNode;
-    rightIcon?: React_2.ReactNode;
+    LeftIcon?: React_2.ReactElement;
+    RightIcon?: React_2.ReactElement;
     isLoading?: boolean;
+    htmlType?: "button" | "submit" | "reset";
 }
 
 export declare const buttonVariants: (props?: ({
-    variant?: "default" | "secondary" | "ghost" | "link" | "danger" | "outline" | null | undefined;
-    size?: "default" | "sm" | "lg" | "icon" | "icon-sm" | "icon-lg" | null | undefined;
+    type?: "primary" | "outlined" | "ghost" | null | undefined;
+    variant?: "primary" | "secondary" | "danger" | null | undefined;
+    size?: "small" | "regular" | null | undefined;
     isIconButton?: boolean | null | undefined;
 } & ClassProp) | undefined) => string;
 
@@ -56,7 +54,36 @@ export declare const infoMessageVariants: (props?: ({
     variant?: "default" | "info" | "success" | "warning" | "error" | null | undefined;
 } & ClassProp) | undefined) => string;
 
-export declare function RadioGroup({ className, ...props }: React_2.ComponentProps<typeof RadioGroupPrimitive.Root>): JSX.Element;
+export declare function Modal({ title, description, children, actions, isOpen, isClosable, isCloseOnOverlayClick, onClose, className, dataTestId, ...rest }: ModalProps): JSX.Element | null;
+
+declare interface ModalProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
+    title: React.ReactNode;
+    description?: React.ReactNode;
+    children?: React.ReactNode;
+    actions?: React.ReactNode;
+    isOpen: boolean;
+    isClosable?: boolean;
+    isCloseOnOverlayClick?: boolean;
+    onClose: () => void;
+    dataTestId?: string;
+}
+
+export declare function ProgressBar({ className, value, size, variant, dataTestId, ...props }: ProgressBarProps): JSX.Element;
+
+declare const progressBarFillVariants: (props?: ({
+    variant?: "default" | "info" | "success" | "warning" | "error" | null | undefined;
+} & ClassProp) | undefined) => string;
+
+declare interface ProgressBarProps extends React_2.HTMLAttributes<HTMLDivElement>, VariantProps<typeof progressBarVariants>, VariantProps<typeof progressBarFillVariants> {
+    value: number;
+    dataTestId?: string;
+}
+
+declare const progressBarVariants: (props?: ({
+    size?: "small" | "regular" | null | undefined;
+} & ClassProp) | undefined) => string;
+
+export declare const RadioGroup: React_2.ForwardRefExoticComponent<Omit<RadioGroupPrimitive.RadioGroupProps & React_2.RefAttributes<HTMLDivElement>, "ref"> & React_2.RefAttributes<HTMLDivElement>>;
 
 export declare function RadioGroupItem({ className, ...props }: React_2.ComponentProps<typeof RadioGroupPrimitive.Item>): JSX.Element;
 
