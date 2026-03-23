@@ -32,7 +32,7 @@ const MOCK_COLUMNS = generateColumns(8);
 const MOCK_DATA = generateData(TOTAL_ITEMS);
 
 const meta = {
-  title: "Components/Table",
+  title: "Table",
   component: Table,
   parameters: {
     layout: "padded",
