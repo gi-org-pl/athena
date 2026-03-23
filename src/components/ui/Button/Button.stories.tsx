@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 import { fn } from "storybook/test";
 import Crown from "@/assets/icons/crown.svg";
 import { Button } from "./Button";
+
+const TYPES = ["primary", "outlined", "ghost"] as const;
+const VARIANTS = ["primary", "secondary", "danger"] as const;
 
 const meta = {
   title: "Button",
@@ -12,24 +14,49 @@ const meta = {
   },
   argTypes: {
     children: { control: "text" },
-
     isLoading: { control: "boolean" },
-
-    leftIcon: { control: false },
-    rightIcon: { control: false },
-
+    disabled: { control: "boolean" },
+    isIconButton: { control: "boolean" },
+    LeftIcon: {
+      options: ["None", "Crown"],
+      mapping: {
+        None: undefined,
+        Crown: <Crown />,
+      },
+      control: { type: "select" },
+    },
+    RightIcon: {
+      options: ["None", "Crown"],
+      mapping: {
+        None: undefined,
+        Crown: <Crown />,
+      },
+      control: { type: "select" },
+    },
+    type: {
+      control: "inline-radio",
+      options: TYPES,
+    },
     variant: {
-      control: "select",
-      options: ["default", "danger", "outline", "secondary", "ghost", "link"],
+      control: "inline-radio",
+      options: VARIANTS,
     },
     size: {
-      control: "select",
-      options: ["default", "sm", "lg", "icon", "icon-sm", "icon-lg"],
+      control: "inline-radio",
+      options: ["regular", "small"],
     },
     asChild: { control: "boolean" },
   },
   tags: ["autodocs"],
-  args: { onClick: fn(), children: "Button" },
+  args: {
+    onClick: fn(),
+    children: "Button",
+    LeftIcon: "None",
+    RightIcon: "None",
+    size: "regular",
+    type: "primary",
+    variant: "primary",
+  },
 } satisfies Meta<typeof Button>;
 
 export default meta;
@@ -37,79 +64,61 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    variant: "default",
+    children: "Default Button",
   },
 };
 
-export const LeftIcon: Story = {
+export const IconButton: Story = {
   args: {
-    variant: "default",
-    children: "Primary",
-    leftIcon: <Crown />,
+    isIconButton: true,
+    LeftIcon: "Crown",
+    children: undefined,
   },
 };
 
-export const RightIcon: Story = {
+const ButtonMatrix = (args: any) => (
+  <div className="flex flex-col gap-8 p-6 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800">
+    {VARIANTS.map((variant) => (
+      <div key={variant} className="flex flex-col gap-3">
+        <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400">
+          {variant} Variant
+        </h3>
+        <div className="flex gap-4 items-center">
+          {TYPES.map((type) => (
+            <div
+              key={`${variant}-${type}`}
+              className="flex flex-col gap-2 items-center"
+            >
+              <Button {...args} type={type} variant={variant} />
+              <span className="text-[10px] text-gray-400 font-mono">
+                {type}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
+/* 3. System wide variations */
+export const AllVariations: Story = {
+  render: (args) => <ButtonMatrix {...args} />,
+  name: "System Matrix",
+};
+
+export const IconButtonMatrix: Story = {
+  render: (args) => <ButtonMatrix {...args} />,
   args: {
-    variant: "default",
-    children: "Primary",
-    rightIcon: <Crown />,
+    isIconButton: true,
+    LeftIcon: "Crown",
+    children: undefined,
   },
 };
 
-export const Loading: Story = {
+export const LoadingMatrix: Story = {
+  render: (args) => <ButtonMatrix {...args} />,
   args: {
-    variant: "default",
-    children: "Primary",
     isLoading: true,
-  },
-};
-
-export const Danger: Story = {
-  args: {
-    variant: "danger",
-  },
-};
-
-export const Outline: Story = {
-  args: {
-    variant: "outline",
-  },
-};
-
-export const Secondary: Story = {
-  args: {
-    variant: "secondary",
-  },
-};
-
-export const Ghost: Story = {
-  args: {
-    variant: "ghost",
-  },
-};
-
-export const Link: Story = {
-  args: {
-    variant: "link",
-  },
-};
-
-export const Small: Story = {
-  args: {
-    size: "sm",
-  },
-};
-
-export const Large: Story = {
-  args: {
-    size: "lg",
-  },
-};
-
-export const Icon: Story = {
-  args: {
-    size: "icon",
-    children: "🚀",
   },
 };
