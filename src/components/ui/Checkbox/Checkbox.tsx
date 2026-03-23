@@ -30,8 +30,7 @@ function Checkbox({
         <CheckboxPrimitive.Indicator
           data-slot="checkbox-indicator"
           className="grid place-content-center text-current transition-none"
-        >
-        </CheckboxPrimitive.Indicator>
+        ></CheckboxPrimitive.Indicator>
       </CheckboxPrimitive.Root>
       <div className="flex flex-col ml-2">
         <label
