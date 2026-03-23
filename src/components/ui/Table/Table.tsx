@@ -9,46 +9,45 @@ import { Pagination } from "../Pagination/Pagination";
 // 1. KONFIGURACJA CVA (STYLE BAZOWE)
 // ==========================================
 
-const tableContainerVariants = cva(
-  "w-full bg-transparent", 
-  {
-    variants: {
-      isMobileScrollable: {
-        true: "overflow-x-auto",
-        false: "overflow-hidden",
-      },
+const tableContainerVariants = cva("w-full bg-transparent", {
+  variants: {
+    isMobileScrollable: {
+      true: "overflow-x-auto",
+      false: "overflow-hidden",
     },
-    defaultVariants: {
-      isMobileScrollable: true,
-    },
-  }
-);
+  },
+  defaultVariants: {
+    isMobileScrollable: true,
+  },
+});
 
 // --- SEKCJA: STYLE NAGŁÓWKA (PIGUŁKI) ---
 const tableHeaderRowVariants = cva("bg-gi-ash");
 
-const tableCellVariants = cva("px-4 py-5 transition-colors duration-300 ease font-bold", {
-  variants: {
-    align: {
-      left: "text-left",
-      center: "text-center",
-      right: "text-right",
+const tableCellVariants = cva(
+  "px-4 py-5 transition-colors duration-300 ease font-bold",
+  {
+    variants: {
+      align: {
+        left: "text-left",
+        center: "text-center",
+        right: "text-right",
+      },
+      variant: {
+        header:
+          "font-bold text-gi-primary first:rounded-l-[16px] last:rounded-r-[16px]",
+        body: "text-gi-primary",
+      },
     },
-    variant: {
-      header: "font-bold text-gi-primary first:rounded-l-[16px] last:rounded-r-[16px]", 
-      body: "text-gi-primary",
+    defaultVariants: {
+      align: "left",
+      variant: "body",
     },
   },
-  defaultVariants: {
-    align: "left",
-    variant: "body",
-  },
-});
+);
 
 // --- SEKCJA: STYLE WIERSZY (BODY) ---
-const tableRowVariants = cva(
-  "transition-colors duration-300 ease"
-);
+const tableRowVariants = cva("transition-colors duration-300 ease");
 
 // ==========================================
 // 2. INTERFEJSY
@@ -121,7 +120,6 @@ function Table<T>({
     >
       <div className={tableContainerVariants({ isMobileScrollable })}>
         <table className="w-full border-separate border-spacing-y-0 text-sm">
-          
           {/* --- SEKCJA: RENDEROWANIE NAGŁÓWKA --- */}
           <thead>
             <tr className={tableHeaderRowVariants()}>
@@ -132,16 +130,26 @@ function Table<T>({
                 <th
                   key={column.key}
                   style={{ width: column.width, flexGrow: column.ratio }}
-                  className={tableCellVariants({ align: column.align, variant: "header" })}
+                  className={tableCellVariants({
+                    align: column.align,
+                    variant: "header",
+                  })}
                 >
                   {column.header}
                 </th>
               ))}
               {actions && (
-                <th className={tableCellVariants({ align: "right", variant: "header" })} />
+                <th
+                  className={tableCellVariants({
+                    align: "right",
+                    variant: "header",
+                  })}
+                />
               )}
             </tr>
-            <tr className="h-4" aria-hidden="true"><td colSpan={100} /></tr>
+            <tr className="h-4" aria-hidden="true">
+              <td colSpan={100} />
+            </tr>
           </thead>
 
           {/* --- SEKCJA: RENDEROWANIE BODY --- */}
@@ -149,7 +157,9 @@ function Table<T>({
             {data.length === 0 ? (
               <tr>
                 <td
-                  colSpan={columns.length + (isSelectable ? 1 : 0) + (actions ? 1 : 0)}
+                  colSpan={
+                    columns.length + (isSelectable ? 1 : 0) + (actions ? 1 : 0)
+                  }
                   className="p-12 text-center text-gi-gray italic border-y border-gi-dark-ash"
                 >
                   {emptyState || "No data available"}
@@ -161,19 +171,20 @@ function Table<T>({
                 const rowKey = getRowKey(row);
                 const isSelected = selectedRowKeys.includes(rowKey);
                 return (
-                  <tr 
-                    key={rowKey} 
-                    className={tableRowVariants()}
-                  >
+                  <tr key={rowKey} className={tableRowVariants()}>
                     {isSelectable && (
-                      <td className={cn(
-                        "px-4 py-5 w-12 border-b border-gi-dark-ash",
-                        index === 0 && "border-t border-gi-dark-ash"
-                      )}>
+                      <td
+                        className={cn(
+                          "px-4 py-5 w-12 border-b border-gi-dark-ash",
+                          index === 0 && "border-t border-gi-dark-ash",
+                        )}
+                      >
                         <Checkbox
                           label=""
                           checked={isSelected}
-                          onCheckedChange={(checked) => handleSelectRow(rowKey, checked === true)}
+                          onCheckedChange={(checked) =>
+                            handleSelectRow(rowKey, checked === true)
+                          }
                         />
                       </td>
                     )}
@@ -181,20 +192,30 @@ function Table<T>({
                       <td
                         key={`${rowKey}-${column.key}`}
                         className={cn(
-                          tableCellVariants({ align: column.align, variant: "body" }),
+                          tableCellVariants({
+                            align: column.align,
+                            variant: "body",
+                          }),
                           "border-b border-gi-dark-ash",
-                          index === 0 && "border-t border-gi-dark-ash"
+                          index === 0 && "border-t border-gi-dark-ash",
                         )}
                       >
-                        {column.render ? column.render(row) : (row as any)[column.key]}
+                        {column.render
+                          ? column.render(row)
+                          : (row as any)[column.key]}
                       </td>
                     ))}
                     {actions && (
-                      <td className={cn(
-                        tableCellVariants({ align: "right", variant: "body" }),
-                        "border-b border-gi-dark-ash",
-                        index === 0 && "border-t border-gi-dark-ash"
-                      )}>
+                      <td
+                        className={cn(
+                          tableCellVariants({
+                            align: "right",
+                            variant: "body",
+                          }),
+                          "border-b border-gi-dark-ash",
+                          index === 0 && "border-t border-gi-dark-ash",
+                        )}
+                      >
                         {actions(row)}
                       </td>
                     )}
@@ -210,9 +231,9 @@ function Table<T>({
       <div className="flex items-center justify-between w-full mt-2 px-1">
         <div className="flex items-center gap-2">
           {isSelectable && data.length > 0 && (
-            <Badge 
-              type="success" 
-              variant="primary" 
+            <Badge
+              type="success"
+              variant="primary"
               className="flex items-center gap-1.5 py-1 px-3 bg-gi-ash/40 border-none text-gi-primary font-bold rounded-lg"
             >
               {selectedRowKeys.length}/{data.length}
