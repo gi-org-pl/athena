@@ -58,7 +58,7 @@ export function Pagination({
         onClick={handlePrevious}
       >
         <div />
-        <ChevronLeftIcon/>
+        <ChevronLeftIcon />
         <div />
       </Button>
 
@@ -105,7 +105,7 @@ export function Pagination({
         onClick={handleNext}
       >
         <div />
-        <ChevronRightIcon/>
+        <ChevronRightIcon />
         <div />
       </Button>
     </nav>
