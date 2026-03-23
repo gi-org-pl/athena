@@ -33,7 +33,10 @@ describe("<ButtonSelect />", () => {
       const unselectedButton = screen.getByRole("button", { name: "Option 1" });
 
       expect(selectedButton).toHaveClass("bg-gi-primary");
-      expect(unselectedButton).toHaveClass("border-gi-primary", "bg-transparent");
+      expect(unselectedButton).toHaveClass(
+        "border-gi-primary",
+        "bg-transparent",
+      );
     });
   });
 
