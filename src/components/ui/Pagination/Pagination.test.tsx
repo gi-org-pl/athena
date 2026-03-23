@@ -13,7 +13,6 @@ describe("<Pagination />", () => {
     it("should render the correct number of page buttons for a small range", () => {
       render(<Pagination {...defaultProps} totalPages={5} />);
 
-      // 5 page buttons + 2 chevron buttons
       const buttons = screen.getAllByRole("button");
       expect(buttons).toHaveLength(7);
       expect(screen.getByText("1")).toBeInTheDocument();
@@ -39,7 +38,6 @@ describe("<Pagination />", () => {
 
       expect(screen.queryByRole("list")).not.toBeInTheDocument();
       expect(screen.queryByText("1")).not.toBeInTheDocument();
-      // Should still show Previous and Next chevrons
       expect(screen.getAllByRole("button")).toHaveLength(2);
     });
   });

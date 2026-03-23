@@ -80,7 +80,7 @@ export const FullWidth: Story = {
         style={{
           width: "800px",
           maxWidth: "100%",
-          border: "1px solid #ccc",
+          border: "1px dashed #ccc",
           padding: "16px",
         }}
       >
