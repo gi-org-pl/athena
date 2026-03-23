@@ -167,7 +167,6 @@ describe("Badge Component", () => {
       fireEvent.click(button);
 
       expect(dismissClick).toHaveBeenCalledTimes(1);
-      // Proves the event did not bubble up to the parent container
       expect(parentClick).not.toHaveBeenCalled();
     });
   });
