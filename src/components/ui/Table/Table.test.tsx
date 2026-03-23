@@ -222,7 +222,7 @@ describe("<Table />", () => {
           pagination={{
             page: 1,
             totalPages: 5,
-            totalElements: 100, 
+            totalElements: 100,
             onChange: vi.fn(),
           }}
         />,
