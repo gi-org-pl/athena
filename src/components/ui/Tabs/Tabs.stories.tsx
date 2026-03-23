@@ -18,7 +18,7 @@ const meta = {
           border: "1px dashed #cbd5e1",
           padding: 32,
           backgroundColor: "white",
-          borderRadius: 12
+          borderRadius: 12,
         }}
       >
         <Story />
