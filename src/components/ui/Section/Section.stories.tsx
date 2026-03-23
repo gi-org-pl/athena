@@ -1,10 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import React from "react";
 import { Button } from "../Button/Button";
 import { Section } from "./Section";
 
-/** * Define the specific schema for this story
- * This prevents the TS error by explicitly allowing your custom strings
+/** * Define the specific schema for this story 
  */
 type SectionStoryArgs = {
   title: string;
@@ -15,11 +13,11 @@ type SectionStoryArgs = {
   action0: string;
   action1: string;
   actionsPosition: "right" | "bottom";
+  showActions: boolean;
 };
 
 const meta = {
   title: "Section",
-  component: Section,
   parameters: {
     layout: "padded",
   },
@@ -31,7 +29,6 @@ const meta = {
     ),
   ],
   argTypes: {
-    /* Explicitly tell Storybook these are strings */
     title: { control: "text" },
     titleSecondary: { control: "text" },
     description: { control: "text" },
@@ -43,9 +40,7 @@ const meta = {
       control: "select",
       options: ["right", "bottom"],
     },
-    /* Hide the original component props that we are mapping manually */
-    children: { table: { disable: true } },
-    actions: { table: { disable: true } },
+    showActions: { control: "boolean" },
   },
   args: {
     title: "News",
@@ -54,23 +49,23 @@ const meta = {
     childrenTitle: "First news:",
     childrenDescription: "It is great to be a part of the GI foundation!",
     action0: "Action 0",
-    action1: "action 1",
+    action1: "Action 1",
     actionsPosition: "right",
+    showActions: true,
   },
   render: (args) => {
     const titleContent = (
       <div>
-        {args.title}{" "}
-        <span style={{ fontWeight: 500 }}>{args.titleSecondary}</span>
+        {args.title} <span style={{ fontWeight: 500 }}>{args.titleSecondary}</span>
       </div>
     );
 
-    const actionsContent = (
+    const actionsContent = args.showActions ? (
       <>
         <Button type="ghost">{args.action0}</Button>
         <Button type="ghost">{args.action1}</Button>
       </>
-    );
+    ) : undefined;
 
     const childrenContent = (
       <div>
@@ -82,7 +77,6 @@ const meta = {
     return (
       <Section
         title={titleContent}
-        description={args.description}
         actions={actionsContent}
         actionsPosition={args.actionsPosition}
       >
@@ -97,14 +91,22 @@ type Story = StoryObj<SectionStoryArgs>;
 
 export const Default: Story = {};
 
+export const NoActions: Story = {
+  args: {
+    showActions: false,
+  },
+};
+
 export const RightActions: Story = {
   args: {
     actionsPosition: "right",
+    showActions: true,
   },
 };
 
 export const BottomActions: Story = {
   args: {
     actionsPosition: "bottom",
+    showActions: true,
   },
 };
