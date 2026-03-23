@@ -10,18 +10,21 @@ interface RowData {
   [key: string]: string;
 }
 
-const generateColumns = (count: number): TableColumn<RowData>[] => 
+const generateColumns = (count: number): TableColumn<RowData>[] =>
   Array.from({ length: count }, (_, i) => ({
     key: `col${i + 1}`,
     header: `Step ${i + 1}: Detailed Header`,
-    width: "auto", 
+    width: "auto",
   }));
 
-const generateData = (count: number): RowData[] => 
+const generateData = (count: number): RowData[] =>
   Array.from({ length: count }, (_, i) => ({
     id: `row_${i + 1}`,
     ...Object.fromEntries(
-      Array.from({ length: 8 }, (_, j) => [`col${j + 1}`, `Data point ${i + 1}:${j + 1}`])
+      Array.from({ length: 8 }, (_, j) => [
+        `col${j + 1}`,
+        `Data point ${i + 1}:${j + 1}`,
+      ]),
     ),
   }));
 
@@ -57,7 +60,7 @@ const meta = {
   render: (args) => {
     const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
-    
+
     const startIndex = (currentPage - 1) * PAGE_SIZE;
     const paginatedData = MOCK_DATA.slice(startIndex, startIndex + PAGE_SIZE);
 
@@ -66,7 +69,9 @@ const meta = {
         {...args}
         data={paginatedData}
         getRowKey={(row: RowData) => row.id}
-        actions={() => <span className="text_primary font_medium">(actions)</span>}
+        actions={() => (
+          <span className="text_primary font_medium">(actions)</span>
+        )}
         selectedRowKeys={selectedKeys}
         onSelectedRowKeysChange={setSelectedKeys}
         pagination={{

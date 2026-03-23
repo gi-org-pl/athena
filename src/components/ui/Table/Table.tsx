@@ -5,17 +5,20 @@ import { Badge } from "../Badge/Badge";
 import { Checkbox } from "../Checkbox/Checkbox";
 import { Pagination } from "../Pagination/Pagination";
 
-const tableContainerVariants = cva("w-full bg-transparent overflow-x-auto scroll-smooth", {
-  variants: {
-    isMobileScrollable: {
-      true: "snap-x snap-mandatory",
-      false: "overflow-hidden",
+const tableContainerVariants = cva(
+  "w-full bg-transparent overflow-x-auto scroll-smooth",
+  {
+    variants: {
+      isMobileScrollable: {
+        true: "snap-x snap-mandatory",
+        false: "overflow-hidden",
+      },
+    },
+    defaultVariants: {
+      isMobileScrollable: true,
     },
   },
-  defaultVariants: {
-    isMobileScrollable: true,
-  },
-});
+);
 
 const tableCellVariants = cva(
   "px-4 py-5 transition-colors duration-300 ease font-bold whitespace-nowrap snap-center",
@@ -54,7 +57,7 @@ export interface TableColumn<T> {
 export interface TablePagination {
   page: number;
   totalPages: number;
-  totalElements: number; 
+  totalElements: number;
   onChange: (page: number) => void;
 }
 
@@ -112,7 +115,12 @@ function Table<T>({
           <thead>
             <tr className="bg-gi-ash">
               {isSelectable && (
-                <th className={cn(tableCellVariants({ variant: "header" }), "w-12")} />
+                <th
+                  className={cn(
+                    tableCellVariants({ variant: "header" }),
+                    "w-12",
+                  )}
+                />
               )}
               {columns.map((column) => (
                 <th
@@ -128,7 +136,12 @@ function Table<T>({
                 </th>
               ))}
               {actions && (
-                <th className={tableCellVariants({ align: "right", variant: "header" })} />
+                <th
+                  className={tableCellVariants({
+                    align: "right",
+                    variant: "header",
+                  })}
+                />
               )}
             </tr>
             <tr className="h-4" aria-hidden="true">
@@ -139,7 +152,10 @@ function Table<T>({
           <tbody className="bg-white">
             {data.length === 0 ? (
               <tr>
-                <td colSpan={100} className="p-12 text-center text-gi-gray italic border-y border-gi-dark-ash">
+                <td
+                  colSpan={100}
+                  className="p-12 text-center text-gi-gray italic border-y border-gi-dark-ash"
+                >
                   {emptyState || "No data available"}
                 </td>
               </tr>
@@ -148,13 +164,23 @@ function Table<T>({
                 const rowKey = getRowKey(row);
                 const isSelected = selectedRowKeys.includes(rowKey);
                 return (
-                  <tr key={rowKey} className="transition-colors duration-300 ease group hover:bg-gi-ash/10">
+                  <tr
+                    key={rowKey}
+                    className="transition-colors duration-300 ease group hover:bg-gi-ash/10"
+                  >
                     {isSelectable && (
-                      <td className={cn("px-4 py-5 w-12 border-b border-gi-dark-ash", index === 0 && "border-t border-gi-dark-ash")}>
+                      <td
+                        className={cn(
+                          "px-4 py-5 w-12 border-b border-gi-dark-ash",
+                          index === 0 && "border-t border-gi-dark-ash",
+                        )}
+                      >
                         <Checkbox
                           label=""
                           checked={isSelected}
-                          onCheckedChange={(checked) => handleSelectRow(rowKey, checked === true)}
+                          onCheckedChange={(checked) =>
+                            handleSelectRow(rowKey, checked === true)
+                          }
                         />
                       </td>
                     )}
@@ -168,14 +194,21 @@ function Table<T>({
                             mobileFullWidth: isMobileScrollable,
                           }),
                           "border-b border-gi-dark-ash",
-                          index === 0 && "border-t border-gi-dark-ash"
+                          index === 0 && "border-t border-gi-dark-ash",
                         )}
                       >
-                        {column.render ? column.render(row) : (row as any)[column.key]}
+                        {column.render
+                          ? column.render(row)
+                          : (row as any)[column.key]}
                       </td>
                     ))}
                     {actions && (
-                      <td className={cn("px-4 py-5 text-right border-b border-gi-dark-ash font-medium text-gi-primary", index === 0 && "border-t border-gi-dark-ash")}>
+                      <td
+                        className={cn(
+                          "px-4 py-5 text-right border-b border-gi-dark-ash font-medium text-gi-primary",
+                          index === 0 && "border-t border-gi-dark-ash",
+                        )}
+                      >
                         {actions(row)}
                       </td>
                     )}
