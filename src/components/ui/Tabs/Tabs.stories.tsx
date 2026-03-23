@@ -10,7 +10,17 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div className="w-full max-w-[1000px] mx-auto border border-dashed border-slate-300 p-8 bg-white rounded-xl">
+      <div
+        style={{
+          width: "100%",
+          maxWidth: 1000,
+          margin: "0 auto",
+          border: "1px dashed #cbd5e1",
+          padding: 32,
+          backgroundColor: "white",
+          borderRadius: 12
+        }}
+      >
         <Story />
       </div>
     ),
@@ -42,6 +52,10 @@ const meta = {
   },
   tags: ["autodocs"],
   argTypes: {
+    /* Explicitly disabling the controls you want hidden */
+    className: { table: { disable: true } },
+    value: { table: { disable: true } },
+    onValueChange: { table: { disable: true } },
     size: {
       control: "radio",
       options: ["regular", "large"],
