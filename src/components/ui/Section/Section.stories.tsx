@@ -4,8 +4,8 @@ import { Section } from "./Section";
 
 const ActionButtons = () => (
   <>
-    <Button>Action 1</Button>
-    <Button>Action 2</Button>
+    <Button type="ghost">Action 1</Button>
+    <Button type="ghost">Action 2</Button>
   </>
 );
 
