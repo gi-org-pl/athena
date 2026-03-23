@@ -117,9 +117,9 @@ function Table<T>({
               {isSelectable && (
                 <th
                   // Hardcoded mobileFullWidth to false to keep it narrow
-                  className={tableCellVariants({ 
+                  className={tableCellVariants({
                     variant: "header",
-                    mobileFullWidth: false 
+                    mobileFullWidth: false,
                   })}
                 />
               )}
