@@ -35,7 +35,8 @@ export function ButtonSelect({
         <Button
           key={option.id}
           className={isFullWidth ? "flex-1" : "w-max"}
-          variant={selectedOptionId === option.id ? "default" : "outline"}
+          type={selectedOptionId === option.id ? "primary" : "outlined"}
+          variant={"primary"}
           onClick={() => {
             if (selectedOptionId !== option.id) {
               onSelectedOptionIdChange(option.id);
