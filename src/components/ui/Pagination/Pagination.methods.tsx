@@ -8,9 +8,9 @@ const range = (start: number, end: number): number[] => {
 
 // Determines whether the pagination should show dots on the left or right.
 const getBoundaryFlags = (
-  currentPage: number, 
-  totalPageCount: number, 
-  siblingCount: number
+  currentPage: number,
+  totalPageCount: number,
+  siblingCount: number,
 ) => {
   const firstPageIndex = 1;
   const lastPageIndex = totalPageCount;
@@ -23,13 +23,18 @@ const getBoundaryFlags = (
   const shouldShowLeftDots = leftSiblingIndex > 2;
   const shouldShowRightDots = rightSiblingIndex < lastPageIndex - 1;
 
-  return { shouldShowLeftDots, shouldShowRightDots, leftSiblingIndex, rightSiblingIndex };
+  return {
+    shouldShowLeftDots,
+    shouldShowRightDots,
+    leftSiblingIndex,
+    rightSiblingIndex,
+  };
 };
 
 export function generatePaginationRange(
   currentPage: number,
   totalPageCount: number,
-  siblingCount: number = 1
+  siblingCount: number = 1,
 ) {
   // Constant represents: first + last + current + 2*siblings + 2*dots
   const totalPageNumbers = siblingCount + 5;
@@ -39,11 +44,11 @@ export function generatePaginationRange(
     return range(1, totalPageCount);
   }
 
-  const { 
-    shouldShowLeftDots, 
-    shouldShowRightDots, 
-    leftSiblingIndex, 
-    rightSiblingIndex 
+  const {
+    shouldShowLeftDots,
+    shouldShowRightDots,
+    leftSiblingIndex,
+    rightSiblingIndex,
   } = getBoundaryFlags(currentPage, totalPageCount, siblingCount);
 
   // Case 2: No left dots, but right dots exist
@@ -56,7 +61,10 @@ export function generatePaginationRange(
   // Case 3: No right dots, but left dots exist
   if (shouldShowLeftDots && !shouldShowRightDots) {
     const rightItemCount = 3 + 2 * siblingCount;
-    const rightRange = range(totalPageCount - rightItemCount + 1, totalPageCount);
+    const rightRange = range(
+      totalPageCount - rightItemCount + 1,
+      totalPageCount,
+    );
     return [1, DOTS, ...rightRange];
   }
 

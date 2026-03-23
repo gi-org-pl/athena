@@ -1,29 +1,29 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'react';
-import { Pagination } from './Pagination';
+import type { Meta, StoryObj } from "@storybook/react";
+import { useState } from "react";
+import { Pagination } from "./Pagination";
 
 const meta: Meta<typeof Pagination> = {
-  title: 'Pagination',
+  title: "Pagination",
   component: Pagination,
   argTypes: {
-    onChange: { action: 'pageChanged' },
-    page: { control: { type: 'number', min: 1 } },
-    totalPages: { control: { type: 'number', min: 1 } },
+    onChange: { action: "pageChanged" },
+    page: { control: { type: "number", min: 1 } },
+    totalPages: { control: { type: "number", min: 1 } },
   },
   tags: ["autodocs"],
   parameters: {
-    layout: "padded", 
+    layout: "padded",
   },
   render: (args) => {
     const [currentPage, setCurrentPage] = useState(args.page);
     return (
-      <Pagination 
-        {...args} 
-        page={currentPage} 
+      <Pagination
+        {...args}
+        page={currentPage}
         onChange={(p) => {
           setCurrentPage(p);
           args.onChange(p);
-        }} 
+        }}
       />
     );
   },
@@ -36,7 +36,7 @@ export const SmallRange: Story = {
   args: {
     page: 1,
     totalPages: 5,
-    dataTestId: 'pagination-small',
+    dataTestId: "pagination-small",
   },
 };
 
@@ -45,7 +45,7 @@ export const LargeRange: Story = {
     page: 10,
     totalPages: 50,
     siblingCount: 1,
-    dataTestId: 'pagination-large',
+    dataTestId: "pagination-large",
   },
 };
 
@@ -54,7 +54,7 @@ export const HighSiblingCount: Story = {
     page: 10,
     totalPages: 20,
     siblingCount: 3,
-    dataTestId: 'pagination-siblings',
+    dataTestId: "pagination-siblings",
   },
 };
 
@@ -63,7 +63,7 @@ export const OnlyActions: Story = {
     page: 2,
     totalPages: 10,
     isOnlyActions: true,
-    dataTestId: 'pagination-actions-only',
+    dataTestId: "pagination-actions-only",
   },
 };
 
@@ -72,11 +72,18 @@ export const FullWidth: Story = {
     page: 1,
     totalPages: 10,
     isFullWidth: true,
-    dataTestId: 'pagination-full-width',
+    dataTestId: "pagination-full-width",
   },
   decorators: [
     (Story) => (
-      <div style={{ width: '800px', maxWidth: '100%', border: '1px solid #ccc', padding: '16px' }}>
+      <div
+        style={{
+          width: "800px",
+          maxWidth: "100%",
+          border: "1px solid #ccc",
+          padding: "16px",
+        }}
+      >
         <Story />
       </div>
     ),
