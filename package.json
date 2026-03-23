@@ -25,8 +25,6 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.554.0",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.17"
   },
@@ -64,6 +62,10 @@
     "vite-plugin-svgr": "^4.5.0",
     "vitest": "^4.0.10",
     "vitest-browser-react": "^2.0.2"
+  },
+  "peerDependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   },
   "engines": {
     "node": ">=24",
