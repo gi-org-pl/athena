@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import React from "react";
 import { Button } from "../Button/Button";
 import { Section } from "./Section";
-import React from "react";
 
-/** * Define the specific schema for this story 
+/** * Define the specific schema for this story
  * This prevents the TS error by explicitly allowing your custom strings
  */
 type SectionStoryArgs = {
@@ -60,7 +60,8 @@ const meta = {
   render: (args) => {
     const titleContent = (
       <div>
-        {args.title} <span style={{ fontWeight: 500 }}>{args.titleSecondary}</span>
+        {args.title}{" "}
+        <span style={{ fontWeight: 500 }}>{args.titleSecondary}</span>
       </div>
     );
 
