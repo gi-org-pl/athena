@@ -53,6 +53,7 @@ const meta = {
     actionsPosition: "right",
     showActions: true,
   },
+  tags: ["autodocs"],
   render: (args) => {
     const titleContent = (
       <div>
