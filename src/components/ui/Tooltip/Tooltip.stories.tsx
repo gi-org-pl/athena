@@ -87,9 +87,7 @@ export const LongDelay: Story = {
   },
   render: (args) => (
     <Tooltip {...args}>
-      <button className="px-4 py-2 border rounded-md">
-        {args.children}
-      </button>
+      <button className="px-4 py-2 border rounded-md">{args.children}</button>
     </Tooltip>
   ),
 };
