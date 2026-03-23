@@ -26,15 +26,14 @@ describe("<ButtonSelect />", () => {
       }
     });
 
-    it("should apply 'default' variant to the selected option and 'outline' to others", () => {
+    it("should apply primary styles to the selected option and outlined styles to others", () => {
       render(<ButtonSelect {...defaultProps} selectedOptionId="2" />);
 
       const selectedButton = screen.getByRole("button", { name: "Option 2" });
       const unselectedButton = screen.getByRole("button", { name: "Option 1" });
 
-      expect(selectedButton).toHaveClass("bg-primary");
-      expect(unselectedButton).toHaveClass("border");
-      expect(unselectedButton).toHaveClass("bg-background");
+      expect(selectedButton).toHaveClass("bg-gi-primary");
+      expect(unselectedButton).toHaveClass("border-gi-primary", "bg-transparent");
     });
   });
 
