@@ -1,7 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { XIcon } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
-import { Button, buttonVariants } from "@/components/ui/Button/Button.tsx";
 import { cn } from "@/lib/utils";
 
 const overlayVariants = cva(
@@ -86,10 +85,9 @@ export function Modal({
   }, [isOpen]);
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen || !isRendered) return;
 
-    const modal = containerRef.current;
-    if (!modal) return;
+    const modal = containerRef.current!;
 
     previouslyFocusedElement.current = document.activeElement as HTMLElement;
 
@@ -135,7 +133,7 @@ export function Modal({
       document.removeEventListener("keydown", handleKeyDown);
       previouslyFocusedElement.current?.focus();
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, isRendered, isClosable, onClose]);
 
   if (!isRendered) return null;
 

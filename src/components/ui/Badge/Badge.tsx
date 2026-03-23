@@ -55,7 +55,7 @@ export interface BadgeProps
   extends Omit<React.ComponentProps<"span">, "children">,
     VariantProps<typeof badgeVariants> {
   children: React.ReactNode;
-  LeftIcon?: React.ReactElement;
+  LeftIcon?: React.ReactNode;
   isDismissible?: boolean;
   onDismiss?: () => void;
   dataTestId?: string;
