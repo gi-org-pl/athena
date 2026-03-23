@@ -1,133 +1,84 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
-import { Table } from "./Table";
+import { Table, type TableColumn } from "./Table";
+
+const PAGE_SIZE = 5;
+const TOTAL_ITEMS = 24;
+
+interface RowData {
+  id: string;
+  [key: string]: string;
+}
+
+const generateColumns = (count: number): TableColumn<RowData>[] => 
+  Array.from({ length: count }, (_, i) => ({
+    key: `col${i + 1}`,
+    header: `Step ${i + 1}: Detailed Header`,
+    width: "auto", 
+  }));
+
+const generateData = (count: number): RowData[] => 
+  Array.from({ length: count }, (_, i) => ({
+    id: `row_${i + 1}`,
+    ...Object.fromEntries(
+      Array.from({ length: 8 }, (_, j) => [`col${j + 1}`, `Data point ${i + 1}:${j + 1}`])
+    ),
+  }));
+
+const MOCK_COLUMNS = generateColumns(8);
+const MOCK_DATA = generateData(TOTAL_ITEMS);
 
 const meta = {
-  title: "Table",
+  title: "Components/Table",
   component: Table,
   parameters: {
     layout: "padded",
   },
+  tags: ["autodocs"],
   argTypes: {
+    getRowKey: { table: { disable: true } },
+    actions: { table: { disable: true } },
+    data: { table: { disable: true } },
+    selectedRowKeys: { table: { disable: true } },
+    onSelectedRowKeysChange: { table: { disable: true } },
+    pagination: { table: { disable: true } },
+    emptyState: { table: { disable: true } },
     isSelectable: { control: "boolean" },
     isMobileScrollable: { control: "boolean" },
+    columns: { control: "object" },
+    dataTestId: { control: "text" },
   },
-  tags: ["autodocs"],
+  args: {
+    columns: MOCK_COLUMNS,
+    isSelectable: true,
+    isMobileScrollable: true,
+    dataTestId: "main_table",
+  },
   render: (args) => {
-    // Stan dla zaznaczonych wierszy
     const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
-    // STAN DLA PAGINACJI - to sprawia, że przyciski działają
-    const [currentPage, setCurrentPage] = useState(args.pagination?.page || 1);
+    const [currentPage, setCurrentPage] = useState(1);
+    
+    const startIndex = (currentPage - 1) * PAGE_SIZE;
+    const paginatedData = MOCK_DATA.slice(startIndex, startIndex + PAGE_SIZE);
 
     return (
       <Table
         {...args}
+        data={paginatedData}
+        getRowKey={(row: RowData) => row.id}
+        actions={() => <span className="text_primary font_medium">(actions)</span>}
         selectedRowKeys={selectedKeys}
-        onSelectedRowKeysChange={(keys) => setSelectedKeys(keys)}
-        pagination={
-          args.pagination
-            ? {
-                ...args.pagination,
-                page: currentPage,
-                onChange: (newPage) => {
-                  setCurrentPage(newPage); // Aktualizacja stanu w Storybooku
-                  args.pagination?.onChange?.(newPage); // Logowanie w konsoli/Actions
-                },
-              }
-            : undefined
-        }
+        onSelectedRowKeysChange={setSelectedKeys}
+        pagination={{
+          page: currentPage,
+          totalPages: Math.ceil(TOTAL_ITEMS / PAGE_SIZE),
+          totalElements: TOTAL_ITEMS,
+          onChange: setCurrentPage,
+        }}
       />
     );
   },
-  args: {
-    getRowKey: (row: any) => row.id,
-    columns: [
-      { key: "c1", header: "Column" },
-      { key: "c2", header: "Column" },
-      { key: "c3", header: "Column" },
-      { key: "c4", header: "Column" },
-      { key: "c5", header: "Column" },
-      { key: "c6", header: "Column" },
-      { key: "c7", header: "Column" },
-      { key: "c8", header: "Column" },
-      { key: "c9", header: "Column" },
-      { key: "c10", header: "Column" },
-    ],
-    data: [
-      {
-        id: "1",
-        c1: "Row",
-        c2: "Row",
-        c3: "Row",
-        c4: "Row",
-        c5: "Row",
-        c6: "Row",
-        c7: "Row",
-        c8: "Row",
-        c9: "Row",
-        c10: "Row",
-      },
-      {
-        id: "2",
-        c1: "Row",
-        c2: "Row",
-        c3: "Row",
-        c4: "Row",
-        c5: "Row",
-        c6: "Row",
-        c7: "Row",
-        c8: "Row",
-        c9: "Row",
-        c10: "Row",
-      },
-      {
-        id: "3",
-        c1: "Row",
-        c2: "Row",
-        c3: "Row",
-        c4: "Row",
-        c5: "Row",
-        c6: "Row",
-        c7: "Row",
-        c8: "Row",
-        c9: "Row",
-        c10: "Row",
-      },
-      {
-        id: "4",
-        c1: "Row",
-        c2: "Row",
-        c3: "Row",
-        c4: "Row",
-        c5: "Row",
-        c6: "Row",
-        c7: "Row",
-        c8: "Row",
-        c9: "Row",
-        c10: "Row",
-      },
-      {
-        id: "5",
-        c1: "Row",
-        c2: "Row",
-        c3: "Row",
-        c4: "Row",
-        c5: "Row",
-        c6: "Row",
-        c7: "Row",
-        c8: "Row",
-        c9: "Row",
-        c10: "Row",
-      },
-    ],
-    actions: () => <span className="text-primary font-bold">(actions)</span>,
-    pagination: {
-      page: 1,
-      totalPages: 5,
-      onChange: (p) => console.log("Page changed to:", p),
-    },
-  },
-} satisfies Meta<typeof Table<any>>;
+} satisfies Meta<typeof Table<RowData>>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -135,35 +86,26 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     isSelectable: false,
+    isMobileScrollable: false,
   },
 };
 
-export const WithSelect: Story = {
-  render: (args) => {
-    const [selectedKeys, setSelectedKeys] = useState<string[]>(["1", "2", "3"]);
-    const [currentPage, setCurrentPage] = useState(args.pagination?.page || 1);
-
-    return (
-      <Table
-        {...args}
-        selectedRowKeys={selectedKeys}
-        onSelectedRowKeysChange={setSelectedKeys}
-        pagination={
-          args.pagination
-            ? {
-                ...args.pagination,
-                page: currentPage,
-                onChange: (newPage) => {
-                  setCurrentPage(newPage);
-                  args.pagination?.onChange?.(newPage);
-                },
-              }
-            : undefined
-        }
-      />
-    );
+export const MobileScrollExperience: Story = {
+  parameters: {
+    viewport: {
+      defaultViewport: "mobile1",
+    },
+    layout: "fullscreen",
   },
   args: {
+    isMobileScrollable: true,
     isSelectable: true,
+  },
+};
+
+export const LargeDatasetSelection: Story = {
+  args: {
+    isSelectable: true,
+    isMobileScrollable: false,
   },
 };
