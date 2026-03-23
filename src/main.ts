@@ -1,5 +1,7 @@
 import "./index.css";
 
+export * from './components/ui/Select/Select';
+export * from './components/ui/ActionsList/ActionsList';
 export * from "./components/ui/Badge/Badge";
 export { Button, buttonVariants } from "./components/ui/Button/Button";
 export { Checkbox } from "./components/ui/Checkbox/Checkbox";
@@ -12,5 +14,3 @@ export { RadioGroupItem } from "./components/ui/RadioGroup/RadioGroupItem/RadioG
 export { Section } from "./components/ui/Section/Section";
 export { Switch } from "./components/ui/Switch/Switch";
 export { TextArea } from "./components/ui/TextArea/TextArea";
-export { Select } from "./components/Select";
-export { ActionsList } from "./components/ActionsList";
