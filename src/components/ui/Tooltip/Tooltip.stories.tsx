@@ -2,10 +2,18 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Tooltip } from "./Tooltip";
 
 const meta: Meta<typeof Tooltip> = {
-  title: "Tooltip",
+  title: "UI/Tooltip",
   component: Tooltip,
   tags: ["autodocs"],
   argTypes: {
+    content: {
+      control: "text",
+      description: "Tekst wyświetlany w dymku",
+    },
+    children: {
+      control: "text",
+      description: "Tekst przycisku (trigger)",
+    },
     side: {
       control: "select",
       options: ["top", "right", "bottom", "left"],
@@ -25,14 +33,17 @@ type Story = StoryObj<typeof Tooltip>;
 
 export const Default: Story = {
   args: {
-    children: (
-      <button className="px-4 py-2 border rounded-md hover:bg-slate-50">
-        Hover me
-      </button>
-    ),
+    children: "Hover me",
     content: "This is a default tooltip",
     side: "top",
   },
+  render: (args) => (
+    <Tooltip {...args}>
+      <button className="px-4 py-2 border rounded-md hover:bg-slate-50">
+        {args.children}
+      </button>
+    </Tooltip>
+  ),
 };
 
 export const DifferentSides: Story = {
@@ -59,7 +70,7 @@ export const InlineText: Story = {
     <p className="text-sm">
       Tooltips are great because you can hide them even in the{" "}
       <Tooltip content="Additional information inside text" side="top">
-        <span className="font-bold underline cursor-help text-[#003c47]">
+        <span className="font-bold underline cursor-help text-gi-primary">
           middle of a sentence
         </span>
       </Tooltip>
@@ -70,10 +81,15 @@ export const InlineText: Story = {
 
 export const LongDelay: Story = {
   args: {
-    children: (
-      <button className="px-4 py-2 border rounded-md">Delayed tooltip</button>
-    ),
+    children: "Delayed tooltip",
     content: "Patience is a virtue!",
     delay: 1000,
   },
+  render: (args) => (
+    <Tooltip {...args}>
+      <button className="px-4 py-2 border rounded-md">
+        {args.children}
+      </button>
+    </Tooltip>
+  ),
 };
