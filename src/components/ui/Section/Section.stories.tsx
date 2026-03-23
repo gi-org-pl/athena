@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "../Button/Button";
 import { Section } from "./Section";
 
-/** * Define the specific schema for this story 
+/** * Define the specific schema for this story
  */
 type SectionStoryArgs = {
   title: string;
@@ -56,7 +56,8 @@ const meta = {
   render: (args) => {
     const titleContent = (
       <div>
-        {args.title} <span style={{ fontWeight: 500 }}>{args.titleSecondary}</span>
+        {args.title}{" "}
+        <span style={{ fontWeight: 500 }}>{args.titleSecondary}</span>
       </div>
     );
 
