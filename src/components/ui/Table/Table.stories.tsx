@@ -98,12 +98,6 @@ export const Default: Story = {
 };
 
 export const MobileScrollExperience: Story = {
-  parameters: {
-    viewport: {
-      defaultViewport: "mobile1",
-    },
-    layout: "fullscreen",
-  },
   args: {
     isMobileScrollable: true,
     isSelectable: true,
