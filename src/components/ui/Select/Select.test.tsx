@@ -1,9 +1,8 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { act } from "react";
-import React from "react";
-import { Select } from "./Select";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import React, { act } from "react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { Select } from "./Select";
 
 global.ResizeObserver = class {
   observe() {}

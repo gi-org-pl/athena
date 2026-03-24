@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { fn } from "storybook/test";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Pencil, PlusCircle, Trash2 } from "lucide-react";
+import { fn } from "storybook/test";
 import { Select } from "./Select";
 
 if (typeof window !== "undefined") {

@@ -1,7 +1,7 @@
-import * as React from "react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { cva } from "class-variance-authority";
 import { ChevronDown } from "lucide-react";
+import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const selectTriggerVariants = cva(
@@ -19,10 +19,8 @@ const selectTriggerVariants = cva(
   },
 );
 
-export interface SelectProps extends Omit<
-  React.HTMLAttributes<HTMLDivElement>,
-  "children"
-> {
+export interface SelectProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
   value?: React.ReactNode;
   placeholder?: string;
   size?: "regular" | "small";
