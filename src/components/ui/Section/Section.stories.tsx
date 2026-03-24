@@ -2,8 +2,6 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "../Button/Button";
 import { Section } from "./Section";
 
-/** * Define the specific schema for this story
- */
 type SectionStoryArgs = {
   title: string;
   titleSecondary: string;
