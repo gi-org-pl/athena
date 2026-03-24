@@ -131,7 +131,6 @@ describe("<Table />", () => {
       );
       const headerRowWithout = withoutActions.querySelector("thead tr");
       const thWithout = headerRowWithout?.querySelectorAll("th");
-      // 2 columns + 0 actions header = 2
       expect(thWithout).toHaveLength(2);
     });
   });

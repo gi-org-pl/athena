@@ -34,7 +34,6 @@ const tableCellVariants = cva(
         body: "text-gi-primary font-bold",
       },
       mobileFullWidth: {
-        // Corrected the sm breakpoint logic here
         true: "min-w-[100cqw] w-[100cqw] sm:min-w-0 sm:w-auto",
         false: "min-w-fit",
       },
@@ -116,7 +115,6 @@ function Table<T>({
             <tr className="bg-gi-ash">
               {isSelectable && (
                 <th
-                  // Hardcoded mobileFullWidth to false to keep it narrow
                   className={tableCellVariants({
                     variant: "header",
                     mobileFullWidth: false,
@@ -173,7 +171,6 @@ function Table<T>({
                     {isSelectable && (
                       <td
                         className={cn(
-                          // Hardcoded mobileFullWidth to false here as well
                           tableCellVariants({
                             mobileFullWidth: false,
                           }),
