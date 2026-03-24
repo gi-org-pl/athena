@@ -15,5 +15,6 @@ export { ProgressBar } from "./components/ui/ProgressBar/ProgressBar";
 export { RadioGroup } from "./components/ui/RadioGroup/RadioGroup";
 export { RadioGroupItem } from "./components/ui/RadioGroup/RadioGroupItem/RadioGroupItem";
 export { Switch } from "./components/ui/Switch/Switch";
+export { Table } from "./components/ui/Table/Table";
 export { Tabs } from "./components/ui/Tabs/Tabs";
 export { TextArea } from "./components/ui/TextArea/TextArea";
