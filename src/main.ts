@@ -14,6 +14,7 @@ export { Pagination } from "./components/ui/Pagination/Pagination";
 export { ProgressBar } from "./components/ui/ProgressBar/ProgressBar";
 export { RadioGroup } from "./components/ui/RadioGroup/RadioGroup";
 export { RadioGroupItem } from "./components/ui/RadioGroup/RadioGroupItem/RadioGroupItem";
+export { Section } from "./components/ui/Section/Section";
 export { Switch } from "./components/ui/Switch/Switch";
 export { Table } from "./components/ui/Table/Table";
 export { Tabs } from "./components/ui/Tabs/Tabs";
