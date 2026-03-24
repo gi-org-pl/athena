@@ -60,7 +60,7 @@ export const IconFallbackMale: Story = {
     fallback: "icon",
     gender: "male",
     size: "medium",
-    color: "text-gi-red",
+    color: "text-gi-light-primary",
   },
 };
 
@@ -69,7 +69,7 @@ export const IconFallbackFemale: Story = {
     fallback: "icon",
     gender: "female",
     size: "medium",
-    color: "text-gi-red",
+    color: "text-gi-light-primary",
   },
 };
 
