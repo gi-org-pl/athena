@@ -1,14 +1,24 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Input } from "./Input";
+import React from "react";
 
 const meta: Meta<typeof Input> = {
   title: "Input",
   component: Input,
   tags: ["autodocs"],
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: '400px' }}>
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     isError: { control: "boolean" },
     isDisabled: { control: "boolean" },
     isRequired: { control: "boolean" },
+    LeftIcon: { control: "text" },
+    RightIcon: { control: "text" },
   },
 };
 
@@ -36,10 +46,10 @@ export const WithError: Story = {
 export const LongTextCollisionTest: Story = {
   args: {
     label: "Overlap Prevention Test",
-    defaultValue: "This is a very long text that must scroll inside the input and never mash with the suffix.",
+    defaultValue:
+      "This is a very long text that must scroll inside the input and never mash with the suffix.",
     prefix: "Prefix",
     suffix: "Suffix",
-    className: "max-w-[400px]",
   },
 };
 
@@ -47,7 +57,7 @@ export const IconsAndDecorators: Story = {
   args: {
     label: "Search",
     placeholder: "Search components...",
-    LeftIcon: "🔍",
+    LeftIcon: <span role="img" aria-label="search">🔍</span>,
     suffix: "Ctrl+K",
   },
 };

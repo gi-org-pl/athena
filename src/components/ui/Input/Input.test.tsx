@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
 import { Input } from "./Input";
 
 describe("Input Component", () => {
@@ -15,7 +15,7 @@ describe("Input Component", () => {
 
   it("shows helper text when no error is present", () => {
     render(<Input helperText="Enter your name" />);
-    expect(screen.getByText("Enter your name")).toHaveClass("text-gi-grey-500");
+    expect(screen.getByText("Enter your name")).toHaveClass("text-gi-ash");
   });
 
   it("shows error text and hides helper text when isError is true", () => {
@@ -43,7 +43,9 @@ describe("Input Component", () => {
   });
 
   it("renders RightIcon and suffix correctly", () => {
-    const { rerender } = render(<Input RightIcon={<span data-testid="right-icon">R</span>} />);
+    const { rerender } = render(
+      <Input RightIcon={<span data-testid="right-icon">R</span>} />
+    );
     expect(screen.getByTestId("right-icon")).toBeInTheDocument();
 
     rerender(<Input suffix="USD" />);
@@ -75,5 +77,33 @@ describe("Input Component", () => {
     render(<Input type="password" dataTestId="pass-input" />);
     const input = screen.getByTestId("pass-input");
     expect(input).toHaveAttribute("type", "password");
+  });
+
+  it("renders both prefix and suffix simultaneously and checks their alignment", () => {
+    render(<Input prefix="Start" suffix="End" />);
+    
+    const prefixNode = screen.getByText("Start");
+    const suffixNode = screen.getByText("End");
+    
+    expect(prefixNode).toBeInTheDocument();
+    expect(suffixNode).toBeInTheDocument();
+    
+    expect(prefixNode.closest('div')).toHaveClass("text-gi-ash");
+    expect(suffixNode.closest('div')).toHaveClass("text-gi-ash");
+  });
+
+  it("renders both LeftIcon and RightIcon and checks for correct classes", () => {
+    render(
+      <Input 
+        LeftIcon={<span data-testid="l-icon">L</span>} 
+        RightIcon={<span data-testid="r-icon">R</span>} 
+      />
+    );
+    
+    expect(screen.getByTestId("l-icon")).toBeInTheDocument();
+    expect(screen.getByTestId("r-icon")).toBeInTheDocument();
+    
+    expect(screen.getByTestId("l-icon").parentElement).toHaveClass("mr-2");
+    expect(screen.getByTestId("r-icon").parentElement).toHaveClass("ml-2");
   });
 });
