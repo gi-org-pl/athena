@@ -1,8 +1,8 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
-import { cn } from "@/lib/utils";
-import Male from "@/assets/icons/gi-male.svg";
 import Female from "@/assets/icons/gi-female.svg";
+import Male from "@/assets/icons/gi-male.svg";
+import { cn } from "@/lib/utils";
 
 const avatarVariants = cva(
   "relative flex shrink-0 overflow-hidden rounded-full items-center justify-center bg-gi-ash",

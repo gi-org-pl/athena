@@ -1,7 +1,7 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
-import { Avatar } from "./Avatar";
+import { fireEvent, render, screen } from "@testing-library/react";
 import * as React from "react";
+import { describe, expect, it, vi } from "vitest";
+import { Avatar } from "./Avatar";
 
 vi.mock("../../../assets/icons/gi-male.svg", () => ({
   default: () => <svg data-testid="male-icon" />,
@@ -15,7 +15,7 @@ describe("<Avatar />", () => {
     it("should render with default props (medium size)", () => {
       const { container } = render(<Avatar dataTestId="avatar-root" />);
       const root = container.querySelector('[data-test-id="avatar-root"]');
-      
+
       expect(root).toBeInTheDocument();
       expect(root).toHaveAttribute("data-slot", "avatar");
       expect(root).toHaveClass("h-10", "w-10");
@@ -23,7 +23,9 @@ describe("<Avatar />", () => {
     });
 
     it("should render with custom className", () => {
-      const { container } = render(<Avatar className="custom-class" dataTestId="avatar" />);
+      const { container } = render(
+        <Avatar className="custom-class" dataTestId="avatar" />,
+      );
       const root = container.querySelector('[data-test-id="avatar"]');
       expect(root).toHaveClass("custom-class");
     });
@@ -52,9 +54,9 @@ describe("<Avatar />", () => {
     it("should fallback to icon when image triggers an error", () => {
       render(<Avatar src="broken.jpg" name="John Doe" />);
       const img = screen.getByRole("img");
-      
+
       fireEvent.error(img);
-      
+
       expect(screen.queryByRole("img")).not.toBeInTheDocument();
       expect(screen.getByLabelText("John Doe")).toBeInTheDocument();
       expect(screen.getByTestId("male-icon")).toBeInTheDocument();
@@ -100,13 +102,17 @@ describe("<Avatar />", () => {
 
   describe("when sizing variants are used", () => {
     it("should apply small sizing", () => {
-      const { container } = render(<Avatar size="small" dataTestId="avatar-small" />);
+      const { container } = render(
+        <Avatar size="small" dataTestId="avatar-small" />,
+      );
       const root = container.querySelector('[data-test-id="avatar-small"]');
       expect(root).toHaveClass("h-8", "w-8");
     });
 
     it("should apply large sizing", () => {
-      const { container } = render(<Avatar size="large" dataTestId="avatar-large" />);
+      const { container } = render(
+        <Avatar size="large" dataTestId="avatar-large" />,
+      );
       const root = container.querySelector('[data-test-id="avatar-large"]');
       expect(root).toHaveClass("h-14", "w-14");
     });
