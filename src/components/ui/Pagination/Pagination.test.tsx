@@ -9,6 +9,16 @@ describe("<Pagination />", () => {
     onChange: vi.fn(),
   };
 
+  vi.mock("@/assets/icons/chevron-left.svg", () => ({
+  default: () => <span data-testid="chevron-left" />,
+}));
+
+vi.mock("@/assets/icons/chevron-right.svg", () => ({
+  default: () => <span data-testid="chevron-right" />,
+}));
+  const getPrevButton = () => screen.getByRole("button", { name: /previous/i });
+  const getNextButton = () => screen.getByRole("button", { name: /next/i });
+
   describe("Rendering Logic", () => {
     it("should render the correct number of page buttons for a small range", () => {
       render(<Pagination {...defaultProps} totalPages={5} />);
@@ -47,10 +57,7 @@ describe("<Pagination />", () => {
       const onChange = vi.fn();
       render(<Pagination {...defaultProps} page={1} onChange={onChange} />);
 
-      const buttons = screen.getAllByRole("button");
-      const nextButton = buttons[buttons.length - 1];
-
-      fireEvent.click(nextButton);
+      fireEvent.click(getNextButton());
       expect(onChange).toHaveBeenCalledWith(2);
     });
 
@@ -58,9 +65,7 @@ describe("<Pagination />", () => {
       const onChange = vi.fn();
       render(<Pagination {...defaultProps} page={5} onChange={onChange} />);
 
-      const prevButton = screen.getAllByRole("button")[0];
-
-      fireEvent.click(prevButton);
+      fireEvent.click(getPrevButton());
       expect(onChange).toHaveBeenCalledWith(4);
     });
 
@@ -78,41 +83,27 @@ describe("<Pagination />", () => {
   describe("Boundary Constraints", () => {
     it("should disable the previous button when on the first page", () => {
       render(<Pagination {...defaultProps} page={1} />);
-      const prevButton = screen.getAllByRole("button")[0];
-      expect(prevButton).toBeDisabled();
+      expect(getPrevButton()).toBeDisabled();
     });
 
     it("should disable the next button when on the last page", () => {
-      render(<Pagination {...defaultProps} page={10} />);
-      const buttons = screen.getAllByRole("button");
-      const nextButton = buttons[buttons.length - 1];
-      expect(nextButton).toBeDisabled();
+      render(<Pagination {...defaultProps} page={10} totalPages={10} />);
+      expect(getNextButton()).toBeDisabled();
     });
+
     it("should not call onChange when previous button is clicked on the first page", () => {
       const onChange = vi.fn();
       render(<Pagination {...defaultProps} page={1} onChange={onChange} />);
 
-      const prevButton = screen.getAllByRole("button")[0];
-      fireEvent.click(prevButton);
-
+      fireEvent.click(getPrevButton());
       expect(onChange).not.toHaveBeenCalled();
     });
 
     it("should not call onChange when next button is clicked on the last page", () => {
       const onChange = vi.fn();
-      render(
-        <Pagination
-          {...defaultProps}
-          page={10}
-          totalPages={10}
-          onChange={onChange}
-        />,
-      );
+      render(<Pagination {...defaultProps} page={10} totalPages={10} onChange={onChange} />);
 
-      const buttons = screen.getAllByRole("button");
-      const nextButton = buttons[buttons.length - 1];
-      fireEvent.click(nextButton);
-
+      fireEvent.click(getNextButton());
       expect(onChange).not.toHaveBeenCalled();
     });
   });

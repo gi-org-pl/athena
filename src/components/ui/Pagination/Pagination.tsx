@@ -56,6 +56,7 @@ export function Pagination({
         disabled={page === 1}
         isIconButton={isOnlyActions}
         onClick={handlePrevious}
+        aria-label="Previous"
       >
         <div />
         <ChevronLeftIcon />
@@ -102,6 +103,7 @@ export function Pagination({
         variant="primary"
         disabled={page === totalPages}
         isIconButton={isOnlyActions}
+        aria-label="Next"
         onClick={handleNext}
       >
         <div />
