@@ -1,4 +1,3 @@
-import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import * as React from "react";
 import {
   Tooltip as ShadcnTooltip,
@@ -30,14 +29,8 @@ const Tooltip = ({
         <TooltipTrigger asChild>
           <span className="cursor-default inline-block">{children}</span>
         </TooltipTrigger>
-        <TooltipContent
-          side={side}
-          align={align}
-          data-test-id={dataTestId}
-          className="bg-[#003c47] text-white border-none shadow-md"
-        >
+        <TooltipContent side={side} align={align} data-test-id={dataTestId}>
           {content}
-          <TooltipPrimitive.Arrow className="fill-[#003c47]" />
         </TooltipContent>
       </ShadcnTooltip>
     </TooltipProvider>

@@ -2,17 +2,17 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Tooltip } from "./Tooltip";
 
 const meta: Meta<typeof Tooltip> = {
-  title: "UI/Tooltip",
+  title: "Tooltip",
   component: Tooltip,
   tags: ["autodocs"],
   argTypes: {
     content: {
       control: "text",
-      description: "Tekst wyświetlany w dymku",
+      description: "Text displayed in the tooltip",
     },
     children: {
       control: "text",
-      description: "Tekst przycisku (trigger)",
+      description: "Trigger element",
     },
     side: {
       control: "select",
@@ -47,8 +47,15 @@ export const Default: Story = {
 };
 
 export const DifferentSides: Story = {
+  decorators: [
+    (Story) => (
+      <div className="flex items-center justify-center min-h-[300px] w-full">
+        <Story />
+      </div>
+    ),
+  ],
   render: () => (
-    <div className="flex items-center gap-4 p-20">
+    <div className="flex items-center gap-8">
       <Tooltip content="Tooltip on the left" side="left">
         <button className="px-3 py-1 border rounded">Left</button>
       </Tooltip>
