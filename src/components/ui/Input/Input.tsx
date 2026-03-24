@@ -1,36 +1,18 @@
-import { cva } from "class-variance-authority";
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-const inputVariants = cva(
-  "flex w-full rounded-3xl border border-gi-primary/10 bg-transparent px-3 py-2 text-sm transition-all duration-300 ease-in-out placeholder:text-gi-primary/30 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
-  {
-    variants: {
-      variant: {
-        default: "hover:border-gi-primary/20 focus:border-gi-primary/20",
-        error: "border-gi-red focus:border-gi-red hover:border-gi-red",
-        disabled: "border-gi-primary/5 text-gi-gray",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-    },
-  },
-);
-
-export interface InputProps
-  extends Omit<React.ComponentProps<"input">, "onChange"> {
+export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "prefix"> {
   label?: string;
-  helper?: React.ReactNode; // Przyjmuje string lub JSX
+  helperText?: React.ReactNode;
   errorText?: string;
   isError?: boolean;
   isRequired?: boolean;
-  leftIcon?: React.ReactNode;
-  rightIcon?: React.ReactNode;
+  isDisabled?: boolean;
+  LeftIcon?: React.ReactNode;
+  RightIcon?: React.ReactNode;
   prefix?: string;
   suffix?: string;
   dataTestId?: string;
-  onChange?: (value: string) => void;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -39,103 +21,78 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       className,
       type,
       label,
-      helper,
+      helperText,
       errorText,
       isError,
       isRequired,
-      leftIcon,
-      rightIcon,
+      isDisabled,
+      LeftIcon,
+      RightIcon,
       prefix,
       suffix,
-      disabled,
-      onChange,
       dataTestId,
       ...props
     },
-    ref,
+    ref
   ) => {
-    const computedVariant = disabled
-      ? "disabled"
-      : isError
-        ? "error"
-        : "default";
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (onChange) {
-        onChange(e.target.value);
-      }
-    };
+    const secondaryText = isError ? errorText : helperText;
 
     return (
-      <div className="flex w-full flex-col gap-1.5 text-left">
+      <div className="w-full space-y-1.5 text-left">
         {label && (
-          <label
-            className={cn(
-              "text-sm font-bold text-gi-primary flex items-center",
-              disabled && "opacity-50",
-            )}
-          >
+          <label className="text-sm font-medium text-gi-grey-700 block">
             {label}
-            {isRequired && (
-              <span className="ml-1 text-gi-red font-bold">*</span>
-            )}
+            {isRequired && <span className="text-red-500 ml-1">*</span>}
           </label>
         )}
 
-        <div className="relative flex items-center w-full">
-          {leftIcon && !prefix && (
-            <div className="absolute left-3 flex items-center justify-center text-gi-primary/50 pointer-events-none">
-              {leftIcon}
-            </div>
+        <div
+          className={cn(
+            "flex items-center w-full min-h-[40px] px-3 bg-white border rounded-full overflow-hidden transition-all duration-200",
+            
+            !isError && !isDisabled && "border-gi-grey-300 hover:border-gi-grey-400 focus-within:ring-2 focus-within:ring-gi-primary focus-within:border-gi-primary",
+            
+            isError && "border-red-500 focus-within:ring-2 focus-within:ring-red-500 focus-within:border-red-500",
+            
+            isDisabled && "opacity-50 bg-gi-grey-50 border-gi-grey-200 cursor-not-allowed",
+            
+            className
           )}
-          {prefix && (
-            <span className="absolute left-4 text-gi-primary/50 text-sm pointer-events-none">
-              {prefix}
-            </span>
+        >
+          {(LeftIcon || prefix) && (
+            <div className="flex-shrink-0 flex items-center text-gi-grey-500 text-sm mr-2 select-none">
+              {LeftIcon || prefix}
+            </div>
           )}
 
           <input
-            type={type}
-            className={cn(
-              inputVariants({ variant: computedVariant }),
-              (leftIcon || prefix) && "pl-10",
-              (rightIcon || suffix) && "pr-10",
-              className,
-            )}
             ref={ref}
-            disabled={disabled}
-            onChange={handleChange}
-            data-test-id={dataTestId}
+            type={type}
+            disabled={isDisabled}
+            data-testid={dataTestId}
+            className={cn(
+              "flex-1 w-full h-full bg-transparent text-sm text-gi-grey-900 outline-none placeholder:text-gi-grey-400 py-2 min-w-0",
+              isDisabled && "cursor-not-allowed"
+            )}
             {...props}
           />
 
-          {suffix && (
-            <span className="absolute right-4 text-gi-primary/50 text-sm pointer-events-none">
-              {suffix}
-            </span>
-          )}
-          {rightIcon && !suffix && (
-            <div className="absolute right-3 flex items-center justify-center text-gi-primary/50 pointer-events-none">
-              {rightIcon}
+          {(RightIcon || suffix) && (
+            <div className="flex-shrink-0 flex items-center text-gi-grey-500 text-sm ml-2 select-none">
+              {RightIcon || suffix}
             </div>
           )}
         </div>
 
-        {(isError && errorText) || helper ? (
-          <p
-            className={cn(
-              "text-[14px] mt-1 min-h-[20px]",
-              isError ? "text-gi-red font-medium" : "text-gi-primary/50",
-            )}
-          >
-            {isError && errorText ? errorText : helper}
+        {secondaryText && (
+          <p className={cn("text-xs transition-colors duration-200", isError ? "text-red-500" : "text-gi-grey-500")}>
+            {secondaryText}
           </p>
-        ) : null}
+        )}
       </div>
     );
-  },
+  }
 );
 
 Input.displayName = "Input";
-
 export { Input };
