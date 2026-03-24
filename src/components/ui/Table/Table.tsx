@@ -31,7 +31,7 @@ const tableCellVariants = cva(
       },
       variant: {
         header: "text-gi-primary first:rounded-l-[16px] last:rounded-r-[16px]",
-        body: "text-gi-primary font-normal",
+        body: "text-gi-primary font-bold",
       },
       mobileFullWidth: {
         // Corrected the sm breakpoint logic here
