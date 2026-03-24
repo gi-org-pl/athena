@@ -47,11 +47,11 @@ export function Section({
           <div className="flex flex-row items-center gap-3">{actions}</div>
         )}
       </header>
-      <section className="flex flex-col w-full border-gi-ash rounded-[48px] bg-gi-ash p-6 gap-4">
-        <section className="text-gi-light-primary bg-background rounded-[32px] border py-4.5 px-6  border-gi-dark-ash">
+      <div className="flex flex-col w-full border-gi-ash rounded-[48px] bg-gi-ash p-6 gap-4">
+        <div className="text-gi-light-primary bg-background rounded-[32px] border py-4.5 px-6  border-gi-dark-ash">
           {children}
-        </section>
-      </section>
+        </div>
+      </div>
     </section>
   );
 }
