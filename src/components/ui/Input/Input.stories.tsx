@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Input } from "./Input";
-import React from "react";
 
 const meta: Meta<typeof Input> = {
   title: "Input",
@@ -8,7 +7,7 @@ const meta: Meta<typeof Input> = {
   tags: ["autodocs"],
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: '400px' }}>
+      <div style={{ maxWidth: "400px" }}>
         <Story />
       </div>
     ),
@@ -57,7 +56,11 @@ export const IconsAndDecorators: Story = {
   args: {
     label: "Search",
     placeholder: "Search components...",
-    LeftIcon: <span role="img" aria-label="search">🔍</span>,
+    LeftIcon: (
+      <span role="img" aria-label="search">
+        🔍
+      </span>
+    ),
     suffix: "Ctrl+K",
   },
 };
