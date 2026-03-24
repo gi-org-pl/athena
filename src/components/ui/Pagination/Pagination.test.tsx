@@ -10,12 +10,12 @@ describe("<Pagination />", () => {
   };
 
   vi.mock("@/assets/icons/chevron-left.svg", () => ({
-  default: () => <span data-testid="chevron-left" />,
-}));
+    default: () => <span data-testid="chevron-left" />,
+  }));
 
-vi.mock("@/assets/icons/chevron-right.svg", () => ({
-  default: () => <span data-testid="chevron-right" />,
-}));
+  vi.mock("@/assets/icons/chevron-right.svg", () => ({
+    default: () => <span data-testid="chevron-right" />,
+  }));
   const getPrevButton = () => screen.getByRole("button", { name: /previous/i });
   const getNextButton = () => screen.getByRole("button", { name: /next/i });
 
@@ -101,7 +101,14 @@ vi.mock("@/assets/icons/chevron-right.svg", () => ({
 
     it("should not call onChange when next button is clicked on the last page", () => {
       const onChange = vi.fn();
-      render(<Pagination {...defaultProps} page={10} totalPages={10} onChange={onChange} />);
+      render(
+        <Pagination
+          {...defaultProps}
+          page={10}
+          totalPages={10}
+          onChange={onChange}
+        />,
+      );
 
       fireEvent.click(getNextButton());
       expect(onChange).not.toHaveBeenCalled();
