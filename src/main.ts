@@ -9,6 +9,7 @@ export {
   infoMessageVariants,
 } from "./components/ui/InfoMessage/InfoMessage";
 export { Modal } from "./components/ui/Modal/Modal";
+export { Pagination } from "./components/ui/Pagination/Pagination";
 export { ProgressBar } from "./components/ui/ProgressBar/ProgressBar";
 export { RadioGroup } from "./components/ui/RadioGroup/RadioGroup";
 export { RadioGroupItem } from "./components/ui/RadioGroup/RadioGroupItem/RadioGroupItem";
