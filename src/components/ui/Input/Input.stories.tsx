@@ -19,14 +19,35 @@ const meta: Meta<typeof Input> = {
     ),
   ],
   argTypes: {
-    LeftIcon: { control: "boolean", mapping: { true: <SearchIcon />, false: undefined } },
-    RightIcon: { control: "boolean", mapping: { true: <SearchIcon />, false: undefined } },
-    prefix: { control: "text" },
-    suffix: { control: "text" },
-    isError: { control: "boolean" },
-    isDisabled: { control: "boolean" },
-    isRequired: { control: "boolean" },
-    type: { control: "select", options: ["text", "password", "email", "number"] },
+    label: { control: "text", table: { category: "Content" } },
+    placeholder: { control: "text", table: { category: "Content" } },
+    helper: { control: "text", table: { category: "Content" } },
+    errorText: { control: "text", table: { category: "Content" } },
+
+    LeftIcon: {
+      control: "boolean",
+      mapping: { true: <SearchIcon />, false: undefined },
+      table: { category: "Decorators" }
+    },
+    RightIcon: {
+      control: "boolean",
+      mapping: { true: <SearchIcon />, false: undefined },
+      table: { category: "Decorators" }
+    },
+    prefix: { control: "text", table: { category: "Decorators" } },
+    suffix: { control: "text", table: { category: "Decorators" } },
+
+    isError: { control: "boolean", table: { category: "States" } },
+    isDisabled: { control: "boolean", table: { category: "States" } },
+    isRequired: { control: "boolean", table: { category: "States" } },
+
+    type: {
+      control: "select",
+      options: ["text", "password", "email", "number"],
+      table: { category: "Technical" }
+    },
+    dataTestId: { control: "text", table: { category: "Technical" } },
+    value: { control: "text", table: { category: "Technical" } },
   },
 };
 
@@ -39,6 +60,20 @@ export const FullExample: Story = {
     placeholder: "enter@your.email",
     helper: "We will never share your email.",
     isRequired: true,
+  },
+};
+
+export const WithLeftIcon: Story = {
+  args: {
+    placeholder: "Search...",
+    LeftIcon: <SearchIcon />,
+  },
+};
+
+export const WithRightIcon: Story = {
+  args: {
+    placeholder: "Search...",
+    RightIcon: <SearchIcon />,
   },
 };
 
