@@ -51,8 +51,6 @@ const meta = {
   args: {
     onClick: fn(),
     children: "Button",
-    LeftIcon: "None",
-    RightIcon: "None",
     size: "regular",
     type: "primary",
     variant: "primary",
@@ -71,7 +69,7 @@ export const Default: Story = {
 export const IconButton: Story = {
   args: {
     isIconButton: true,
-    LeftIcon: "Crown",
+    LeftIcon: <Crown />,
     children: undefined,
   },
 };
@@ -111,7 +109,7 @@ export const IconButtonMatrix: Story = {
   render: (args) => <ButtonMatrix {...args} />,
   args: {
     isIconButton: true,
-    LeftIcon: "Crown",
+    LeftIcon: <Crown />,
     children: undefined,
   },
 };
