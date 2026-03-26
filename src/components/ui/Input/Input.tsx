@@ -25,7 +25,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (
     {
       className,
-      type,
       label,
       helper,
       errorText,
@@ -46,7 +45,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     ref,
   ) => {
     const [isFocused, setIsFocused] = React.useState(false);
-    const [internalValue, setInternalValue] = React.useState(value || props.defaultValue || "");
+    const [internalValue, setInternalValue] = React.useState(
+      value || props.defaultValue || "",
+    );
 
     React.useEffect(() => {
       if (value !== undefined) {
@@ -56,7 +57,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       if (isDisabled) return;
-      
+
       if (value === undefined) {
         setInternalValue(e.target.value);
       }
@@ -75,11 +76,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     const secondaryText = isError ? errorText : helper;
     const hasPrefixOrSuffix = !!prefix || !!suffix;
+    
+    const hasUserText = !!(value !== undefined ? value : internalValue);
 
     const getDisplayValue = () => {
       if (isDisabled && !internalValue) return "some text";
       return internalValue;
     };
+
+    const shouldShowOverlay =
+      !isFocused && ((hasPrefixOrSuffix && hasUserText) || isDisabled);
 
     return (
       <div className="w-full space-y-1.5 text-left" data-testid={dataTestId}>
@@ -88,7 +94,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             className={cn(
               "text-sm font-medium block transition-all duration-300 ease-in-out",
               isError ? "text-red-500" : "text-[#004554]",
-              isDisabled && "opacity-50"
+              isDisabled && "opacity-50",
             )}
           >
             {label}
@@ -99,36 +105,54 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <div
           className={cn(
             "flex items-center w-full min-h-[40px] px-4 bg-white border rounded-[24px] transition-all duration-300 ease-in-out",
-            !isError && !isDisabled && "border-[#004554]/10 hover:border-[#004554]/33 focus-within:border-2 focus-within:border-[#004554]/33",
-            isError && "border border-red-500", 
+            !isError &&
+              !isDisabled &&
+              "border-[#004554]/10 hover:border-[#004554]/33 focus-within:border-2 focus-within:border-[#004554]/33",
+            isError && "border border-red-500",
             isDisabled && "border-[#004554]/10 cursor-not-allowed bg-white",
-            className
+            className,
           )}
         >
           {LeftIcon && (
-            <div className={cn(
-              "flex-shrink-0 flex items-center mr-2 transition-opacity duration-300 ease-in-out",
-              isDisabled ? "opacity-30" : "text-[#004554]"
-            )}>
+            <div
+              className={cn(
+                "flex-shrink-0 flex items-center mr-2 transition-opacity duration-300 ease-in-out",
+                isDisabled ? "opacity-30" : "text-[#004554]",
+              )}
+            >
               {LeftIcon}
             </div>
           )}
 
           <div className="relative flex-1 flex items-center overflow-hidden h-full">
-            {!isFocused && (hasPrefixOrSuffix || isDisabled) && (
+            {shouldShowOverlay && (
               <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none w-full">
-                {prefix && <span className="text-sm mr-0.2 text-[#004554]/50">{prefix}</span>}
-                <span className={cn("text-sm truncate", !getDisplayValue() && !isDisabled ? "text-[#004554]/30" : "text-[#004554]")}>
+                {prefix && hasUserText && (
+                  <span className="text-sm mr-0.2 text-[#004554]/50">
+                    {prefix}
+                  </span>
+                )}
+                <span
+                  className={cn(
+                    "text-sm truncate",
+                    !getDisplayValue() && !isDisabled
+                      ? "text-[#004554]/30"
+                      : "text-[#004554]",
+                  )}
+                >
                   {getDisplayValue() || props.placeholder}
                 </span>
-                {suffix && <span className="text-sm ml-0.2 text-[#004554]/50">{suffix}</span>}
+                {suffix && hasUserText && (
+                  <span className="text-sm ml-0.2 text-[#004554]/50">
+                    {suffix}
+                  </span>
+                )}
               </div>
             )}
 
             <input
               {...props}
               ref={ref}
-              type={type}
               value={value !== undefined ? value : internalValue}
               onChange={handleChange}
               onFocus={handleFocus}
@@ -137,25 +161,33 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               required={isRequired}
               data-test-id={dataTestId}
               className={cn(
-                "flex-1 bg-transparent text-sm text-[#004554] outline-none placeholder:text-[#004554]/30 py-3 min-w-[20px] w-full transition-all duration-300 ease-in-out",
-                (!isFocused && (hasPrefixOrSuffix || isDisabled)) && "text-transparent placeholder:text-transparent",
-                isDisabled && "cursor-not-allowed"
+                "flex-1 bg-transparent text-sm text-[#004554] outline-none placeholder:text-[#004554]/30 py-3 min-w-[20px] w-full",
+                shouldShowOverlay &&
+                  "text-transparent placeholder:text-transparent",
+                isDisabled && "cursor-not-allowed",
               )}
             />
           </div>
 
           {RightIcon && (
-            <div className={cn(
-              "flex-shrink-0 flex items-center ml-2 transition-opacity duration-300 ease-in-out",
-              isDisabled ? "opacity-30" : "text-[#004554]"
-            )}>
+            <div
+              className={cn(
+                "flex-shrink-0 flex items-center ml-2 transition-opacity duration-300 ease-in-out",
+                isDisabled ? "opacity-30" : "text-[#004554]",
+              )}
+            >
               {RightIcon}
             </div>
           )}
         </div>
 
         {secondaryText && !isDisabled && (
-          <p className={cn("text-[14px] leading-tight transition-all duration-300 ease-in-out", isError ? "text-red-500" : "text-[#004554]/50")}>
+          <p
+            className={cn(
+              "text-[14px] leading-tight transition-all duration-300 ease-in-out",
+              isError ? "text-red-500" : "text-[#004554]/50",
+            )}
+          >
             {secondaryText}
           </p>
         )}
