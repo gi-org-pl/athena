@@ -1,4 +1,4 @@
-import { cva, type VariantProps } from "class-variance-authority";
+import { cva } from "class-variance-authority";
 import { XIcon } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
@@ -43,6 +43,8 @@ export interface ModalProps
   isCloseOnOverlayClick?: boolean;
   onClose: () => void;
   dataTestId?: string;
+  primaryAction?: string;
+  secondaryAction?: string;
 }
 
 export function Modal({

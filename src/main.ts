@@ -9,6 +9,7 @@ export {
   InfoMessage,
   infoMessageVariants,
 } from "./components/ui/InfoMessage/InfoMessage";
+export { Input } from "./components/ui/Input/Input";
 export { Modal } from "./components/ui/Modal/Modal";
 export { Pagination } from "./components/ui/Pagination/Pagination";
 export { ProgressBar } from "./components/ui/ProgressBar/ProgressBar";

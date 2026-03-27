@@ -36,7 +36,7 @@ const progressBarFillVariants = cva(
   },
 );
 
-interface ProgressBarProps
+export interface ProgressBarProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof progressBarVariants>,
     VariantProps<typeof progressBarFillVariants> {
