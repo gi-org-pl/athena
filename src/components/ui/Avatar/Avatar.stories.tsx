@@ -96,10 +96,11 @@ export const SizeComparison: Story = {
 export const InternationalInitials: Story = {
   render: (args) => (
     <div className="flex flex-col gap-6">
- 
       <div className="flex items-center gap-4">
         <Avatar {...args} name="山田 太郎" />
-        <span className="text-sm text-gi-primary font-medium">Japanese: 山太</span>
+        <span className="text-sm text-gi-primary font-medium">
+          Japanese: 山太
+        </span>
       </div>
 
       <div className="flex items-center gap-4">
@@ -122,7 +123,7 @@ export const InternationalInitials: Story = {
           Soft Sign (Ь): ЮЬ
         </span>
       </div>
-      
+
       <div className="flex items-center gap-4">
         <Avatar {...args} name="أحمد علي" />
         <span className="text-sm text-gi-primary font-medium">Arabic: أع</span>
