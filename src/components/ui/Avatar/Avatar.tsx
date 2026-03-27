@@ -29,6 +29,7 @@ interface AvatarProps
   name?: string;
   gender?: "male" | "female";
   color?: string;
+  dataTestId?: string,
 }
 
 const getInitials = (name: string) => {
@@ -52,6 +53,7 @@ function Avatar({
   name = "",
   gender = "male",
   color = "text-gi-light-primary",
+  dataTestId,
   ...props
 }: AvatarProps) {
   const [hasError, setHasError] = useState(false);
@@ -70,6 +72,7 @@ function Avatar({
     <div
       data-slot="avatar"
       className={cn(avatarVariants({ size, className }))}
+      data-test-id={dataTestId}
       {...props}
     >
       {showImage ? (

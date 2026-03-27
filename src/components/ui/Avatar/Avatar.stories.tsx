@@ -15,6 +15,7 @@ const meta = {
   argTypes: {
     src: { table: { category: "Media" } },
     alt: { table: { category: "Media" } },
+    dataTestId: { table: { category: "Media" } },
     name: { table: { category: "Identity" } },
     gender: {
       control: "radio",
