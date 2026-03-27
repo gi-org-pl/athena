@@ -7,6 +7,11 @@ const meta = {
   parameters: {
     layout: "centered",
   },
+  args: {
+    color: "text-gi-light-primary",
+    size: "medium",
+    fallback: "icon",
+  },
   argTypes: {
     src: { table: { category: "Media" } },
     alt: { table: { category: "Media" } },
