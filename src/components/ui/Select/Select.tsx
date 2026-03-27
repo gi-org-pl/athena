@@ -1,21 +1,21 @@
-import * as React from "react"
-import { cn } from "@/lib/utils"
+import * as React from "react";
+import ChevronDown from "@/assets/icons/chevron-down.svg";
+import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "./ActionList/ActionList"
-import ChevronDown from "@/assets/icons/chevron-down.svg";
+} from "./ActionList/ActionList";
 
 export interface SelectProps extends React.HTMLAttributes<HTMLDivElement> {
-  value?: React.ReactNode
-  placeholder?: string
-  size?: "regular" | "small"
-  openOn?: "click" | "hover"
-  children: React.ReactNode
-  isDisabled?: boolean
-  dataTestId?: string
-  trigger?: React.ReactNode
+  value?: React.ReactNode;
+  placeholder?: string;
+  size?: "regular" | "small";
+  openOn?: "click" | "hover";
+  children: React.ReactNode;
+  isDisabled?: boolean;
+  dataTestId?: string;
+  trigger?: React.ReactNode;
 }
 
 const Select = React.forwardRef<HTMLDivElement, SelectProps>(
@@ -32,45 +32,44 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
       trigger,
       ...props
     },
-    ref
+    ref,
   ) => {
-    const [open, setOpen] = React.useState(false)
-    const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
-    const isOpenRef = React.useRef(false)
+    const [open, setOpen] = React.useState(false);
+    const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+    const isOpenRef = React.useRef(false);
 
     const handleOpen = React.useCallback(() => {
-      if (isDisabled || openOn !== "hover") return
-      if (timeoutRef.current) clearTimeout(timeoutRef.current)
-      
+      if (isDisabled || openOn !== "hover") return;
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
       if (!isOpenRef.current) {
-        isOpenRef.current = true
-        setOpen(true)
+        isOpenRef.current = true;
+        setOpen(true);
       }
-    }, [isDisabled, openOn])
+    }, [isDisabled, openOn]);
 
     const handleClose = React.useCallback(() => {
-      if (openOn !== "hover") return
-      if (timeoutRef.current) clearTimeout(timeoutRef.current)
-      
+      if (openOn !== "hover") return;
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
       timeoutRef.current = setTimeout(() => {
-        isOpenRef.current = false
-        setOpen(false)
-      }, 150)
-    }, [openOn])
+        isOpenRef.current = false;
+        setOpen(false);
+      }, 150);
+    }, [openOn]);
 
     const onOpenChange = (nextOpen: boolean) => {
-
       if (openOn === "hover") {
-        isOpenRef.current = false
-        setOpen(false)
+        isOpenRef.current = false;
+        setOpen(false);
       } else {
-        isOpenRef.current = nextOpen
-        setOpen(nextOpen)
+        isOpenRef.current = nextOpen;
+        setOpen(nextOpen);
       }
-    }
+    };
 
     return (
-      <div 
+      <div
         className="relative inline-block min-w-32"
         onPointerEnter={handleOpen}
         onPointerLeave={handleClose}
@@ -86,21 +85,23 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
                 className={cn(
                   "flex w-full items-center justify-between gap-2 rounded-full bg-gi-ash px-3 py-2 text-gi-primary font-bold transition-all duration-300 ease",
                   size === "small" ? "h-8" : "h-10",
-                  isDisabled ? "cursor-not-allowed opacity-50" : "cursor-pointer",
-                  className
+                  isDisabled
+                    ? "cursor-not-allowed opacity-50"
+                    : "cursor-pointer",
+                  className,
                 )}
                 onPointerDown={(e) => {
-                  if (isDisabled || openOn === "hover") e.preventDefault()
+                  if (isDisabled || openOn === "hover") e.preventDefault();
                 }}
                 onClick={(e) => {
-                  if (isDisabled || openOn === "hover") e.preventDefault()
+                  if (isDisabled || openOn === "hover") e.preventDefault();
                 }}
                 {...props}
               >
                 <div className="truncate text-left flex-1 pointer-events-none select-none">
                   {value || placeholder}
                 </div>
-                <ChevronDown/>
+                <ChevronDown />
               </div>
             )}
           </DropdownMenuTrigger>
@@ -111,7 +112,7 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
             sideOffset={4}
             className={cn(
               "min-w-[var(--radix-dropdown-menu-trigger-width)]",
-              "before:absolute before:-top-[12px] before:left-0 before:h-[12px] before:w-full before:content-['']"
+              "before:absolute before:-top-[12px] before:left-0 before:h-[12px] before:w-full before:content-['']",
             )}
             onCloseAutoFocus={(e) => openOn === "hover" && e.preventDefault()}
           >
@@ -119,10 +120,10 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-    )
-  }
-)
+    );
+  },
+);
 
-Select.displayName = "Select"
+Select.displayName = "Select";
 
-export { Select }
+export { Select };

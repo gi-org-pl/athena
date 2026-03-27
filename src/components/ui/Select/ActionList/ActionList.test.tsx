@@ -1,23 +1,23 @@
-import { render, screen, cleanup } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, it, expect, vi, afterEach } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import {
+  ActionList,
   DropdownMenu,
-  DropdownMenuTrigger,
+  DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuPortal,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuCheckboxItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuSub,
-  DropdownMenuSubTrigger,
   DropdownMenuSubContent,
-  ActionList,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
 } from "./ActionList";
 
 describe("DropdownMenu & ActionList Full Coverage", () => {
@@ -31,13 +31,17 @@ describe("DropdownMenu & ActionList Full Coverage", () => {
         <DropdownMenuContent>
           <ActionList items={items} {...props} />
         </DropdownMenuContent>
-      </DropdownMenu>
+      </DropdownMenu>,
     );
   };
 
   describe("<ActionList /> Logic", () => {
     const mockItems = [
-      { label: "Edit", onClick: vi.fn(), icon: <span data-testid="edit-icon" /> },
+      {
+        label: "Edit",
+        onClick: vi.fn(),
+        icon: <span data-testid="edit-icon" />,
+      },
       { label: "Delete", variant: "danger" as const, onClick: vi.fn() },
     ];
 
@@ -51,14 +55,14 @@ describe("DropdownMenu & ActionList Full Coverage", () => {
     it("should call onClick when an item is clicked", async () => {
       const user = userEvent.setup();
       renderActionList(mockItems);
-      
+
       await user.click(screen.getByText("Edit"));
       expect(mockItems[0].onClick).toHaveBeenCalledTimes(1);
     });
 
     it("should apply custom className to the ActionList container", () => {
       renderActionList(mockItems, { className: "custom-list-class" });
-      const listContainer = document.querySelector('.custom-list-class');
+      const listContainer = document.querySelector(".custom-list-class");
       expect(listContainer).toBeInTheDocument();
     });
   });
@@ -74,11 +78,13 @@ describe("DropdownMenu & ActionList Full Coverage", () => {
                 My Label
               </DropdownMenuLabel>
               <DropdownMenuSeparator className="sep-class" />
-              
+
               <DropdownMenuGroup>
                 <DropdownMenuCheckboxItem checked className="check-class">
                   Checkbox
-                  <DropdownMenuShortcut className="shortcut-class">⌘K</DropdownMenuShortcut>
+                  <DropdownMenuShortcut className="shortcut-class">
+                    ⌘K
+                  </DropdownMenuShortcut>
                 </DropdownMenuCheckboxItem>
               </DropdownMenuGroup>
 
@@ -98,14 +104,17 @@ describe("DropdownMenu & ActionList Full Coverage", () => {
               </DropdownMenuSub>
             </DropdownMenuContent>
           </DropdownMenuPortal>
-        </DropdownMenu>
+        </DropdownMenu>,
       );
 
       expect(screen.getByText("My Label")).toHaveClass("label-class");
-      expect(screen.getByText("My Label")).toHaveAttribute("data-inset", "true");
-      
+      expect(screen.getByText("My Label")).toHaveAttribute(
+        "data-inset",
+        "true",
+      );
+
       expect(document.querySelector(".sep-class")).toBeInTheDocument();
-      
+
       const checkbox = screen.getByText("Checkbox").closest(".check-class");
       expect(checkbox).toBeInTheDocument();
       expect(screen.getByText("⌘K")).toHaveClass("shortcut-class");
@@ -113,8 +122,13 @@ describe("DropdownMenu & ActionList Full Coverage", () => {
       const radio = screen.getByText("Radio A").closest(".radio-class");
       expect(radio).toBeInTheDocument();
 
-      const subTrigger = screen.getByText("Submenu").closest(".sub-trigger-class");
-      expect(subTrigger).toHaveAttribute("data-slot", "dropdown-menu-sub-trigger");
+      const subTrigger = screen
+        .getByText("Submenu")
+        .closest(".sub-trigger-class");
+      expect(subTrigger).toHaveAttribute(
+        "data-slot",
+        "dropdown-menu-sub-trigger",
+      );
     });
 
     it("should render Item with danger variant", () => {
@@ -123,9 +137,11 @@ describe("DropdownMenu & ActionList Full Coverage", () => {
           <DropdownMenuContent>
             <DropdownMenuItem variant="danger">Danger Item</DropdownMenuItem>
           </DropdownMenuContent>
-        </DropdownMenu>
+        </DropdownMenu>,
       );
-      const item = screen.getByText("Danger Item").closest('[data-slot="dropdown-menu-item"]');
+      const item = screen
+        .getByText("Danger Item")
+        .closest('[data-slot="dropdown-menu-item"]');
       expect(item).toHaveAttribute("data-variant", "danger");
       expect(item).toHaveClass("text-gi-red");
     });
@@ -137,10 +153,13 @@ describe("DropdownMenu & ActionList Full Coverage", () => {
         <DropdownMenu open={true}>
           <DropdownMenuTrigger>Trigger</DropdownMenuTrigger>
           <DropdownMenuContent>Content</DropdownMenuContent>
-        </DropdownMenu>
+        </DropdownMenu>,
       );
-      
-      const trigger = screen.getByRole("button", { name: /trigger/i, hidden: true });
+
+      const trigger = screen.getByRole("button", {
+        name: /trigger/i,
+        hidden: true,
+      });
       expect(trigger).toHaveAttribute("data-slot", "dropdown-menu-trigger");
     });
   });

@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from "@storybook/react-vite"
-import { Button } from "../Button/Button"
-import { Select } from "./Select"
-import { ActionList } from "./ActionList/ActionList"
-import { Settings, LogOut, User } from "lucide-react"
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { LogOut, Settings, User } from "lucide-react";
 import AddIcon from "@/assets/icons/add.svg";
 import DeleteIcon from "@/assets/icons/delete.svg";
 import EditIcon from "@/assets/icons/edit.svg";
+import { Button } from "../Button/Button";
+import { ActionList } from "./ActionList/ActionList";
+import { Select } from "./Select";
 
 const meta: Meta<typeof Select> = {
   title: "Select",
@@ -36,24 +36,32 @@ const meta: Meta<typeof Select> = {
       },
     },
   },
-}
+};
 
-export default meta
-type Story = StoryObj<typeof Select>
+export default meta;
+type Story = StoryObj<typeof Select>;
 
 export const Default: Story = {
   render: (args) => (
     <Select {...args}>
       <ActionList
         items={[
-          { label: "Action 1", icon: <EditIcon />, onClick: () => console.log("Action 1") },
-          { label: "Action 2", icon: <AddIcon />, onClick: () => console.log("Action 2") },
+          {
+            label: "Action 1",
+            icon: <EditIcon />,
+            onClick: () => console.log("Action 1"),
+          },
+          {
+            label: "Action 2",
+            icon: <AddIcon />,
+            onClick: () => console.log("Action 2"),
+          },
           { label: "Action 3", onClick: () => console.log("Action 3") },
-          { 
-            label: "Danger Action", 
-            icon: <DeleteIcon />, 
+          {
+            label: "Danger Action",
+            icon: <DeleteIcon />,
             variant: "danger",
-            onClick: () => console.log("Danger Action") 
+            onClick: () => console.log("Danger Action"),
           },
         ]}
       />
@@ -62,7 +70,7 @@ export const Default: Story = {
   args: {
     placeholder: "Text",
   },
-}
+};
 
 export const WithValue: Story = {
   render: (args) => (
@@ -79,7 +87,7 @@ export const WithValue: Story = {
   args: {
     value: "Settings",
   },
-}
+};
 
 export const WithIconValue: Story = {
   render: (args) => (
@@ -100,57 +108,43 @@ export const WithIconValue: Story = {
       </div>
     ),
   },
-}
+};
 
 export const Small: Story = {
   render: (args) => (
     <Select {...args}>
-      <ActionList
-        items={[
-          { label: "Option 1" },
-          { label: "Option 2" },
-        ]}
-      />
+      <ActionList items={[{ label: "Option 1" }, { label: "Option 2" }]} />
     </Select>
   ),
   args: {
     size: "small",
     placeholder: "Small select",
   },
-}
+};
 
 export const HoverTrigger: Story = {
   render: (args) => (
     <Select {...args}>
-      <ActionList
-        items={[
-          { label: "Option 1" },
-          { label: "Option 2" },
-        ]}
-      />
+      <ActionList items={[{ label: "Option 1" }, { label: "Option 2" }]} />
     </Select>
   ),
   args: {
     openOn: "hover",
     placeholder: "Hover to open",
   },
-}
+};
 
 export const Disabled: Story = {
   render: (args) => (
     <Select {...args}>
-      <ActionList
-        items={[
-          { label: "Option 1" },
-        ]}
-      />
+      <ActionList items={[{ label: "Option 1" }]} />
     </Select>
   ),
   args: {
     isDisabled: true,
     placeholder: "Disabled select",
   },
-}
+};
 
 export const CustomChildren: Story = {
   render: (args) => (
@@ -158,14 +152,22 @@ export const CustomChildren: Story = {
       <Select {...args}>
         <ActionList
           items={[
-            { label: "Action 1", icon: <EditIcon />, onClick: () => console.log("Action 1") },
-            { label: "Action 2", icon: <AddIcon />, onClick: () => console.log("Action 2") },
+            {
+              label: "Action 1",
+              icon: <EditIcon />,
+              onClick: () => console.log("Action 1"),
+            },
+            {
+              label: "Action 2",
+              icon: <AddIcon />,
+              onClick: () => console.log("Action 2"),
+            },
             { label: "Action 3", onClick: () => console.log("Action 3") },
-            { 
-              label: "Danger Action", 
-              icon: <DeleteIcon />, 
+            {
+              label: "Danger Action",
+              icon: <DeleteIcon />,
               variant: "danger",
-              onClick: () => console.log("Danger Action") 
+              onClick: () => console.log("Danger Action"),
             },
           ]}
         />
