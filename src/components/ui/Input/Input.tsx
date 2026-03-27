@@ -109,9 +109,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             )}
           >
             {label}
-            {isRequired ? (
-              <span className="text-gi-red ml-1">*</span>
-            ) : null}
+            {isRequired ? <span className="text-gi-red ml-1">*</span> : null}
           </label>
         ) : null}
 
@@ -143,7 +141,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             data-testid="input-click-wrapper"
           >
             {shouldShowOverlay ? (
-              <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none w-full bg-white">
+              <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none w-full">
                 {prefix && hasValue ? (
                   <span className="text-sm mr-0.2 text-gi-primary/50 select-none">
                     {prefix}
@@ -180,7 +178,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               data-test-id={dataTestId}
               className={cn(
                 "flex-1 bg-transparent text-sm text-gi-primary outline-none placeholder:text-gi-primary/30 py-3 w-full",
-                shouldShowOverlay && "text-transparent placeholder:text-transparent",
+                shouldShowOverlay &&
+                  "text-transparent placeholder:text-transparent",
                 isDisabled && "cursor-not-allowed",
               )}
             />

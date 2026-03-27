@@ -252,7 +252,7 @@ describe("Input Component - 100% Coverage Suite", () => {
     expect(input).toHaveValue("");
   });
 
-it("applies error and disabled styles to label (Linie 109-110)", () => {
+  it("applies error and disabled styles to label (Linie 109-110)", () => {
     const { rerender } = render(<Input label="Test Label" isError />);
     expect(screen.getByText("Test Label")).toHaveClass("text-gi-red");
 
@@ -268,7 +268,7 @@ it("applies error and disabled styles to label (Linie 109-110)", () => {
       "opacity-30",
     );
   });
-  
+
   it("covers all secondary text branch permutations", () => {
     const { rerender } = render(<Input isError errorText={undefined} />);
     expect(screen.queryByRole("paragraph")).not.toBeInTheDocument();
