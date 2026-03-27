@@ -12,28 +12,54 @@ import XIcon from "@/assets/icons/x-icon.svg";
 import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
-  "inline-flex items-center rounded-full font-medium shrink-0 transition-colors",
+  "inline-flex items-center rounded-full font-medium shrink-0 transition-colors [&_svg]:shrink-0 [&_svg_*]:fill-current [&_svg_*]:stroke-none",
   {
     variants: {
       type: {
-        default: "bg-gi-dark-gray/10 text-gi-dark-gray",
-        info: "bg-gi-blue/10 text-gi-blue",
-        success: "bg-gi-green/10 text-gi-green",
-        warning: "bg-gi-orange/10 text-gi-orange",
-        error: "bg-gi-red/10 text-gi-red",
+        default: "",
+        info: "",
+        success: "",
+        warning: "",
+        error: "",
       },
       variant: {
         primary: "",
         secondary: "",
-        outlined: "bg-transparent border border-current",
-        ghost: "bg-transparent border-transparent",
+        outlined: "border",
+        ghost: "bg-transparent",
       },
       size: {
-        small: "py-1.25 px-1.5 text-[0.65em] gap-0.75 [&_svg]:size-[0.8em]",
-        regular: "py-2 px-2.5 text-[0.8em] gap-1 [&_svg]:size-[0.8em]",
-        big: "py-2.25 px-3 text-[0.9em] gap-1 [&_svg]:size-[0.85em]",
+        small: "py-1 px-1.5 text-[0.65em] gap-0.75",
+        regular: "py-1.5 px-2.5 text-[0.8em] gap-1",
+        big: "py-2 px-3 text-[0.9em] gap-1.25",
       },
     },
+    compoundVariants: [
+      { type: "default", variant: "primary", className: "bg-gi-primary text-white" },
+      { type: "default", variant: "secondary", className: "bg-gi-ash text-gi-primary" },
+      { type: "default", variant: "outlined", className: "border-gi-ash text-gi-primary bg-transparent" },
+      { type: "default", variant: "ghost", className: "text-gi-primary bg-transparent" },
+
+      { type: "info", variant: "primary", className: "bg-gi-blue text-white" },
+      { type: "info", variant: "secondary", className: "bg-gi-blue/10 text-gi-blue" },
+      { type: "info", variant: "outlined", className: "border-gi-blue text-gi-blue bg-transparent" },
+      { type: "info", variant: "ghost", className: "text-gi-blue bg-transparent" },
+
+      { type: "success", variant: "primary", className: "bg-gi-green text-white" },
+      { type: "success", variant: "secondary", className: "bg-gi-green/10 text-gi-green" },
+      { type: "success", variant: "outlined", className: "border-gi-green text-gi-green bg-transparent" },
+      { type: "success", variant: "ghost", className: "text-gi-green bg-transparent" },
+
+      { type: "warning", variant: "primary", className: "bg-gi-orange text-white" },
+      { type: "warning", variant: "secondary", className: "bg-gi-orange/10 text-gi-orange" },
+      { type: "warning", variant: "outlined", className: "border-gi-orange text-gi-orange bg-transparent" },
+      { type: "warning", variant: "ghost", className: "text-gi-orange bg-transparent" },
+
+      { type: "error", variant: "primary", className: "bg-gi-red text-white" },
+      { type: "error", variant: "secondary", className: "bg-gi-red/10 text-gi-red" },
+      { type: "error", variant: "outlined", className: "border-gi-red text-gi-red bg-transparent" },
+      { type: "error", variant: "ghost", className: "text-gi-red bg-transparent" },
+    ],
     defaultVariants: {
       type: "default",
       variant: "secondary",
@@ -63,7 +89,7 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
     {
       className,
       type = "default",
-      variant,
+      variant = "secondary",
       size = "regular",
       children,
       LeftIcon,
@@ -82,9 +108,9 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
     }, [LeftIcon, type]);
 
     const dismissSizeClasses = {
-      small: "[&_svg]:size-3.0",
-      regular: "[&_svg]:size-3.5",
-      big: "[&_svg]:size-5",
+      small: "size-3",
+      regular: "size-3.5",
+      big: "size-5",
     };
 
     const dismissClass =
@@ -105,7 +131,13 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
           {...props}
         >
           {iconContent && (
-            <span className="flex items-center justify-center shrink-0 [color:inherit]">
+            <span 
+              className={cn(
+                "flex items-center justify-center shrink-0",
+                "h-[0.8em] w-[0.9em] leading-none self-center", 
+                "[&_svg]:size-full [&_svg]:block",
+              )}
+            >
               {iconContent}
             </span>
           )}
@@ -125,10 +157,10 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
               "flex items-center justify-center shrink-0 rounded-full text-gi-gray",
               "transition-all duration-300 ease hover:brightness-90",
               "will-change-transform transform-gpu cursor-pointer",
-              dismissClass,
+              dismissClass
             )}
           >
-            <CustomDismissIcon />
+            <CustomDismissIcon className="size-full overflow-visible" />
           </button>
         )}
       </span>

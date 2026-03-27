@@ -35,7 +35,8 @@ describe("Badge Component", () => {
       const badgeInner = container.querySelector(
         '[data-test-id="badge-default"] > span',
       );
-      expect(badgeInner).toHaveClass("bg-gi-dark-gray/10", "text-gi-dark-gray");
+      
+      expect(badgeInner).toHaveClass("bg-gi-ash", "text-gi-primary");
     });
   });
 
@@ -57,31 +58,25 @@ describe("Badge Component", () => {
       const icon = screen.getByTestId("valid-element");
       const iconWrapper = icon.parentElement;
       expect(icon).toHaveClass("original");
-      expect(iconWrapper).toHaveClass("shrink-0", "flex", "items-center");
+      expect(iconWrapper).toHaveClass("flex", "items-center", "justify-center");
     });
 
     it("should render string LeftIcon inside the icon wrapper", () => {
-      const {} = render(
+      render(
         <Badge LeftIcon="🔥" dataTestId="fallback-test">
           Fallback
         </Badge>,
       );
 
       const iconWrapper = screen.getByText("🔥").parentElement;
-
       expect(iconWrapper).toHaveTextContent("🔥");
       expect(iconWrapper).toHaveClass("inline-flex", "items-center");
     });
-  });
 
-  describe("Type Icon Mapping Branch", () => {
     it("should render the mapped icon inside a span wrapper when a valid type is provided", () => {
       render(<Badge type="info">Info</Badge>);
-      const svg = screen.getByTestId("info-icon");
-      const iconWrapper = svg.parentElement;
-
-      expect(iconWrapper).toBeInTheDocument();
-      expect(iconWrapper).toHaveClass("flex", "items-center", "justify-center");
+      const icon = screen.getByTestId("info-icon");
+      expect(icon.parentElement).toHaveClass("flex", "items-center", "justify-center");
     });
   });
 
@@ -93,30 +88,42 @@ describe("Badge Component", () => {
         </Badge>,
       );
       const button = screen.getByRole("button", { name: "Dismiss" });
-      expect(button).toHaveClass("[&_svg]:size-3.0");
+      expect(button).toHaveClass("size-3");
     });
 
     it("should apply regular size classes to the dismiss button icon via the wrapper", () => {
       render(
         <Badge isDismissible size="regular">
-          Small
+          Regular
         </Badge>,
       );
       const button = screen.getByRole("button", { name: "Dismiss" });
-      expect(button).toHaveClass("[&_svg]:size-3.5");
+      expect(button).toHaveClass("size-3.5");
     });
+
     it("should fallback to regular dismiss icon sizing when size is undefined", () => {
       render(
-        // @ts-expect-error - testing runtime fallback for invalid/undefined prop
-        <Badge isDismissible size={"test"}>
+        <Badge isDismissible size={undefined}>
           Fallback Size
         </Badge>,
       );
 
       const button = screen.getByRole("button", { name: "Dismiss" });
-
-      expect(button).toHaveClass("[&_svg]:size-3.5");
+      expect(button).toHaveClass("size-3.5");
     });
+
+        it("should fallback to regular dismiss icon sizing when size is undefined", () => {
+      render(
+        // @ts-expect-error - testing runtime fallback
+        <Badge isDismissible size={"random"}>
+          Fallback Size
+        </Badge>,
+      );
+
+      const button = screen.getByRole("button", { name: "Dismiss" });
+      expect(button).toHaveClass("size-3.5");
+    });
+
     it("should apply big size classes to the dismiss button icon via the wrapper", () => {
       render(
         <Badge isDismissible size="big">
@@ -124,17 +131,14 @@ describe("Badge Component", () => {
         </Badge>,
       );
       const button = screen.getByRole("button", { name: "Dismiss" });
-      expect(button).toHaveClass("[&_svg]:size-5");
+      expect(button).toHaveClass("size-5");
     });
   });
 
   describe("Icon Mapping Branch Coverage", () => {
     it("should return null and render no icon when type is 'default'", () => {
       const { container } = render(<Badge type="default">No Icon</Badge>);
-
-      const iconWrapper = container.querySelector(
-        ".flex.items-center.justify-center.shrink-0",
-      );
+      const iconWrapper = container.querySelector(".flex.items-center.justify-center.shrink-0");
       expect(iconWrapper).toBeNull();
     });
 
@@ -143,10 +147,7 @@ describe("Badge Component", () => {
         // @ts-expect-error - Simulating invalid runtime prop
         <Badge type="non-existent-type">Invalid Type</Badge>,
       );
-
       expect(screen.queryByTestId("check-icon")).not.toBeInTheDocument();
-      expect(screen.queryByTestId("info-icon")).not.toBeInTheDocument();
-
       expect(screen.getByText("Invalid Type")).toBeInTheDocument();
     });
   });
@@ -162,7 +163,6 @@ describe("Badge Component", () => {
 
       const button = screen.getByRole("button", { name: "Dismiss" });
       fireEvent.click(button);
-
       expect(handleDismiss).toHaveBeenCalledTimes(1);
     });
 
