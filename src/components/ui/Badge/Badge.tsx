@@ -1,5 +1,10 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import * as React from "react";
+import { 
+  useMemo, 
+  forwardRef, 
+  type ReactNode, 
+  type ComponentProps 
+} from "react";
 import CheckIcon from "@/assets/icons/check-icon.svg";
 import InfoIcon from "@/assets/icons/info-icon.svg";
 import WarningIcon from "@/assets/icons/warning-icon.svg";
@@ -7,7 +12,7 @@ import XIcon from "@/assets/icons/x-icon.svg";
 import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
-  "inline-flex items-center rounded-full font-medium shrink-0",
+  "inline-flex items-center rounded-full font-medium shrink-0 transition-colors",
   {
     variants: {
       type: {
@@ -20,13 +25,13 @@ const badgeVariants = cva(
       variant: {
         primary: "",
         secondary: "",
-        outlined: "bg-transparent border",
+        outlined: "bg-transparent border border-current",
         ghost: "bg-transparent border-transparent",
       },
       size: {
-        small: "h-5 px-1.5 text-[10px] gap-1 [&_svg]:size-2",
-        regular: "h-7 px-2.5 text-xs gap-1.5 [&_svg]:size-3",
-        big: "h-8 px-3 text-sm gap-2 [&_svg]:size-3.5",
+        small: "py-1.25 px-1.5 text-[0.65em] gap-0.75 [&_svg]:size-[0.8em]",
+        regular: "py-2 px-2.5 text-[0.8em] gap-1 [&_svg]:size-[0.8em]",
+        big: "py-2.25 px-3 text-[0.9em] gap-1 [&_svg]:size-[0.85em]",
       },
     },
     defaultVariants: {
@@ -34,7 +39,7 @@ const badgeVariants = cva(
       variant: "secondary",
       size: "regular",
     },
-  },
+  }
 );
 
 const typeIconMap = {
@@ -44,22 +49,93 @@ const typeIconMap = {
   error: XIcon,
 } as const;
 
-export type BadgeType = "default" | "info" | "success" | "warning" | "error";
-
 export interface BadgeProps
-  extends Omit<React.ComponentProps<"span">, "children">,
+  extends ComponentProps<"span">,
     VariantProps<typeof badgeVariants> {
-  children: React.ReactNode;
-  LeftIcon?: React.ReactNode;
+  LeftIcon?: ReactNode;
   isDismissible?: boolean;
   onDismiss?: () => void;
   dataTestId?: string;
 }
 
-/**
- * Custom Dismiss Icon Component
- * Using fill="currentColor" allows the button to control the color via text classes
- */
+const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
+  (
+    {
+      className,
+      type = "default",
+      variant,
+      size = "regular",
+      children,
+      LeftIcon,
+      isDismissible = false,
+      onDismiss,
+      dataTestId,
+      ...props
+    },
+    ref
+  ) => {
+    const iconContent = useMemo(() => {
+      if (LeftIcon) return LeftIcon;
+      if (type === "default") return null;
+      const Icon = typeIconMap[type as keyof typeof typeIconMap];
+      return Icon ? <Icon /> : null;
+    }, [LeftIcon, type]);
+
+    const dismissSizeClasses = {
+      small: "[&_svg]:size-3.0",
+      regular: "[&_svg]:size-3.5",
+      big: "[&_svg]:size-5",
+    };
+
+    const dismissClass = dismissSizeClasses[size as keyof typeof dismissSizeClasses] ?? dismissSizeClasses.regular;
+
+    return (
+      <span
+        ref={ref}
+        data-test-id={dataTestId}
+        className={cn(
+          "group relative inline-flex items-center gap-1.25", 
+          isDismissible && "pr-1"
+        )}
+      >
+        <span
+          className={cn(badgeVariants({ type, variant, size, className }))}
+          {...props}
+        >
+          {iconContent && (
+            <span className="flex items-center justify-center shrink-0 [color:inherit]">
+              {iconContent}
+            </span>
+          )}
+          <span className="leading-none">{children}</span>
+        </span>
+
+        {isDismissible && (
+          <button
+            type="button"
+            aria-label="Dismiss"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onDismiss?.();
+            }}
+            className={cn(
+              "flex items-center justify-center shrink-0 rounded-full text-gi-gray",
+              "transition-all duration-300 ease hover:brightness-90", 
+              "will-change-transform transform-gpu cursor-pointer",
+              dismissClass
+            )}
+          >
+            <CustomDismissIcon />
+          </button>
+        )}
+      </span>
+    );
+  }
+);
+
+Badge.displayName = "Badge";
+
 const CustomDismissIcon = ({ className }: { className?: string }) => (
   <svg
     viewBox="0 0 16 16"
@@ -75,87 +151,5 @@ const CustomDismissIcon = ({ className }: { className?: string }) => (
     />
   </svg>
 );
-
-function Badge({
-  className,
-  type = "default",
-  variant,
-  size,
-  children,
-  LeftIcon,
-  isDismissible = false,
-  onDismiss,
-  dataTestId,
-  ...props
-}: BadgeProps) {
-  const iconClassName =
-    "[color:inherit] shrink-0 flex items-center justify-center";
-
-  const renderedIcon = React.useMemo(() => {
-    if (LeftIcon) {
-      return React.isValidElement(LeftIcon) ? (
-        React.cloneElement(
-          LeftIcon as React.ReactElement<{ className?: string }>,
-          {
-            className: cn((LeftIcon as any).props?.className, iconClassName),
-          },
-        )
-      ) : (
-        <span className={iconClassName}>{LeftIcon}</span>
-      );
-    }
-
-    if (type === "default") return null;
-
-    const Icon = typeIconMap[type as keyof typeof typeIconMap];
-
-    return (
-      <span className={iconClassName}>
-        <Icon />
-      </span>
-    );
-  }, [LeftIcon, type]);
-
-  return (
-    <div className="inline-flex items-center gap-1.5" data-slot="badge-wrapper">
-      <span
-        data-test-id={dataTestId}
-        className={cn(badgeVariants({ type, variant, size, className }))}
-        {...props}
-      >
-        {renderedIcon}
-        <span className="leading-none">{children}</span>
-      </span>
-
-      {isDismissible && (
-        <button
-          type="button"
-          aria-label="Dismiss"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            onDismiss?.();
-          }}
-          className={cn(
-            "flex items-center justify-center transition-all outline-none",
-            "text-[#D3D9DA] hover:brightness-90",
-            size === "small" ? "size-4" : size === "big" ? "size-6" : "size-5",
-          )}
-        >
-          <CustomDismissIcon
-            className={cn(
-              size === "small"
-                ? "size-3.5"
-                : size === "big"
-                  ? "size-5"
-                  : "size-4.5",
-              "cursor-pointer",
-            )}
-          />
-        </button>
-      )}
-    </div>
-  );
-}
 
 export { Badge, badgeVariants };
