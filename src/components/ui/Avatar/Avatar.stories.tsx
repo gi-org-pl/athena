@@ -22,7 +22,7 @@ const meta = {
       table: { category: "Identity" },
     },
     size: {
-      control: "select",
+      control: "radio",
       options: ["small", "medium", "large"],
       table: { category: "Style" },
     },
