@@ -11,20 +11,20 @@ const meta = {
     src: { table: { category: "Media" } },
     alt: { table: { category: "Media" } },
     name: { table: { category: "Identity" } },
-    gender: { 
-      control: "radio", 
+    gender: {
+      control: "radio",
       options: ["male", "female"],
-      table: { category: "Identity" } 
+      table: { category: "Identity" },
     },
     size: {
       control: "select",
       options: ["small", "medium", "large"],
-      table: { category: "Style" }
+      table: { category: "Style" },
     },
     fallback: {
       control: "radio",
       options: ["initials", "icon"],
-      table: { category: "Style" }
+      table: { category: "Style" },
     },
     color: {
       control: "select",
@@ -33,11 +33,11 @@ const meta = {
         "text-gi-green",
         "text-gi-orange",
         "text-gi-red",
-        "text-gi-blue"
+        "text-gi-blue",
       ],
       description: "Approved brand color tokens",
-      table: { category: "Style" }
-    }
+      table: { category: "Style" },
+    },
   },
   tags: ["autodocs"],
 } satisfies Meta<typeof Avatar>;
@@ -98,7 +98,9 @@ export const InternationalInitials: Story = {
     <div className="flex flex-col gap-6">
       <div className="flex items-center gap-4">
         <Avatar {...args} name="山田 太郎" />
-        <span className="text-sm text-gi-primary font-medium">Japanese: 山太</span>
+        <span className="text-sm text-gi-primary font-medium">
+          Japanese: 山太
+        </span>
       </div>
       <div className="flex items-center gap-4">
         <Avatar {...args} name="أحمد علي" />

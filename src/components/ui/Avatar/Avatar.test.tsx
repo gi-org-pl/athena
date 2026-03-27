@@ -22,37 +22,39 @@ describe("<Avatar />", () => {
     });
     it("should fallback to default icon when name is only whitespace", () => {
       render(<Avatar name="   " fallback="initials" />);
-      
+
       expect(screen.queryByText(/[A-Z]/)).not.toBeInTheDocument();
 
       expect(screen.getByTestId("male-icon")).toBeInTheDocument();
     });
 
-  it("should handle a single name correctly", () => {
-    render(<Avatar name="Zoro" fallback="initials" />);
-    expect(screen.getByText("Z")).toBeInTheDocument();
-  });
+    it("should handle a single name correctly", () => {
+      render(<Avatar name="Zoro" fallback="initials" />);
+      expect(screen.getByText("Z")).toBeInTheDocument();
+    });
 
-  it("should handle multiple spaces between names", () => {
-    render(<Avatar name="First      Last" fallback="initials" />);
-    expect(screen.getByText("FL")).toBeInTheDocument();
-  });
+    it("should handle multiple spaces between names", () => {
+      render(<Avatar name="First      Last" fallback="initials" />);
+      expect(screen.getByText("FL")).toBeInTheDocument();
+    });
   });
 
   describe("Lifecycle & Error Handling", () => {
     it("should reset error state when src prop changes", () => {
       const { rerender, container } = render(
-        <Avatar src="broken.jpg" name="Test User" fallback="initials" />
+        <Avatar src="broken.jpg" name="Test User" fallback="initials" />,
       );
       const img = container.querySelector("img")!;
 
       fireEvent.error(img);
-      
+
       expect(container.querySelector("img")).not.toBeInTheDocument();
       expect(screen.getByText("TU")).toBeInTheDocument();
 
-      rerender(<Avatar src="new-valid.jpg" name="Test User" fallback="initials" />);
-      
+      rerender(
+        <Avatar src="new-valid.jpg" name="Test User" fallback="initials" />,
+      );
+
       const newImg = container.querySelector("img");
       expect(newImg).toHaveAttribute("src", "new-valid.jpg");
     });
@@ -62,7 +64,7 @@ describe("<Avatar />", () => {
     it("should use an empty alt string and hide role when name/alt are missing", () => {
       const { container } = render(<Avatar src="valid.jpg" />);
       const img = container.querySelector("img");
-      
+
       expect(img).toHaveAttribute("alt", "");
       expect(screen.queryByRole("img")).not.toBeInTheDocument();
     });

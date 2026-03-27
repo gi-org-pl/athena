@@ -1,6 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import type { HTMLAttributes } from "react"
-import { useEffect, useState } from "react"
+import type { HTMLAttributes } from "react";
+import { useEffect, useState } from "react";
 import Female from "@/assets/icons/gi-female.svg";
 import Male from "@/assets/icons/gi-male.svg";
 import { cn } from "@/lib/utils";
@@ -38,7 +38,8 @@ const getInitials = (name: string) => {
 
   const parts = cleanName.split(/\s+/).filter(Boolean);
   const firstInitial = Array.from(parts[0])[0];
-  const lastInitial = parts.length > 1 ? Array.from(parts[parts.length - 1])[0]  : "";
+  const lastInitial =
+    parts.length > 1 ? Array.from(parts[parts.length - 1])[0] : "";
 
   return (firstInitial + lastInitial).toUpperCase();
 };
