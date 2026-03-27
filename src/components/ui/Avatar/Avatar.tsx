@@ -1,6 +1,5 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import type { HTMLAttributes } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type HTMLAttributes } from "react";
 import Female from "@/assets/icons/gi-female.svg";
 import Male from "@/assets/icons/gi-male.svg";
 import { cn } from "@/lib/utils";
