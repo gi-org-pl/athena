@@ -252,9 +252,11 @@ describe("Input Component - 100% Coverage Suite", () => {
     expect(input).toHaveValue("");
   });
 
-it("applies error and disabled styles to label (Linie 109-110)", () => {
+  it("applies error and disabled styles to label (Linie 109-110)", () => {
     const { rerender } = render(<Input label="Test Label" isError />);
-    expect(screen.getByText("Test Label")).toHaveClass("text-[var(--color-gi-red)]");
+    expect(screen.getByText("Test Label")).toHaveClass(
+      "text-[var(--color-gi-red)]",
+    );
 
     rerender(<Input label="Test Label" isDisabled />);
     expect(screen.getByText("Test Label")).toHaveClass("opacity-50");

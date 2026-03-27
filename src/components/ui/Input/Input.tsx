@@ -103,24 +103,29 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {label ? (
           <label
             className={cn(
-              "text-sm font-medium block transition-all duration-300",
-              isError ? "text-[var(--color-gi-red)]" : "text-[var(--color-gi-primary)]",
+              "text-sm font-medium block transition-all duration-300 ease-in-out",
+              isError
+                ? "text-[var(--color-gi-red)]"
+                : "text-[var(--color-gi-primary)]",
               isDisabled && "opacity-50",
             )}
           >
             {label}
-            {isRequired ? <span className="text-[var(--color-gi-red)] ml-1">*</span> : null}
+            {isRequired ? (
+              <span className="text-[var(--color-gi-red)] ml-1">*</span>
+            ) : null}
           </label>
         ) : null}
 
         <div
           className={cn(
-            "flex items-center w-full min-h-[40px] px-4 bg-white border rounded-[24px] transition-all duration-300",
+            "flex items-center w-full min-h-[40px] px-4 bg-white border rounded-[24px] transition-all duration-300 ease-in-out",
             !isError &&
               !isDisabled &&
               "border-[var(--color-gi-primary)]/10 hover:border-[var(--color-gi-primary)]/33 focus-within:border-2 focus-within:border-[var(--color-gi-primary)]/33",
             isError && "border-[var(--color-gi-red)]",
-            isDisabled && "border-[var(--color-gi-primary)]/10 cursor-not-allowed bg-white",
+            isDisabled &&
+              "border-[var(--color-gi-primary)]/10 cursor-not-allowed bg-white",
             className,
           )}
         >
@@ -178,7 +183,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               data-test-id={dataTestId}
               className={cn(
                 "flex-1 bg-transparent text-sm text-[var(--color-gi-primary)] outline-none placeholder:text-[var(--color-gi-primary)]/30 py-3 w-full",
-                shouldShowOverlay && "text-transparent placeholder:text-transparent",
+                shouldShowOverlay &&
+                  "text-transparent placeholder:text-transparent",
                 isDisabled && "cursor-not-allowed",
               )}
             />
@@ -200,8 +206,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {secondaryText && !isDisabled ? (
           <p
             className={cn(
-              "text-[14px] leading-tight transition-all duration-300",
-              isError ? "text-[var(--color-gi-red)]" : "text-[var(--color-gi-primary)]/50",
+              // DODANO: ease-in-out
+              "text-[14px] leading-tight transition-all duration-300 ease-in-out",
+              isError
+                ? "text-[var(--color-gi-red)]"
+                : "text-[var(--color-gi-primary)]/50",
             )}
           >
             {secondaryText}
