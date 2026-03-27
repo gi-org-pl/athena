@@ -22,18 +22,26 @@ const meta: Meta<typeof Select> = {
     value: {
       control: "text",
     },
-    size: {
-      control: "select",
-      options: ["regular", "small"],
+    placeholder: {
+      control: "text",
     },
-    openOn: {
-      control: "select",
-      options: ["click", "hover"],
+    children: {
+      table: {
+        disable: true,
+      },
     },
     trigger: {
       table: {
         disable: true,
       },
+    },
+    size: {
+      control: "inline-radio",
+      options: ["regular", "small"],
+    },
+    openOn: {
+      control: "inline-radio",
+      options: ["click", "hover"],
     },
   },
 };
@@ -69,56 +77,6 @@ export const Default: Story = {
   ),
   args: {
     placeholder: "Text",
-  },
-};
-
-export const WithValue: Story = {
-  render: (args) => (
-    <Select {...args}>
-      <ActionList
-        items={[
-          { label: "Profile", icon: <User /> },
-          { label: "Settings", icon: <Settings /> },
-          { label: "Logout", icon: <LogOut />, variant: "danger" },
-        ]}
-      />
-    </Select>
-  ),
-  args: {
-    value: "Settings",
-  },
-};
-
-export const WithIconValue: Story = {
-  render: (args) => (
-    <Select {...args}>
-      <ActionList
-        items={[
-          { label: "User", icon: <User /> },
-          { label: "Settings", icon: <Settings /> },
-        ]}
-      />
-    </Select>
-  ),
-  args: {
-    value: (
-      <div className="flex items-center gap-2">
-        <User className="size-4" />
-        <span>John Doe</span>
-      </div>
-    ),
-  },
-};
-
-export const Small: Story = {
-  render: (args) => (
-    <Select {...args}>
-      <ActionList items={[{ label: "Option 1" }, { label: "Option 2" }]} />
-    </Select>
-  ),
-  args: {
-    size: "small",
-    placeholder: "Small select",
   },
 };
 
@@ -176,7 +134,7 @@ export const CustomChildren: Story = {
   ),
   args: {
     trigger: (
-      <Button variant="primary" type="primary">
+      <Button variant="primary" type="ghost">
         Custom Button
       </Button>
     ),
