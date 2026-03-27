@@ -29,7 +29,7 @@ interface AvatarProps
   name?: string;
   gender?: "male" | "female";
   color?: string;
-  dataTestId?: string,
+  dataTestId?: string;
 }
 
 const getInitials = (name: string) => {
