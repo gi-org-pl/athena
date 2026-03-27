@@ -103,29 +103,26 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {label ? (
           <label
             className={cn(
-              "text-sm font-medium block transition-all duration-300 ease-in-out",
-              isError
-                ? "text-[var(--color-gi-red)]"
-                : "text-[var(--color-gi-primary)]",
+              "text-sm font-medium block transition-all duration-300 ease",
+              isError ? "text-gi-red" : "text-gi-primary",
               isDisabled && "opacity-50",
             )}
           >
             {label}
             {isRequired ? (
-              <span className="text-[var(--color-gi-red)] ml-1">*</span>
+              <span className="text-gi-red ml-1">*</span>
             ) : null}
           </label>
         ) : null}
 
         <div
           className={cn(
-            "flex items-center w-full min-h-[40px] px-4 bg-white border rounded-[24px] transition-all duration-300 ease-in-out",
+            "flex items-center w-full min-h-[40px] px-4 bg-white border rounded-[24px] transition-all duration-300 ease",
             !isError &&
               !isDisabled &&
-              "border-[var(--color-gi-primary)]/10 hover:border-[var(--color-gi-primary)]/33 focus-within:border-2 focus-within:border-[var(--color-gi-primary)]/33",
-            isError && "border-[var(--color-gi-red)]",
-            isDisabled &&
-              "border-[var(--color-gi-primary)]/10 cursor-not-allowed bg-white",
+              "border-gi-primary/10 hover:border-gi-primary/33 focus-within:border-2 focus-within:border-gi-primary/33",
+            isError && "border-gi-red",
+            isDisabled && "border-gi-primary/10 cursor-not-allowed bg-white",
             className,
           )}
         >
@@ -133,7 +130,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             <div
               className={cn(
                 "flex-shrink-0 mr-2 flex items-center",
-                isDisabled ? "opacity-30" : "text-[var(--color-gi-primary)]",
+                isDisabled ? "opacity-30" : "text-gi-primary",
               )}
             >
               {LeftIcon}
@@ -148,7 +145,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {shouldShowOverlay ? (
               <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none w-full bg-white">
                 {prefix && hasValue ? (
-                  <span className="text-sm mr-0.2 text-[var(--color-gi-primary)]/50 select-none">
+                  <span className="text-sm mr-0.2 text-gi-primary/50 select-none">
                     {prefix}
                   </span>
                 ) : null}
@@ -156,14 +153,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                   className={cn(
                     "text-sm truncate",
                     !hasValue && isDisabled
-                      ? "text-[var(--color-gi-primary)]/30"
-                      : "text-[var(--color-gi-primary)]",
+                      ? "text-gi-primary/30"
+                      : "text-gi-primary",
                   )}
                 >
                   {getOverlayContent()}
                 </span>
                 {suffix && hasValue ? (
-                  <span className="text-sm ml-0.2 text-[var(--color-gi-primary)]/50 select-none">
+                  <span className="text-sm ml-0.2 text-gi-primary/50 select-none">
                     {suffix}
                   </span>
                 ) : null}
@@ -182,9 +179,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               placeholder={placeholder}
               data-test-id={dataTestId}
               className={cn(
-                "flex-1 bg-transparent text-sm text-[var(--color-gi-primary)] outline-none placeholder:text-[var(--color-gi-primary)]/30 py-3 w-full",
-                shouldShowOverlay &&
-                  "text-transparent placeholder:text-transparent",
+                "flex-1 bg-transparent text-sm text-gi-primary outline-none placeholder:text-gi-primary/30 py-3 w-full",
+                shouldShowOverlay && "text-transparent placeholder:text-transparent",
                 isDisabled && "cursor-not-allowed",
               )}
             />
@@ -195,7 +191,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               data-testid="right-icon-container"
               className={cn(
                 "flex-shrink-0 ml-2 flex items-center",
-                isDisabled ? "opacity-30" : "text-[var(--color-gi-primary)]",
+                isDisabled ? "opacity-30" : "text-gi-primary",
               )}
             >
               {RightIcon}
@@ -206,11 +202,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {secondaryText && !isDisabled ? (
           <p
             className={cn(
-              // DODANO: ease-in-out
-              "text-[14px] leading-tight transition-all duration-300 ease-in-out",
-              isError
-                ? "text-[var(--color-gi-red)]"
-                : "text-[var(--color-gi-primary)]/50",
+              "text-[14px] leading-tight transition-all duration-300 ease",
+              isError ? "text-gi-red" : "text-gi-primary/50",
             )}
           >
             {secondaryText}
