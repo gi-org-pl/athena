@@ -28,6 +28,9 @@ const meta: Meta<typeof Input> = {
     ),
   ],
   argTypes: {
+    onChange: {
+      table: { disable: true },
+    },
     label: { control: "text", table: { category: "Content" } },
     placeholder: { control: "text", table: { category: "Content" } },
     helper: { control: "text", table: { category: "Content" } },
@@ -96,6 +99,14 @@ export const Disabled: Story = {
     label: "Locked Field",
     placeholder: "Cannot interact",
     isDisabled: true,
+  },
+};
+
+export const PasswordField: Story = {
+  args: {
+    label: "Password",
+    type: "password",
+    defaultValue: "password",
   },
 };
 

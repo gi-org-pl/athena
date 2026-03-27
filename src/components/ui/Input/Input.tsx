@@ -18,6 +18,7 @@ export interface InputProps
   prefix?: string;
   suffix?: string;
   value?: string;
+  defaultValue?: string;
   onChange?: (value: string) => void;
 }
 
@@ -25,6 +26,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (
     {
       className,
+      type,
       label,
       helper,
       errorText,
@@ -40,14 +42,19 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       onChange,
       onFocus,
       onBlur,
+      placeholder,
+      defaultValue,
       ...props
     },
     ref,
   ) => {
     const [isFocused, setIsFocused] = React.useState(false);
     const [internalValue, setInternalValue] = React.useState(
-      value || props.defaultValue || "",
+      value ?? defaultValue ?? "",
     );
+
+    const innerRef = React.useRef<HTMLInputElement>(null);
+    React.useImperativeHandle(ref, () => innerRef.current as HTMLInputElement);
 
     React.useEffect(() => {
       if (value !== undefined) {
@@ -57,11 +64,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       if (isDisabled) return;
-
+      const newValue = e.target.value;
       if (value === undefined) {
-        setInternalValue(e.target.value);
+        setInternalValue(newValue);
       }
-      onChange?.(e.target.value);
+      onChange?.(newValue);
     };
 
     const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -74,25 +81,31 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       onBlur?.(e);
     };
 
-    const secondaryText = isError ? errorText : helper;
-    const hasPrefixOrSuffix = !!prefix || !!suffix;
-    
-    const hasUserText = !!(value !== undefined ? value : internalValue);
-
-    const getDisplayValue = () => {
-      if (isDisabled && !internalValue) return "some text";
-      return internalValue;
+    const handleWrapperClick = () => {
+      if (!isDisabled) {
+        innerRef.current?.focus();
+      }
     };
 
-    const shouldShowOverlay =
-      !isFocused && ((hasPrefixOrSuffix && hasUserText) || isDisabled);
+    const displayValue = value !== undefined ? value : internalValue;
+    const safeValue = String(displayValue ?? "");
+    const hasValue = safeValue.length > 0;
+    const secondaryText = isError ? errorText : helper;
+
+    const shouldShowOverlay = !isFocused && (hasValue || isDisabled);
+
+    const getOverlayContent = () => {
+      if (isDisabled && !hasValue) return "some text";
+      if (type === "password") return "•".repeat(safeValue.length);
+      return safeValue;
+    };
 
     return (
       <div className="w-full space-y-1.5 text-left" data-testid={dataTestId}>
         {label && (
           <label
             className={cn(
-              "text-sm font-medium block transition-all duration-300 ease-in-out",
+              "text-sm font-medium block transition-all duration-300",
               isError ? "text-red-500" : "text-[#004554]",
               isDisabled && "opacity-50",
             )}
@@ -104,7 +117,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
         <div
           className={cn(
-            "flex items-center w-full min-h-[40px] px-4 bg-white border rounded-[24px] transition-all duration-300 ease-in-out",
+            "flex items-center w-full min-h-[40px] px-4 bg-white border rounded-[24px] transition-all duration-300",
             !isError &&
               !isDisabled &&
               "border-[#004554]/10 hover:border-[#004554]/33 focus-within:border-2 focus-within:border-[#004554]/33",
@@ -114,36 +127,33 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           )}
         >
           {LeftIcon && (
-            <div
-              className={cn(
-                "flex-shrink-0 flex items-center mr-2 transition-opacity duration-300 ease-in-out",
-                isDisabled ? "opacity-30" : "text-[#004554]",
-              )}
-            >
+            <div className={cn("flex-shrink-0 mr-2 flex items-center", isDisabled ? "opacity-30" : "text-[#004554]")}>
               {LeftIcon}
             </div>
           )}
 
-          <div className="relative flex-1 flex items-center overflow-hidden h-full">
+          <div 
+            className="relative flex-1 flex items-center overflow-hidden h-full cursor-text"
+            onClick={handleWrapperClick}
+            data-testid="input-click-wrapper"
+          >
             {shouldShowOverlay && (
-              <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none w-full">
-                {prefix && hasUserText && (
-                  <span className="text-sm mr-0.2 text-[#004554]/50">
+              <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none w-full bg-white">
+                {prefix && hasValue && (
+                  <span className="text-sm mr-0.2 text-[#004554]/50 select-none">
                     {prefix}
                   </span>
                 )}
                 <span
                   className={cn(
                     "text-sm truncate",
-                    !getDisplayValue() && !isDisabled
-                      ? "text-[#004554]/30"
-                      : "text-[#004554]",
+                    !hasValue && isDisabled ? "text-[#004554]/30" : "text-[#004554]"
                   )}
                 >
-                  {getDisplayValue() || props.placeholder}
+                  {getOverlayContent()}
                 </span>
-                {suffix && hasUserText && (
-                  <span className="text-sm ml-0.2 text-[#004554]/50">
+                {suffix && hasValue && (
+                  <span className="text-sm ml-0.2 text-[#004554]/50 select-none">
                     {suffix}
                   </span>
                 )}
@@ -152,42 +162,32 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
             <input
               {...props}
-              ref={ref}
-              value={value !== undefined ? value : internalValue}
+              ref={innerRef}
+              type={type}
+              value={displayValue}
               onChange={handleChange}
               onFocus={handleFocus}
               onBlur={handleBlur}
               disabled={isDisabled}
-              required={isRequired}
+              placeholder={placeholder}
               data-test-id={dataTestId}
               className={cn(
-                "flex-1 bg-transparent text-sm text-[#004554] outline-none placeholder:text-[#004554]/30 py-3 min-w-[20px] w-full",
-                shouldShowOverlay &&
-                  "text-transparent placeholder:text-transparent",
+                "flex-1 bg-transparent text-sm text-[#004554] outline-none placeholder:text-[#004554]/30 py-3 w-full",
+                shouldShowOverlay && "text-transparent placeholder:text-transparent",
                 isDisabled && "cursor-not-allowed",
               )}
             />
           </div>
 
           {RightIcon && (
-            <div
-              className={cn(
-                "flex-shrink-0 flex items-center ml-2 transition-opacity duration-300 ease-in-out",
-                isDisabled ? "opacity-30" : "text-[#004554]",
-              )}
-            >
+            <div data-testid="right-icon-container" className={cn("flex-shrink-0 ml-2 flex items-center", isDisabled ? "opacity-30" : "text-[#004554]")}>
               {RightIcon}
             </div>
           )}
         </div>
 
         {secondaryText && !isDisabled && (
-          <p
-            className={cn(
-              "text-[14px] leading-tight transition-all duration-300 ease-in-out",
-              isError ? "text-red-500" : "text-[#004554]/50",
-            )}
-          >
+          <p className={cn("text-[14px] leading-tight transition-all duration-300", isError ? "text-red-500" : "text-[#004554]/50")}>
             {secondaryText}
           </p>
         )}
