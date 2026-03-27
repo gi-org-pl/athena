@@ -15,7 +15,9 @@ const meta = {
     type: "default",
     variant: "secondary",
     size: "regular",
+    dataTestId: "",
     isDismissible: false,
+    LeftIcon: false,
     onDismiss: fn(),
   },
   argTypes: {
@@ -67,7 +69,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     children: "Badge",
-    LeftIcon: false,
   },
 };
 
