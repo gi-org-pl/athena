@@ -1,11 +1,10 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import * as React from "react";
-
+import { type ButtonHTMLAttributes, type ReactElement, type ReactNode, forwardRef, isValidElement, cloneElement } from "react"
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium transition-colors duration-300 ease-[ease] shrink-0 outline-none focus-visible:ring-gi-secondary/50 focus-visible:ring-[3px] disabled:pointer-events-none [&_svg]:size-4 [&_svg]:overflow-visible [&_svg_*]:fill-current [&_svg_*]:stroke-none",
+  "inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium transition-colors duration-300 ease-[ease] shrink-0 outline-none focus-visible:ring-gi-secondary/50 focus-visible:ring-[3px] disabled:pointer-events-none [&_svg]:size-4 [&_svg]:overflow-visible [&_svg_*]:fill-current [&_svg_*]:stroke-none",
   {
     variants: {
       type: {
@@ -101,11 +100,11 @@ const buttonVariants = cva(
 );
 
 export interface ButtonProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type">,
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "type">,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
-  LeftIcon?: React.ReactElement;
-  RightIcon?: React.ReactElement;
+  LeftIcon?: ReactElement;
+  RightIcon?: ReactElement;
   isLoading?: boolean;
   htmlType?: "button" | "submit" | "reset";
 }
@@ -124,7 +123,7 @@ const LoadingSpinner = () => (
   </svg>
 );
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       className,
@@ -145,7 +144,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const isDisabled = disabled || isLoading;
 
-    const renderContent = (content: React.ReactNode) => {
+    const renderContent = (content: ReactNode) => {
       if (isIconButton && isLoading) {
         return <LoadingSpinner />;
       }
@@ -159,9 +158,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       );
     };
 
-    if (asChild && React.isValidElement(children)) {
-      const child = children as React.ReactElement<{
-        children?: React.ReactNode;
+    if (asChild && isValidElement(children)) {
+      const child = children as ReactElement<{
+        children?: ReactNode;
         disabled?: boolean;
       }>;
 
@@ -175,7 +174,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           data-slot="button"
           {...props}
         >
-          {React.cloneElement(child, {
+          {cloneElement(child, {
             disabled: isDisabled,
             children: renderContent(child.props.children),
           })}
