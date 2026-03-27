@@ -4,7 +4,6 @@ import { fn } from "storybook/test";
 
 import { Badge } from "./Badge";
 
-
 const meta = {
   title: "Badge",
   component: Badge,
