@@ -1,5 +1,10 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import * as React from "react";
+import {
+  type ComponentProps,
+  forwardRef,
+  type ReactNode,
+  useMemo,
+} from "react";
 import CheckIcon from "@/assets/icons/check-icon.svg";
 import InfoIcon from "@/assets/icons/info-icon.svg";
 import WarningIcon from "@/assets/icons/warning-icon.svg";
@@ -7,28 +12,126 @@ import XIcon from "@/assets/icons/x-icon.svg";
 import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
-  "inline-flex items-center rounded-full font-medium shrink-0",
+  "inline-flex items-center rounded-full font-medium shrink-0 transition-colors [&_svg]:shrink-0 [&_svg_*]:fill-current [&_svg_*]:stroke-none",
   {
     variants: {
       type: {
-        default: "bg-gi-dark-gray/10 text-gi-dark-gray",
-        info: "bg-gi-blue/10 text-gi-blue",
-        success: "bg-gi-green/10 text-gi-green",
-        warning: "bg-gi-orange/10 text-gi-orange",
-        error: "bg-gi-red/10 text-gi-red",
+        default: "",
+        info: "",
+        success: "",
+        warning: "",
+        error: "",
       },
       variant: {
         primary: "",
         secondary: "",
-        outlined: "bg-transparent border",
-        ghost: "bg-transparent border-transparent",
+        outlined: "border",
+        ghost: "bg-transparent",
       },
       size: {
-        small: "h-5 px-1.5 text-[10px] gap-1 [&_svg]:size-2",
-        regular: "h-7 px-2.5 text-xs gap-1.5 [&_svg]:size-3",
-        big: "h-8 px-3 text-sm gap-2 [&_svg]:size-3.5",
+        small: "py-1 px-1.5 text-[0.65em] gap-0.75",
+        regular: "py-1.5 px-2.5 text-[0.8em] gap-1",
+        big: "py-2 px-3 text-[0.9em] gap-1.25",
       },
     },
+    compoundVariants: [
+      {
+        type: "default",
+        variant: "primary",
+        className: "bg-gi-primary text-white",
+      },
+      {
+        type: "default",
+        variant: "secondary",
+        className: "bg-gi-ash text-gi-primary",
+      },
+      {
+        type: "default",
+        variant: "outlined",
+        className: "border-gi-ash text-gi-primary bg-transparent",
+      },
+      {
+        type: "default",
+        variant: "ghost",
+        className: "text-gi-primary bg-transparent",
+      },
+
+      { type: "info", variant: "primary", className: "bg-gi-blue text-white" },
+      {
+        type: "info",
+        variant: "secondary",
+        className: "bg-gi-blue/10 text-gi-blue",
+      },
+      {
+        type: "info",
+        variant: "outlined",
+        className: "border-gi-blue text-gi-blue bg-transparent",
+      },
+      {
+        type: "info",
+        variant: "ghost",
+        className: "text-gi-blue bg-transparent",
+      },
+
+      {
+        type: "success",
+        variant: "primary",
+        className: "bg-gi-green text-white",
+      },
+      {
+        type: "success",
+        variant: "secondary",
+        className: "bg-gi-green/10 text-gi-green",
+      },
+      {
+        type: "success",
+        variant: "outlined",
+        className: "border-gi-green text-gi-green bg-transparent",
+      },
+      {
+        type: "success",
+        variant: "ghost",
+        className: "text-gi-green bg-transparent",
+      },
+
+      {
+        type: "warning",
+        variant: "primary",
+        className: "bg-gi-orange text-white",
+      },
+      {
+        type: "warning",
+        variant: "secondary",
+        className: "bg-gi-orange/10 text-gi-orange",
+      },
+      {
+        type: "warning",
+        variant: "outlined",
+        className: "border-gi-orange text-gi-orange bg-transparent",
+      },
+      {
+        type: "warning",
+        variant: "ghost",
+        className: "text-gi-orange bg-transparent",
+      },
+
+      { type: "error", variant: "primary", className: "bg-gi-red text-white" },
+      {
+        type: "error",
+        variant: "secondary",
+        className: "bg-gi-red/10 text-gi-red",
+      },
+      {
+        type: "error",
+        variant: "outlined",
+        className: "border-gi-red text-gi-red bg-transparent",
+      },
+      {
+        type: "error",
+        variant: "ghost",
+        className: "text-gi-red bg-transparent",
+      },
+    ],
     defaultVariants: {
       type: "default",
       variant: "secondary",
@@ -44,22 +147,101 @@ const typeIconMap = {
   error: XIcon,
 } as const;
 
-export type BadgeType = "default" | "info" | "success" | "warning" | "error";
-
 export interface BadgeProps
-  extends Omit<React.ComponentProps<"span">, "children">,
+  extends ComponentProps<"span">,
     VariantProps<typeof badgeVariants> {
-  children: React.ReactNode;
-  LeftIcon?: React.ReactNode;
+  LeftIcon?: ReactNode;
   isDismissible?: boolean;
   onDismiss?: () => void;
   dataTestId?: string;
 }
 
-/**
- * Custom Dismiss Icon Component
- * Using fill="currentColor" allows the button to control the color via text classes
- */
+const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
+  (
+    {
+      className,
+      type = "default",
+      variant = "secondary",
+      size = "regular",
+      children,
+      LeftIcon,
+      isDismissible = false,
+      onDismiss,
+      dataTestId,
+      ...props
+    },
+    ref,
+  ) => {
+    const iconContent = useMemo(() => {
+      if (LeftIcon) return LeftIcon;
+      if (type === "default") return null;
+      const Icon = typeIconMap[type as keyof typeof typeIconMap];
+      return Icon ? <Icon /> : null;
+    }, [LeftIcon, type]);
+
+    const dismissSizeClasses = {
+      small: "size-3",
+      regular: "size-3.5",
+      big: "size-5",
+    };
+
+    const dismissClass =
+      dismissSizeClasses[size as keyof typeof dismissSizeClasses] ??
+      dismissSizeClasses.regular;
+
+    return (
+      <span
+        ref={ref}
+        data-test-id={dataTestId}
+        className={cn(
+          "group relative inline-flex items-center gap-1.25",
+          isDismissible && "pr-1",
+        )}
+      >
+        <span
+          className={cn(badgeVariants({ type, variant, size, className }))}
+          {...props}
+        >
+          {iconContent && (
+            <span
+              className={cn(
+                "flex items-center justify-center shrink-0",
+                "h-[0.8em] w-[0.9em] leading-none self-center",
+                "[&_svg]:size-full [&_svg]:block",
+              )}
+            >
+              {iconContent}
+            </span>
+          )}
+          <span className="leading-none">{children}</span>
+        </span>
+
+        {isDismissible && (
+          <button
+            type="button"
+            aria-label="Dismiss"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onDismiss?.();
+            }}
+            className={cn(
+              "flex items-center justify-center shrink-0 rounded-full text-gi-gray",
+              "transition-all duration-300 ease hover:brightness-90",
+              "will-change-transform transform-gpu cursor-pointer",
+              dismissClass,
+            )}
+          >
+            <CustomDismissIcon className="size-full overflow-visible" />
+          </button>
+        )}
+      </span>
+    );
+  },
+);
+
+Badge.displayName = "Badge";
+
 const CustomDismissIcon = ({ className }: { className?: string }) => (
   <svg
     viewBox="0 0 16 16"
@@ -75,87 +257,5 @@ const CustomDismissIcon = ({ className }: { className?: string }) => (
     />
   </svg>
 );
-
-function Badge({
-  className,
-  type = "default",
-  variant,
-  size,
-  children,
-  LeftIcon,
-  isDismissible = false,
-  onDismiss,
-  dataTestId,
-  ...props
-}: BadgeProps) {
-  const iconClassName =
-    "[color:inherit] shrink-0 flex items-center justify-center";
-
-  const renderedIcon = React.useMemo(() => {
-    if (LeftIcon) {
-      return React.isValidElement(LeftIcon) ? (
-        React.cloneElement(
-          LeftIcon as React.ReactElement<{ className?: string }>,
-          {
-            className: cn((LeftIcon as any).props?.className, iconClassName),
-          },
-        )
-      ) : (
-        <span className={iconClassName}>{LeftIcon}</span>
-      );
-    }
-
-    if (type === "default") return null;
-
-    const Icon = typeIconMap[type as keyof typeof typeIconMap];
-
-    return (
-      <span className={iconClassName}>
-        <Icon />
-      </span>
-    );
-  }, [LeftIcon, type]);
-
-  return (
-    <div className="inline-flex items-center gap-1.5" data-slot="badge-wrapper">
-      <span
-        data-test-id={dataTestId}
-        className={cn(badgeVariants({ type, variant, size, className }))}
-        {...props}
-      >
-        {renderedIcon}
-        <span className="leading-none">{children}</span>
-      </span>
-
-      {isDismissible && (
-        <button
-          type="button"
-          aria-label="Dismiss"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            onDismiss?.();
-          }}
-          className={cn(
-            "flex items-center justify-center transition-all outline-none",
-            "text-[#D3D9DA] hover:brightness-90",
-            size === "small" ? "size-4" : size === "big" ? "size-6" : "size-5",
-          )}
-        >
-          <CustomDismissIcon
-            className={cn(
-              size === "small"
-                ? "size-3.5"
-                : size === "big"
-                  ? "size-5"
-                  : "size-4.5",
-              "cursor-pointer",
-            )}
-          />
-        </button>
-      )}
-    </div>
-  );
-}
 
 export { Badge, badgeVariants };
