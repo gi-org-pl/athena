@@ -86,7 +86,7 @@ const meta = {
     disabled: false,
     isIconButton: false,
   },
-  tags: ["autodocs"]
+  tags: ["autodocs"],
 } satisfies Meta<typeof Button>;
 
 export default meta;
@@ -147,7 +147,12 @@ export const IconCustomization: Story = {
       <Button {...args} RightIcon={<Crown />}>
         Right Icon
       </Button>
-      <Button {...args} isIconButton LeftIcon={<Crown />} children={undefined} />
+      <Button
+        {...args}
+        isIconButton
+        LeftIcon={<Crown />}
+        children={undefined}
+      />
     </div>
   ),
 };
