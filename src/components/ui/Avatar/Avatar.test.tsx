@@ -16,6 +16,31 @@ describe("<Avatar />", () => {
       expect(screen.getByText("山太")).toBeInTheDocument();
     });
 
+    it("should correctly handle Chinese names (Hanzi)", () => {
+      render(<Avatar name="李 小龍" fallback="initials" />);
+      expect(screen.getByText("李小")).toBeInTheDocument();
+    });
+
+    it("should handle Chinese names with three distinct parts", () => {
+      render(<Avatar name="李 小 龍" fallback="initials" />);
+      expect(screen.getByText("李龍")).toBeInTheDocument();
+    });
+
+    it("should correctly handle Korean names (Hangul)", () => {
+      render(<Avatar name="박 지성" fallback="initials" />);
+      expect(screen.getByText("박지")).toBeInTheDocument();
+    });
+
+    it("should correctly handle Cyrillic Ukrainian names with diacritics", () => {
+      render(<Avatar name="Йосип Євгенійович" fallback="initials" />);
+      expect(screen.getByText("ЙЄ")).toBeInTheDocument();
+    });
+
+    it("should handle hyphenated Cyrillic surnames as a single block", () => {
+      render(<Avatar name="Марія Квітка-Основ'яненко" fallback="initials" />);
+      expect(screen.getByText("МК")).toBeInTheDocument();
+    });
+
     it("should correctly handle Arabic names (Right-to-Left)", () => {
       render(<Avatar name="أحمد علي" fallback="initials" />);
       expect(screen.getByText("أع")).toBeInTheDocument();
