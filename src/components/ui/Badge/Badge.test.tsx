@@ -35,7 +35,7 @@ describe("Badge Component", () => {
       const badgeInner = container.querySelector(
         '[data-test-id="badge-default"] > span',
       );
-      
+
       expect(badgeInner).toHaveClass("bg-gi-ash", "text-gi-primary");
     });
   });
@@ -76,7 +76,11 @@ describe("Badge Component", () => {
     it("should render the mapped icon inside a span wrapper when a valid type is provided", () => {
       render(<Badge type="info">Info</Badge>);
       const icon = screen.getByTestId("info-icon");
-      expect(icon.parentElement).toHaveClass("flex", "items-center", "justify-center");
+      expect(icon.parentElement).toHaveClass(
+        "flex",
+        "items-center",
+        "justify-center",
+      );
     });
   });
 
@@ -112,7 +116,7 @@ describe("Badge Component", () => {
       expect(button).toHaveClass("size-3.5");
     });
 
-        it("should fallback to regular dismiss icon sizing when size is undefined", () => {
+    it("should fallback to regular dismiss icon sizing when size is undefined", () => {
       render(
         // @ts-expect-error - testing runtime fallback
         <Badge isDismissible size={"random"}>
@@ -138,7 +142,9 @@ describe("Badge Component", () => {
   describe("Icon Mapping Branch Coverage", () => {
     it("should return null and render no icon when type is 'default'", () => {
       const { container } = render(<Badge type="default">No Icon</Badge>);
-      const iconWrapper = container.querySelector(".flex.items-center.justify-center.shrink-0");
+      const iconWrapper = container.querySelector(
+        ".flex.items-center.justify-center.shrink-0",
+      );
       expect(iconWrapper).toBeNull();
     });
 

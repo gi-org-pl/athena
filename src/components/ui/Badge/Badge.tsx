@@ -35,30 +35,102 @@ const badgeVariants = cva(
       },
     },
     compoundVariants: [
-      { type: "default", variant: "primary", className: "bg-gi-primary text-white" },
-      { type: "default", variant: "secondary", className: "bg-gi-ash text-gi-primary" },
-      { type: "default", variant: "outlined", className: "border-gi-ash text-gi-primary bg-transparent" },
-      { type: "default", variant: "ghost", className: "text-gi-primary bg-transparent" },
+      {
+        type: "default",
+        variant: "primary",
+        className: "bg-gi-primary text-white",
+      },
+      {
+        type: "default",
+        variant: "secondary",
+        className: "bg-gi-ash text-gi-primary",
+      },
+      {
+        type: "default",
+        variant: "outlined",
+        className: "border-gi-ash text-gi-primary bg-transparent",
+      },
+      {
+        type: "default",
+        variant: "ghost",
+        className: "text-gi-primary bg-transparent",
+      },
 
       { type: "info", variant: "primary", className: "bg-gi-blue text-white" },
-      { type: "info", variant: "secondary", className: "bg-gi-blue/10 text-gi-blue" },
-      { type: "info", variant: "outlined", className: "border-gi-blue text-gi-blue bg-transparent" },
-      { type: "info", variant: "ghost", className: "text-gi-blue bg-transparent" },
+      {
+        type: "info",
+        variant: "secondary",
+        className: "bg-gi-blue/10 text-gi-blue",
+      },
+      {
+        type: "info",
+        variant: "outlined",
+        className: "border-gi-blue text-gi-blue bg-transparent",
+      },
+      {
+        type: "info",
+        variant: "ghost",
+        className: "text-gi-blue bg-transparent",
+      },
 
-      { type: "success", variant: "primary", className: "bg-gi-green text-white" },
-      { type: "success", variant: "secondary", className: "bg-gi-green/10 text-gi-green" },
-      { type: "success", variant: "outlined", className: "border-gi-green text-gi-green bg-transparent" },
-      { type: "success", variant: "ghost", className: "text-gi-green bg-transparent" },
+      {
+        type: "success",
+        variant: "primary",
+        className: "bg-gi-green text-white",
+      },
+      {
+        type: "success",
+        variant: "secondary",
+        className: "bg-gi-green/10 text-gi-green",
+      },
+      {
+        type: "success",
+        variant: "outlined",
+        className: "border-gi-green text-gi-green bg-transparent",
+      },
+      {
+        type: "success",
+        variant: "ghost",
+        className: "text-gi-green bg-transparent",
+      },
 
-      { type: "warning", variant: "primary", className: "bg-gi-orange text-white" },
-      { type: "warning", variant: "secondary", className: "bg-gi-orange/10 text-gi-orange" },
-      { type: "warning", variant: "outlined", className: "border-gi-orange text-gi-orange bg-transparent" },
-      { type: "warning", variant: "ghost", className: "text-gi-orange bg-transparent" },
+      {
+        type: "warning",
+        variant: "primary",
+        className: "bg-gi-orange text-white",
+      },
+      {
+        type: "warning",
+        variant: "secondary",
+        className: "bg-gi-orange/10 text-gi-orange",
+      },
+      {
+        type: "warning",
+        variant: "outlined",
+        className: "border-gi-orange text-gi-orange bg-transparent",
+      },
+      {
+        type: "warning",
+        variant: "ghost",
+        className: "text-gi-orange bg-transparent",
+      },
 
       { type: "error", variant: "primary", className: "bg-gi-red text-white" },
-      { type: "error", variant: "secondary", className: "bg-gi-red/10 text-gi-red" },
-      { type: "error", variant: "outlined", className: "border-gi-red text-gi-red bg-transparent" },
-      { type: "error", variant: "ghost", className: "text-gi-red bg-transparent" },
+      {
+        type: "error",
+        variant: "secondary",
+        className: "bg-gi-red/10 text-gi-red",
+      },
+      {
+        type: "error",
+        variant: "outlined",
+        className: "border-gi-red text-gi-red bg-transparent",
+      },
+      {
+        type: "error",
+        variant: "ghost",
+        className: "text-gi-red bg-transparent",
+      },
     ],
     defaultVariants: {
       type: "default",
@@ -131,10 +203,10 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
           {...props}
         >
           {iconContent && (
-            <span 
+            <span
               className={cn(
                 "flex items-center justify-center shrink-0",
-                "h-[0.8em] w-[0.9em] leading-none self-center", 
+                "h-[0.8em] w-[0.9em] leading-none self-center",
                 "[&_svg]:size-full [&_svg]:block",
               )}
             >
@@ -157,7 +229,7 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
               "flex items-center justify-center shrink-0 rounded-full text-gi-gray",
               "transition-all duration-300 ease hover:brightness-90",
               "will-change-transform transform-gpu cursor-pointer",
-              dismissClass
+              dismissClass,
             )}
           >
             <CustomDismissIcon className="size-full overflow-visible" />
