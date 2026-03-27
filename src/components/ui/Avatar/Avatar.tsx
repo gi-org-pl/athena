@@ -1,5 +1,6 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import * as React from "react";
+import type { HTMLAttributes } from "react"
+import { useEffect, useState } from "react"
 import Female from "@/assets/icons/gi-female.svg";
 import Male from "@/assets/icons/gi-male.svg";
 import { cn } from "@/lib/utils";
@@ -21,7 +22,7 @@ const avatarVariants = cva(
 );
 
 interface AvatarProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof avatarVariants> {
   src?: string;
   alt?: string;
@@ -29,17 +30,15 @@ interface AvatarProps
   name?: string;
   gender?: "male" | "female";
   color?: string;
-  dataTestId?: string;
 }
 
 const getInitials = (name: string) => {
-  const cleanName = name.replace(/[^a-zA-Z0-9\s]/g, "").trim();
+  const cleanName = name.trim();
+  if (!cleanName) return "";
+
   const parts = cleanName.split(/\s+/).filter(Boolean);
-
-  if (parts.length === 0) return "";
-
-  const firstInitial = parts[0].charAt(0);
-  const lastInitial = parts.length > 1 ? parts[parts.length - 1].charAt(0) : "";
+  const firstInitial = Array.from(parts[0])[0];
+  const lastInitial = parts.length > 1 ? Array.from(parts[parts.length - 1])[0]  : "";
 
   return (firstInitial + lastInitial).toUpperCase();
 };
@@ -53,33 +52,41 @@ function Avatar({
   name = "",
   gender = "male",
   color = "text-gi-light-primary",
-  dataTestId,
   ...props
 }: AvatarProps) {
-  const [hasError, setHasError] = React.useState(false);
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    setHasError(false);
+  }, [src]);
+
+  const initials = fallback === "initials" ? getInitials(name) : "";
   const showImage = src && !hasError;
+  const showInitials = !!initials;
+
+  const hideFromScreenReaders = !name && !showImage;
 
   return (
     <div
       data-slot="avatar"
-      data-test-id={dataTestId}
       className={cn(avatarVariants({ size, className }))}
       {...props}
     >
       {showImage ? (
         <img
           src={src}
-          alt={alt || name || "User avatar"}
+          alt={alt || name || ""}
           className="h-full w-full object-cover transition-opacity duration-300 ease"
           onError={() => setHasError(true)}
         />
       ) : (
         <div
           className="flex h-full w-full items-center justify-center font-medium text-gi-primary"
-          aria-label={name || "User avatar fallback"}
+          aria-label={name ? `${name} avatar` : undefined}
+          aria-hidden={hideFromScreenReaders ? "true" : undefined}
         >
-          {fallback === "initials" ? (
-            getInitials(name)
+          {showInitials ? (
+            initials
           ) : (
             <div className={cn("h-full w-full", color)}>
               {gender === "female" ? <Female /> : <Male />}

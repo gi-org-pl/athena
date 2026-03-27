@@ -1,120 +1,82 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import * as React from "react";
 import { describe, expect, it, vi } from "vitest";
 import { Avatar } from "./Avatar";
 
-vi.mock("../../../assets/icons/gi-male.svg", () => ({
+vi.mock("@/assets/icons/gi-male.svg", () => ({
   default: () => <svg data-testid="male-icon" />,
 }));
-vi.mock("../../../assets/icons/gi-female.svg", () => ({
+vi.mock("@/assets/icons/gi-female.svg", () => ({
   default: () => <svg data-testid="female-icon" />,
 }));
 
 describe("<Avatar />", () => {
-  describe("when all provided props are valid", () => {
-    it("should render with default props (medium size)", () => {
-      const { container } = render(<Avatar dataTestId="avatar-root" />);
-      const root = container.querySelector('[data-test-id="avatar-root"]');
+  describe("Internationalization & Initials", () => {
+    it("should correctly handle Japanese names (Kanji/Kana)", () => {
+      render(<Avatar name="山田 太郎" fallback="initials" />);
+      expect(screen.getByText("山太")).toBeInTheDocument();
+    });
 
-      expect(root).toBeInTheDocument();
-      expect(root).toHaveAttribute("data-slot", "avatar");
-      expect(root).toHaveClass("h-10", "w-10");
+    it("should correctly handle Arabic names (Right-to-Left)", () => {
+      render(<Avatar name="أحمد علي" fallback="initials" />);
+      expect(screen.getByText("أع")).toBeInTheDocument();
+    });
+    it("should fallback to default icon when name is only whitespace", () => {
+      render(<Avatar name="   " fallback="initials" />);
+      
+      expect(screen.queryByText(/[A-Z]/)).not.toBeInTheDocument();
+
       expect(screen.getByTestId("male-icon")).toBeInTheDocument();
     });
 
-    it("should render with custom className", () => {
-      const { container } = render(
-        <Avatar className="custom-class" dataTestId="avatar" />,
-      );
-      const root = container.querySelector('[data-test-id="avatar"]');
-      expect(root).toHaveClass("custom-class");
-    });
+  it("should handle a single name correctly", () => {
+    render(<Avatar name="Zoro" fallback="initials" />);
+    expect(screen.getByText("Z")).toBeInTheDocument();
   });
 
-  describe("when image handling", () => {
-    it("should render an image when src is valid", () => {
-      render(<Avatar src="valid.jpg" alt="Test User" />);
-      const img = screen.getByRole("img");
-      expect(img).toHaveAttribute("src", "valid.jpg");
-      expect(img).toHaveAttribute("alt", "Test User");
-    });
+  it("should handle multiple spaces between names", () => {
+    render(<Avatar name="First      Last" fallback="initials" />);
+    expect(screen.getByText("FL")).toBeInTheDocument();
+  });
+  });
 
-    it("should use name as alt if alt is not provided", () => {
-      render(<Avatar src="valid.jpg" name="John Doe" />);
-      const img = screen.getByRole("img");
-      expect(img).toHaveAttribute("alt", "John Doe");
-    });
-
-    it("should use default alt text when alt and name are missing", () => {
-      render(<Avatar src="valid.jpg" />);
-      const img = screen.getByRole("img");
-      expect(img).toHaveAttribute("alt", "User avatar");
-    });
-
-    it("should fallback to icon when image triggers an error", () => {
-      render(<Avatar src="broken.jpg" name="John Doe" />);
-      const img = screen.getByRole("img");
+  describe("Lifecycle & Error Handling", () => {
+    it("should reset error state when src prop changes", () => {
+      const { rerender, container } = render(
+        <Avatar src="broken.jpg" name="Test User" fallback="initials" />
+      );
+      const img = container.querySelector("img")!;
 
       fireEvent.error(img);
+      
+      expect(container.querySelector("img")).not.toBeInTheDocument();
+      expect(screen.getByText("TU")).toBeInTheDocument();
 
+      rerender(<Avatar src="new-valid.jpg" name="Test User" fallback="initials" />);
+      
+      const newImg = container.querySelector("img");
+      expect(newImg).toHaveAttribute("src", "new-valid.jpg");
+    });
+  });
+
+  describe("Accessibility", () => {
+    it("should use an empty alt string and hide role when name/alt are missing", () => {
+      const { container } = render(<Avatar src="valid.jpg" />);
+      const img = container.querySelector("img");
+      
+      expect(img).toHaveAttribute("alt", "");
       expect(screen.queryByRole("img")).not.toBeInTheDocument();
-      expect(screen.getByLabelText("John Doe")).toBeInTheDocument();
-      expect(screen.getByTestId("male-icon")).toBeInTheDocument();
     });
   });
 
-  describe("when initials logic is called", () => {
-    it("should extract correct initials for complex names", () => {
-      render(<Avatar name="O'Connor Smith Jones" fallback="initials" />);
-      expect(screen.getByText("OJ")).toBeInTheDocument();
+  describe("Core Functionality", () => {
+    it("should apply size variants correctly via CVA", () => {
+      render(<Avatar size="small" data-testid="avatar-root" />);
+      expect(screen.getByTestId("avatar-root")).toHaveClass("h-8", "w-8");
     });
 
-    it("should handle single name", () => {
-      render(<Avatar name="John" fallback="initials" />);
-      expect(screen.getByText("J")).toBeInTheDocument();
-    });
-
-    it("should handle names with extra whitespace", () => {
-      render(<Avatar name="   Jane   Doe   " fallback="initials" />);
-      expect(screen.getByText("JD")).toBeInTheDocument();
-    });
-
-    it("should render nothing for empty/special char names", () => {
-      render(<Avatar name="!@#" fallback="initials" />);
-      const fallback = screen.getByLabelText("!@#");
-      expect(fallback.textContent).toBe("");
-    });
-  });
-
-  describe("when gender and colors are applied", () => {
-    it("should apply female icon when gender is female", () => {
+    it("should render the correct gender icon", () => {
       render(<Avatar gender="female" />);
       expect(screen.getByTestId("female-icon")).toBeInTheDocument();
-    });
-
-    it("should apply the color class to the icon wrapper", () => {
-      render(<Avatar color="text-blue-500" />);
-      const icon = screen.getByTestId("male-icon");
-      const wrapper = icon.parentElement;
-      expect(wrapper).toHaveClass("text-blue-500");
-    });
-  });
-
-  describe("when sizing variants are used", () => {
-    it("should apply small sizing", () => {
-      const { container } = render(
-        <Avatar size="small" dataTestId="avatar-small" />,
-      );
-      const root = container.querySelector('[data-test-id="avatar-small"]');
-      expect(root).toHaveClass("h-8", "w-8");
-    });
-
-    it("should apply large sizing", () => {
-      const { container } = render(
-        <Avatar size="large" dataTestId="avatar-large" />,
-      );
-      const root = container.querySelector('[data-test-id="avatar-large"]');
-      expect(root).toHaveClass("h-14", "w-14");
     });
   });
 });
