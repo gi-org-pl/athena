@@ -107,6 +107,7 @@ export const WithPrefixSuffix: Story = {
     label: "Price",
     prefix: "$",
     suffix: "USD",
+    defaultValue: "100",
     placeholder: "0.00",
   },
 };

@@ -252,9 +252,9 @@ describe("Input Component - 100% Coverage Suite", () => {
     expect(input).toHaveValue("");
   });
 
-  it("applies error and disabled styles to label (Linie 109-110)", () => {
+it("applies error and disabled styles to label (Linie 109-110)", () => {
     const { rerender } = render(<Input label="Test Label" isError />);
-    expect(screen.getByText("Test Label")).toHaveClass("text-red-500");
+    expect(screen.getByText("Test Label")).toHaveClass("text-[var(--color-gi-red)]");
 
     rerender(<Input label="Test Label" isDisabled />);
     expect(screen.getByText("Test Label")).toHaveClass("opacity-50");
@@ -269,37 +269,32 @@ describe("Input Component - 100% Coverage Suite", () => {
     );
   });
   it("covers all secondary text branch permutations", () => {
-    // Branch: isError = true, errorText = undefined
     const { rerender } = render(<Input isError errorText={undefined} />);
     expect(screen.queryByRole("paragraph")).not.toBeInTheDocument();
 
-    // Branch: isError = false, helper = undefined
     rerender(<Input isError={false} helper={undefined} />);
     expect(screen.queryByRole("paragraph")).not.toBeInTheDocument();
 
-    // Branch: secondaryText exists but isDisabled is true
     rerender(<Input helper="Help" isDisabled />);
     expect(screen.queryByText("Help")).not.toBeInTheDocument();
   });
 
   it("covers prefix/suffix permutations with and without values", () => {
-    // Prefix exists but hasValue is false (overlay shown due to isDisabled)
     render(<Input prefix="PRE" value="" isDisabled />);
     expect(screen.queryByText("PRE")).not.toBeInTheDocument();
   });
 
   it("covers missing icon branches", () => {
-    const { container } = render(<Input LeftIcon={undefined} RightIcon={undefined} />);
-    // Szukamy kontenerów ikon po klasach flex-shrink-0 (nie powinny istnieć)
+    const { container } = render(
+      <Input LeftIcon={undefined} RightIcon={undefined} />,
+    );
     expect(container.querySelector(".flex-shrink-0")).not.toBeInTheDocument();
   });
 
   it("hits the value change in useEffect", () => {
     const { rerender } = render(<Input value="initial" />);
-    // Zmiana na nową wartość
     rerender(<Input value="updated" />);
     expect(screen.getByDisplayValue("updated")).toBeInTheDocument();
-    // Zmiana na undefined (nie powinno zaktualizować internalValue zgodnie z logiką useEffect)
     rerender(<Input value={undefined} />);
     expect(screen.getByDisplayValue("updated")).toBeInTheDocument();
   });

@@ -87,14 +87,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       }
     };
 
-    // Uproszczona logika wartości - usuwamy nieosiągalne branche
     const displayValue = value !== undefined ? (value ?? "") : internalValue;
-    const safeValue = String(displayValue); 
+    const safeValue = String(displayValue);
     const hasValue = safeValue.length > 0;
-    
-    // Jawne przypisanie null dla branchy, których Vitest nie "widzi"
     const secondaryText = isError ? (errorText ?? null) : (helper ?? null);
-
     const shouldShowOverlay = !isFocused && (hasValue || isDisabled);
 
     const getOverlayContent = () => {
@@ -108,12 +104,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <label
             className={cn(
               "text-sm font-medium block transition-all duration-300",
-              isError ? "text-red-500" : "text-[#004554]",
+              isError ? "text-[var(--color-gi-red)]" : "text-[var(--color-gi-primary)]",
               isDisabled && "opacity-50",
             )}
           >
             {label}
-            {isRequired ? <span className="text-red-500 ml-1">*</span> : null}
+            {isRequired ? <span className="text-[var(--color-gi-red)] ml-1">*</span> : null}
           </label>
         ) : null}
 
@@ -122,9 +118,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             "flex items-center w-full min-h-[40px] px-4 bg-white border rounded-[24px] transition-all duration-300",
             !isError &&
               !isDisabled &&
-              "border-[#004554]/10 hover:border-[#004554]/33 focus-within:border-2 focus-within:border-[#004554]/33",
-            isError && "border border-red-500",
-            isDisabled && "border-[#004554]/10 cursor-not-allowed bg-white",
+              "border-[var(--color-gi-primary)]/10 hover:border-[var(--color-gi-primary)]/33 focus-within:border-2 focus-within:border-[var(--color-gi-primary)]/33",
+            isError && "border-[var(--color-gi-red)]",
+            isDisabled && "border-[var(--color-gi-primary)]/10 cursor-not-allowed bg-white",
             className,
           )}
         >
@@ -132,7 +128,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             <div
               className={cn(
                 "flex-shrink-0 mr-2 flex items-center",
-                isDisabled ? "opacity-30" : "text-[#004554]",
+                isDisabled ? "opacity-30" : "text-[var(--color-gi-primary)]",
               )}
             >
               {LeftIcon}
@@ -147,7 +143,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {shouldShowOverlay ? (
               <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none w-full bg-white">
                 {prefix && hasValue ? (
-                  <span className="text-sm mr-0.2 text-[#004554]/50 select-none">
+                  <span className="text-sm mr-0.2 text-[var(--color-gi-primary)]/50 select-none">
                     {prefix}
                   </span>
                 ) : null}
@@ -155,14 +151,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                   className={cn(
                     "text-sm truncate",
                     !hasValue && isDisabled
-                      ? "text-[#004554]/30"
-                      : "text-[#004554]",
+                      ? "text-[var(--color-gi-primary)]/30"
+                      : "text-[var(--color-gi-primary)]",
                   )}
                 >
                   {getOverlayContent()}
                 </span>
                 {suffix && hasValue ? (
-                  <span className="text-sm ml-0.2 text-[#004554]/50 select-none">
+                  <span className="text-sm ml-0.2 text-[var(--color-gi-primary)]/50 select-none">
                     {suffix}
                   </span>
                 ) : null}
@@ -181,9 +177,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               placeholder={placeholder}
               data-test-id={dataTestId}
               className={cn(
-                "flex-1 bg-transparent text-sm text-[#004554] outline-none placeholder:text-[#004554]/30 py-3 w-full",
-                shouldShowOverlay &&
-                  "text-transparent placeholder:text-transparent",
+                "flex-1 bg-transparent text-sm text-[var(--color-gi-primary)] outline-none placeholder:text-[var(--color-gi-primary)]/30 py-3 w-full",
+                shouldShowOverlay && "text-transparent placeholder:text-transparent",
                 isDisabled && "cursor-not-allowed",
               )}
             />
@@ -194,7 +189,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               data-testid="right-icon-container"
               className={cn(
                 "flex-shrink-0 ml-2 flex items-center",
-                isDisabled ? "opacity-30" : "text-[#004554]",
+                isDisabled ? "opacity-30" : "text-[var(--color-gi-primary)]",
               )}
             >
               {RightIcon}
@@ -206,7 +201,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <p
             className={cn(
               "text-[14px] leading-tight transition-all duration-300",
-              isError ? "text-red-500" : "text-[#004554]/50",
+              isError ? "text-[var(--color-gi-red)]" : "text-[var(--color-gi-primary)]/50",
             )}
           >
             {secondaryText}
