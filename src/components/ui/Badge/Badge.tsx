@@ -1,9 +1,9 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import { 
-  useMemo, 
-  forwardRef, 
-  type ReactNode, 
-  type ComponentProps 
+import {
+  type ComponentProps,
+  forwardRef,
+  type ReactNode,
+  useMemo,
 } from "react";
 import CheckIcon from "@/assets/icons/check-icon.svg";
 import InfoIcon from "@/assets/icons/info-icon.svg";
@@ -39,7 +39,7 @@ const badgeVariants = cva(
       variant: "secondary",
       size: "regular",
     },
-  }
+  },
 );
 
 const typeIconMap = {
@@ -72,7 +72,7 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
       dataTestId,
       ...props
     },
-    ref
+    ref,
   ) => {
     const iconContent = useMemo(() => {
       if (LeftIcon) return LeftIcon;
@@ -87,15 +87,17 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
       big: "[&_svg]:size-5",
     };
 
-    const dismissClass = dismissSizeClasses[size as keyof typeof dismissSizeClasses] ?? dismissSizeClasses.regular;
+    const dismissClass =
+      dismissSizeClasses[size as keyof typeof dismissSizeClasses] ??
+      dismissSizeClasses.regular;
 
     return (
       <span
         ref={ref}
         data-test-id={dataTestId}
         className={cn(
-          "group relative inline-flex items-center gap-1.25", 
-          isDismissible && "pr-1"
+          "group relative inline-flex items-center gap-1.25",
+          isDismissible && "pr-1",
         )}
       >
         <span
@@ -121,9 +123,9 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
             }}
             className={cn(
               "flex items-center justify-center shrink-0 rounded-full text-gi-gray",
-              "transition-all duration-300 ease hover:brightness-90", 
+              "transition-all duration-300 ease hover:brightness-90",
               "will-change-transform transform-gpu cursor-pointer",
-              dismissClass
+              dismissClass,
             )}
           >
             <CustomDismissIcon />
@@ -131,7 +133,7 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
         )}
       </span>
     );
-  }
+  },
 );
 
 Badge.displayName = "Badge";

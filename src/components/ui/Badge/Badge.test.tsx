@@ -32,7 +32,9 @@ describe("Badge Component", () => {
         <Badge dataTestId="badge-default">Default</Badge>,
       );
 
-      const badgeInner = container.querySelector('[data-test-id="badge-default"] > span');
+      const badgeInner = container.querySelector(
+        '[data-test-id="badge-default"] > span',
+      );
       expect(badgeInner).toHaveClass("bg-gi-dark-gray/10", "text-gi-dark-gray");
     });
   });
@@ -59,7 +61,7 @@ describe("Badge Component", () => {
     });
 
     it("should render string LeftIcon inside the icon wrapper", () => {
-      const { } = render(
+      const {} = render(
         <Badge LeftIcon="🔥" dataTestId="fallback-test">
           Fallback
         </Badge>,
@@ -94,7 +96,7 @@ describe("Badge Component", () => {
       expect(button).toHaveClass("[&_svg]:size-3.0");
     });
 
-      it("should apply regular size classes to the dismiss button icon via the wrapper", () => {
+    it("should apply regular size classes to the dismiss button icon via the wrapper", () => {
       render(
         <Badge isDismissible size="regular">
           Small
@@ -110,9 +112,9 @@ describe("Badge Component", () => {
           Fallback Size
         </Badge>,
       );
-      
+
       const button = screen.getByRole("button", { name: "Dismiss" });
-      
+
       expect(button).toHaveClass("[&_svg]:size-3.5");
     });
     it("should apply big size classes to the dismiss button icon via the wrapper", () => {
@@ -127,25 +129,27 @@ describe("Badge Component", () => {
   });
 
   describe("Icon Mapping Branch Coverage", () => {
-  it("should return null and render no icon when type is 'default'", () => {
-    const { container } = render(<Badge type="default">No Icon</Badge>);
-    
-    const iconWrapper = container.querySelector('.flex.items-center.justify-center.shrink-0');
-    expect(iconWrapper).toBeNull();
-  });
+    it("should return null and render no icon when type is 'default'", () => {
+      const { container } = render(<Badge type="default">No Icon</Badge>);
 
-  it("should return null and render no icon when an invalid type is provided at runtime", () => {
-    render(
-      // @ts-expect-error - Simulating invalid runtime prop
-      <Badge type="non-existent-type">Invalid Type</Badge>
-    );
+      const iconWrapper = container.querySelector(
+        ".flex.items-center.justify-center.shrink-0",
+      );
+      expect(iconWrapper).toBeNull();
+    });
 
-    expect(screen.queryByTestId("check-icon")).not.toBeInTheDocument();
-    expect(screen.queryByTestId("info-icon")).not.toBeInTheDocument();
-    
-    expect(screen.getByText("Invalid Type")).toBeInTheDocument();
+    it("should return null and render no icon when an invalid type is provided at runtime", () => {
+      render(
+        // @ts-expect-error - Simulating invalid runtime prop
+        <Badge type="non-existent-type">Invalid Type</Badge>,
+      );
+
+      expect(screen.queryByTestId("check-icon")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("info-icon")).not.toBeInTheDocument();
+
+      expect(screen.getByText("Invalid Type")).toBeInTheDocument();
+    });
   });
-});
 
   describe("Dismissible Functionality", () => {
     it("should fire the onDismiss callback when the button is clicked", () => {
