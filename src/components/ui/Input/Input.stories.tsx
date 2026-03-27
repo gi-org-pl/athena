@@ -102,14 +102,6 @@ export const Disabled: Story = {
   },
 };
 
-export const PasswordField: Story = {
-  args: {
-    label: "Password",
-    type: "password",
-    defaultValue: "password",
-  },
-};
-
 export const WithPrefixSuffix: Story = {
   args: {
     label: "Price",

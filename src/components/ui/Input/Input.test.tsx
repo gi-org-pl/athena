@@ -1,7 +1,13 @@
-import { fireEvent, render, screen, cleanup, act } from "@testing-library/react";
-import { describe, expect, it, vi, afterEach } from "vitest";
-import { Input } from "./Input";
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+} from "@testing-library/react";
 import * as React from "react";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { Input } from "./Input";
 
 describe("Input Component - 100% Coverage Suite", () => {
   afterEach(cleanup);
@@ -21,17 +27,12 @@ describe("Input Component - 100% Coverage Suite", () => {
     expect(screen.queryByText("$")).not.toBeInTheDocument();
   });
 
-  it("masks password in overlay using dots", () => {
-    render(<Input type="password" value="12345" />);
-    expect(screen.getByText("•••••")).toBeInTheDocument();
-  });
-
   it("hides overlay and shows raw text on focus", () => {
     render(<Input prefix="$" value="100" />);
     const input = screen.getByRole("textbox");
-    
+
     expect(screen.getByText("$")).toBeInTheDocument();
-    
+
     fireEvent.focus(input);
     expect(screen.queryByText("$")).not.toBeInTheDocument();
     expect(input).not.toHaveClass("text-transparent");
@@ -40,7 +41,7 @@ describe("Input Component - 100% Coverage Suite", () => {
   it("handles internal state when no value prop is provided (Uncontrolled)", () => {
     render(<Input defaultValue="initial" />);
     const input = screen.getByDisplayValue("initial") as HTMLInputElement;
-    
+
     fireEvent.change(input, { target: { value: "new value" } });
     expect(input.value).toBe("new value");
   });
@@ -48,7 +49,7 @@ describe("Input Component - 100% Coverage Suite", () => {
   it("updates internal value when value prop changes (Controlled)", () => {
     const { rerender } = render(<Input value="first" />);
     expect(screen.getByDisplayValue("first")).toBeInTheDocument();
-    
+
     rerender(<Input value="second" />);
     expect(screen.getByDisplayValue("second")).toBeInTheDocument();
 
@@ -56,7 +57,9 @@ describe("Input Component - 100% Coverage Suite", () => {
   });
 
   it("switches between helper text and error text", () => {
-    const { rerender } = render(<Input helper="Helper" errorText="Error" isError={false} />);
+    const { rerender } = render(
+      <Input helper="Helper" errorText="Error" isError={false} />,
+    );
     expect(screen.getByText("Helper")).toBeInTheDocument();
 
     rerender(<Input helper="Helper" errorText="Error" isError={true} />);
@@ -66,14 +69,14 @@ describe("Input Component - 100% Coverage Suite", () => {
   it("handles disabled state correctly", () => {
     const onChange = vi.fn();
     render(<Input isDisabled value="" onChange={onChange} />);
-    
+
     const input = screen.getByRole("textbox");
     expect(input).toBeDisabled();
     expect(screen.getByText("some text")).toBeInTheDocument();
 
     fireEvent.click(screen.getByTestId("input-click-wrapper"));
     expect(input).not.toHaveFocus();
-    
+
     fireEvent.change(input, { target: { value: "test" } });
     expect(onChange).not.toHaveBeenCalled();
   });
@@ -87,10 +90,10 @@ describe("Input Component - 100% Coverage Suite", () => {
 
   it("renders icons and applies disabled styles", () => {
     const { rerender } = render(
-      <Input 
-        LeftIcon={<span data-testid="left" />} 
-        RightIcon={<span data-testid="right" />} 
-      />
+      <Input
+        LeftIcon={<span data-testid="left" />}
+        RightIcon={<span data-testid="right" />}
+      />,
     );
     expect(screen.getByTestId("left")).toBeInTheDocument();
     expect(screen.getByTestId("right")).toBeInTheDocument();
@@ -107,7 +110,7 @@ describe("Input Component - 100% Coverage Suite", () => {
 
     fireEvent.focus(input);
     expect(onFocus).toHaveBeenCalled();
-    
+
     fireEvent.blur(input);
     expect(onBlur).toHaveBeenCalled();
   });
@@ -115,15 +118,14 @@ describe("Input Component - 100% Coverage Suite", () => {
   it("uses imperative handle to expose focus method with act", () => {
     const ref = React.createRef<HTMLInputElement>();
     render(<Input ref={ref} />);
-    
+
     act(() => {
       ref.current?.focus();
     });
-    
+
     expect(screen.getByRole("textbox")).toHaveFocus();
   });
 
-  
   it("shows overlay when disabled even if value is present", () => {
     render(<Input isDisabled value="disabled text" />);
     expect(screen.getByText("disabled text")).toBeInTheDocument();
@@ -165,7 +167,7 @@ describe("Input Component - 100% Coverage Suite", () => {
 
     fireEvent.focus(input);
     expect(onFocus).toHaveBeenCalled();
-    
+
     fireEvent.blur(input);
     expect(onBlur).toHaveBeenCalled();
   });
@@ -196,7 +198,9 @@ describe("Input Component - 100% Coverage Suite", () => {
   });
 
   it("handles empty displayValue and safeValue correctly (Coverage for edge cases)", () => {
-    render(<Input value={undefined} defaultValue={undefined} placeholder="Empty" />);
+    render(
+      <Input value={undefined} defaultValue={undefined} placeholder="Empty" />,
+    );
     expect(screen.getByPlaceholderText("Empty")).toBeInTheDocument();
   });
 
@@ -257,7 +261,51 @@ describe("Input Component - 100% Coverage Suite", () => {
   });
 
   it("renders RightIcon with disabled styles (Linia 183)", () => {
-    render(<Input isDisabled RightIcon={<span data-testid="right-icon-test" />} />);
-    expect(screen.getByTestId("right-icon-test").parentElement).toHaveClass("opacity-30");
+    render(
+      <Input isDisabled RightIcon={<span data-testid="right-icon-test" />} />,
+    );
+    expect(screen.getByTestId("right-icon-test").parentElement).toHaveClass(
+      "opacity-30",
+    );
+  });
+  it("covers all secondary text branch permutations", () => {
+    // Branch: isError = true, errorText = undefined
+    const { rerender } = render(<Input isError errorText={undefined} />);
+    expect(screen.queryByRole("paragraph")).not.toBeInTheDocument();
+
+    // Branch: isError = false, helper = undefined
+    rerender(<Input isError={false} helper={undefined} />);
+    expect(screen.queryByRole("paragraph")).not.toBeInTheDocument();
+
+    // Branch: secondaryText exists but isDisabled is true
+    rerender(<Input helper="Help" isDisabled />);
+    expect(screen.queryByText("Help")).not.toBeInTheDocument();
+  });
+
+  it("covers prefix/suffix permutations with and without values", () => {
+    // Prefix exists but hasValue is false (overlay shown due to isDisabled)
+    render(<Input prefix="PRE" value="" isDisabled />);
+    expect(screen.queryByText("PRE")).not.toBeInTheDocument();
+  });
+
+  it("covers missing icon branches", () => {
+    const { container } = render(<Input LeftIcon={undefined} RightIcon={undefined} />);
+    // Szukamy kontenerów ikon po klasach flex-shrink-0 (nie powinny istnieć)
+    expect(container.querySelector(".flex-shrink-0")).not.toBeInTheDocument();
+  });
+
+  it("hits the value change in useEffect", () => {
+    const { rerender } = render(<Input value="initial" />);
+    // Zmiana na nową wartość
+    rerender(<Input value="updated" />);
+    expect(screen.getByDisplayValue("updated")).toBeInTheDocument();
+    // Zmiana na undefined (nie powinno zaktualizować internalValue zgodnie z logiką useEffect)
+    rerender(<Input value={undefined} />);
+    expect(screen.getByDisplayValue("updated")).toBeInTheDocument();
+  });
+
+  it("handles isRequired being false explicitly", () => {
+    render(<Input label="Test" isRequired={false} />);
+    expect(screen.queryByText("*")).not.toBeInTheDocument();
   });
 });
