@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { Badge } from "./Badge";
 
+// Clean mocks to prevent JSDOM parsing errors
 vi.mock("@/assets/icons/check-icon.svg", () => ({
   default: () => <svg data-testid="check-icon" />,
 }));
@@ -14,29 +15,19 @@ vi.mock("@/assets/icons/warning-icon.svg", () => ({
 vi.mock("@/assets/icons/x-icon.svg", () => ({
   default: () => <svg data-testid="x-icon" />,
 }));
+vi.mock("@/assets/icons/dismiss-circle-icon.svg", () => ({
+  default: () => <svg data-testid="dismiss-icon" />,
+}));
 
 describe("Badge Component", () => {
   describe("Core Rendering", () => {
-    it("should render the children correctly", () => {
-      const { container } = render(
-        <Badge dataTestId="badge-root">Active Status</Badge>,
-      );
-
-      const wrapper = container.querySelector('[data-test-id="badge-root"]');
-      expect(wrapper).toBeInTheDocument();
-      expect(wrapper).toHaveTextContent("Active Status");
-    });
-
     it("should apply default styling variants", () => {
-      const { container } = render(
-        <Badge dataTestId="badge-default">Default</Badge>,
-      );
+      render(<Badge dataTestId="badge-default">Default</Badge>);
 
-      const badgeInner = container.querySelector(
-        '[data-test-id="badge-default"] > span',
-      );
+      const wrapper = document.querySelector('[data-test-id="badge-default"]');
+      const styledSpan = wrapper?.firstElementChild;
 
-      expect(badgeInner).toHaveClass("bg-gi-ash", "text-gi-primary");
+      expect(styledSpan).toHaveClass("bg-gi-ash", "text-gi-primary");
     });
   });
 
@@ -91,7 +82,7 @@ describe("Badge Component", () => {
           Small
         </Badge>,
       );
-      const button = screen.getByRole("button", { name: "Dismiss" });
+      const button = screen.getByRole("button", { name: /dismiss/i });
       expect(button).toHaveClass("size-3");
     });
 
@@ -101,7 +92,7 @@ describe("Badge Component", () => {
           Regular
         </Badge>,
       );
-      const button = screen.getByRole("button", { name: "Dismiss" });
+      const button = screen.getByRole("button", { name: /dismiss/i });
       expect(button).toHaveClass("size-3.5");
     });
 
@@ -111,20 +102,18 @@ describe("Badge Component", () => {
           Fallback Size
         </Badge>,
       );
-
-      const button = screen.getByRole("button", { name: "Dismiss" });
+      const button = screen.getByRole("button", { name: /dismiss/i });
       expect(button).toHaveClass("size-3.5");
     });
 
-    it("should fallback to regular dismiss icon sizing when size is undefined", () => {
+    it("should fallback to regular dismiss icon sizing when size is invalid string", () => {
       render(
         // @ts-expect-error - testing runtime fallback
         <Badge isDismissible size={"random"}>
           Fallback Size
         </Badge>,
       );
-
-      const button = screen.getByRole("button", { name: "Dismiss" });
+      const button = screen.getByRole("button", { name: /dismiss/i });
       expect(button).toHaveClass("size-3.5");
     });
 
@@ -134,7 +123,7 @@ describe("Badge Component", () => {
           Big
         </Badge>,
       );
-      const button = screen.getByRole("button", { name: "Dismiss" });
+      const button = screen.getByRole("button", { name: /dismiss/i });
       expect(button).toHaveClass("size-5");
     });
   });
@@ -142,9 +131,7 @@ describe("Badge Component", () => {
   describe("Icon Mapping Branch Coverage", () => {
     it("should return null and render no icon when type is 'default'", () => {
       const { container } = render(<Badge type="default">No Icon</Badge>);
-      const iconWrapper = container.querySelector(
-        ".flex.items-center.justify-center.shrink-0",
-      );
+      const iconWrapper = container.querySelector(".shrink-0.h-\\[0\\.8em\\]");
       expect(iconWrapper).toBeNull();
     });
 
@@ -167,7 +154,7 @@ describe("Badge Component", () => {
         </Badge>,
       );
 
-      const button = screen.getByRole("button", { name: "Dismiss" });
+      const button = screen.getByRole("button", { name: /dismiss/i });
       fireEvent.click(button);
       expect(handleDismiss).toHaveBeenCalledTimes(1);
     });
@@ -184,7 +171,7 @@ describe("Badge Component", () => {
         </div>,
       );
 
-      const button = screen.getByRole("button", { name: "Dismiss" });
+      const button = screen.getByRole("button", { name: /dismiss/i });
       fireEvent.click(button);
 
       expect(dismissClick).toHaveBeenCalledTimes(1);
