@@ -2,10 +2,10 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { Avatar } from "./Avatar";
 
-vi.mock("@/assets/icons/gi-male.svg", () => ({
+vi.mock("@/assets/icons/male-icon.svg", () => ({
   default: () => <svg data-testid="male-icon" />,
 }));
-vi.mock("@/assets/icons/gi-female.svg", () => ({
+vi.mock("@/assets/icons/female-icon.svg", () => ({
   default: () => <svg data-testid="female-icon" />,
 }));
 

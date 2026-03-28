@@ -1,6 +1,6 @@
 import { forwardRef, useEffect, useState } from "react";
-import Female from "@/assets/icons/gi-female.svg";
-import Male from "@/assets/icons/gi-male.svg";
+import Female from "@/assets/icons/female-icon.svg";
+import Male from "@/assets/icons/male-icon.svg";
 import { cn } from "@/lib/utils";
 import { getInitials } from "./Avatar.methods";
 import { type AvatarProps, avatarVariants } from "./Avatar.types";
