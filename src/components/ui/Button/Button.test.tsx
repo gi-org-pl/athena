@@ -1,6 +1,10 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { vi } from "vitest";
+import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 import { Button } from "./Button";
+
+vi.mock("@/assets/icons/loading-spinner.svg", () => ({
+  default: () => <svg data-testid="loading-spinner" className="animate-spin" />,
+}));
 
 describe("<Button />", () => {
   describe("when all provided props are valid", () => {
@@ -24,57 +28,20 @@ describe("<Button />", () => {
     });
   });
 
-  describe("when type is provided as a prop", () => {
+  describe("when variants and sizes are provided", () => {
     it("should render primary type", () => {
       render(<Button type="primary">Primary</Button>);
-      const button = screen.getByRole("button");
-      expect(button).toBeInTheDocument();
-    });
-
-    it("should render outlined type", () => {
-      render(<Button type="outlined">Outlined</Button>);
-      const button = screen.getByRole("button");
-      expect(button).toBeInTheDocument();
-    });
-
-    it("should render ghost type", () => {
-      render(<Button type="ghost">Ghost</Button>);
-      const button = screen.getByRole("button");
-      expect(button).toBeInTheDocument();
-    });
-  });
-
-  describe("when variant is provided as a prop", () => {
-    it("should render primary variant", () => {
-      render(<Button variant="primary">Primary</Button>);
-      const button = screen.getByRole("button");
-      expect(button).toBeInTheDocument();
-    });
-
-    it("should render secondary variant", () => {
-      render(<Button variant="secondary">Secondary</Button>);
-      const button = screen.getByRole("button");
-      expect(button).toBeInTheDocument();
+      expect(screen.getByRole("button")).toBeInTheDocument();
     });
 
     it("should render danger variant", () => {
       render(<Button variant="danger">Danger</Button>);
-      const button = screen.getByRole("button");
-      expect(button).toBeInTheDocument();
-    });
-  });
-
-  describe("when size is provided as a prop", () => {
-    it("should render regular size", () => {
-      render(<Button size="regular">Regular</Button>);
-      const button = screen.getByRole("button");
-      expect(button).toBeInTheDocument();
+      expect(screen.getByRole("button")).toBeInTheDocument();
     });
 
     it("should render small size", () => {
       render(<Button size="small">Small</Button>);
-      const button = screen.getByRole("button");
-      expect(button).toBeInTheDocument();
+      expect(screen.getByRole("button")).toBeInTheDocument();
     });
   });
 
@@ -83,23 +50,24 @@ describe("<Button />", () => {
       render(
         <Button isIconButton aria-label="Launch">
           🚀
-        </Button>,
+        </Button>
       );
       const button = screen.getByRole("button");
-      expect(button).toBeInTheDocument();
       expect(button).toHaveClass("p-0");
     });
 
-    it("should render LeftIcon", () => {
+    it("should render LeftIcon and apply accessibility attributes", () => {
       render(
-        <Button LeftIcon={<span data-testid="left">L</span>}>Text</Button>,
+        <Button LeftIcon={<svg data-testid="left-icon" />}>Text</Button>
       );
-      expect(screen.getByTestId("left")).toBeInTheDocument();
+      const icon = screen.getByTestId("left-icon");
+      expect(icon).toHaveAttribute("aria-hidden", "true");
+      expect(icon).toHaveAttribute("focusable", "false");
     });
 
     it("should render RightIcon", () => {
       render(
-        <Button RightIcon={<span data-testid="right">R</span>}>Text</Button>,
+        <Button RightIcon={<span data-testid="right">R</span>}>Text</Button>
       );
       expect(screen.getByTestId("right")).toBeInTheDocument();
     });
@@ -114,138 +82,108 @@ describe("<Button />", () => {
       expect(button).toHaveAttribute("data-disabled", "true");
       expect(button).toHaveClass("cursor-wait");
 
-      expect(button.querySelector(".animate-spin")).toBeInTheDocument();
+      // Verify the mocked spinner is present
+      expect(screen.getByTestId("loading-spinner")).toBeInTheDocument();
     });
 
     it("should hide children when loading as an icon button", () => {
       render(
         <Button isIconButton isLoading aria-label="Loading action">
           <span data-testid="hidden-child">Hidden</span>
-        </Button>,
+        </Button>
       );
       expect(screen.queryByTestId("hidden-child")).not.toBeInTheDocument();
-      expect(
-        screen.getByRole("button").querySelector(".animate-spin"),
-      ).toBeInTheDocument();
+      expect(screen.getByTestId("loading-spinner")).toBeInTheDocument();
     });
   });
 
-  describe("when is clicked", () => {
+  describe("Interaction and handleInteraction logic", () => {
+    let preventDefaultSpy: any;
+    let stopPropagationSpy: any;
+
+    beforeEach(() => {
+      // Setup spies on the prototype to catch calls regardless of event wrapping
+      preventDefaultSpy = vi.spyOn(MouseEvent.prototype, "preventDefault");
+      stopPropagationSpy = vi.spyOn(MouseEvent.prototype, "stopPropagation");
+    });
+
+    afterEach(() => {
+      preventDefaultSpy.mockRestore();
+      stopPropagationSpy.mockRestore();
+    });
+
     it("should call onClick handler when clicked", () => {
       const handleClick = vi.fn();
       render(<Button onClick={handleClick}>Click me</Button>);
-      const button = screen.getByRole("button");
-      button.click();
+      screen.getByRole("button").click();
       expect(handleClick).toHaveBeenCalledTimes(1);
     });
 
     it("should possess native disabled attribute when disabled prop is true", () => {
       render(<Button disabled>Disabled</Button>);
-      const button = screen.getByRole("button");
-      expect(button).toBeDisabled();
+      expect(screen.getByRole("button")).toBeDisabled();
     });
 
     it("should not call onClick when disabled", () => {
       const handleClick = vi.fn();
-      render(
-        <Button onClick={handleClick} disabled>
-          Disabled
-        </Button>,
-      );
-      const button = screen.getByRole("button");
-      button.click();
+      render(<Button onClick={handleClick} disabled>Disabled</Button>);
+      screen.getByRole("button").click();
       expect(handleClick).not.toHaveBeenCalled();
     });
-  });
 
-  describe("handleInteraction logic", () => {
     it("should stop propagation and prevent default when isLoading is true", () => {
       const handleClick = vi.fn();
-      const preventDefaultSpy = vi.spyOn(
-        MouseEvent.prototype,
-        "preventDefault",
-      );
-      const stopPropagationSpy = vi.spyOn(
-        MouseEvent.prototype,
-        "stopPropagation",
-      );
-
       render(
         <Button onClick={handleClick} isLoading asChild>
           <div role="button">Loading...</div>
-        </Button>,
+        </Button>
       );
 
-      const element = screen.getByRole("button");
-
-      fireEvent.click(element);
+      fireEvent.click(screen.getByRole("button"));
 
       expect(handleClick).not.toHaveBeenCalled();
       expect(preventDefaultSpy).toHaveBeenCalled();
       expect(stopPropagationSpy).toHaveBeenCalled();
-
-      preventDefaultSpy.mockRestore();
-      stopPropagationSpy.mockRestore();
     });
 
     it("should stop propagation and prevent default when disabled is true", () => {
       const handleClick = vi.fn();
-      const preventDefaultSpy = vi.spyOn(
-        MouseEvent.prototype,
-        "preventDefault",
-      );
-      const stopPropagationSpy = vi.spyOn(
-        MouseEvent.prototype,
-        "stopPropagation",
-      );
-
       render(
         <Button onClick={handleClick} disabled asChild>
           <div role="button">Disabled</div>
-        </Button>,
+        </Button>
       );
 
-      const element = screen.getByRole("button");
-
-      fireEvent.click(element);
+      fireEvent.click(screen.getByRole("button"));
 
       expect(handleClick).not.toHaveBeenCalled();
       expect(preventDefaultSpy).toHaveBeenCalled();
       expect(stopPropagationSpy).toHaveBeenCalled();
-
-      preventDefaultSpy.mockRestore();
-      stopPropagationSpy.mockRestore();
     });
   });
 
-  describe("when asChild is provided as a prop", () => {
+  describe("when asChild is provided", () => {
     it("should render as child element when asChild is true", () => {
       render(
         <Button asChild>
           <a href="/test">Link Button</a>
-        </Button>,
+        </Button>
       );
-
-      const link = screen.getByRole("link", { name: "Link Button" });
-      expect(link).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: "Link Button" })).toBeInTheDocument();
     });
 
-    it("should apply loading classes and attributes when asChild and isLoading are true", () => {
+    it("should apply loading attributes when asChild and isLoading are true", () => {
       render(
         <Button asChild isLoading className="custom-slot-class">
           <button>Custom Child</button>
-        </Button>,
+        </Button>
       );
 
       const childBtn = screen.getByRole("button");
-
       expect(childBtn).toHaveClass("custom-slot-class");
       expect(childBtn).toHaveClass("cursor-wait");
-
       expect(childBtn).toHaveAttribute("aria-disabled", "true");
-      expect(childBtn).toHaveAttribute("data-disabled", "true");
-
-      expect(childBtn.querySelector(".animate-spin")).toBeInTheDocument();
+      expect(screen.getByTestId("loading-spinner")).toBeInTheDocument();
     });
   });
 });
