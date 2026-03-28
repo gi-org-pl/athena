@@ -2,7 +2,6 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { Badge } from "./Badge";
 
-// Clean mocks to prevent JSDOM parsing errors
 vi.mock("@/assets/icons/check-icon.svg", () => ({
   default: () => <svg data-testid="check-icon" />,
 }));
