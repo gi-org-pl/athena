@@ -87,9 +87,9 @@ export const ColorShowcase: Story = {
 export const SizeComparison: Story = {
   render: (args) => (
     <div className="flex items-end gap-4">
-      <Avatar {...args} size="small" />
-      <Avatar {...args} size="medium" />
-      <Avatar {...args} size="large" />
+      <Avatar {...args} name="Small" size="small" />
+      <Avatar {...args} name="Medium" size="medium" />
+      <Avatar {...args} name="Large" size="large" />
     </div>
   ),
   args: {
