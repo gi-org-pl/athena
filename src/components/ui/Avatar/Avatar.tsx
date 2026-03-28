@@ -1,9 +1,9 @@
-import { useEffect, useState, forwardRef } from "react";
-import { type AvatarProps, avatarVariants } from "./Avatar.types";
-import { getInitials } from "./Avatar.methods";
+import { forwardRef, useEffect, useState } from "react";
 import Female from "@/assets/icons/gi-female.svg";
 import Male from "@/assets/icons/gi-male.svg";
 import { cn } from "@/lib/utils";
+import { getInitials } from "./Avatar.methods";
+import { type AvatarProps, avatarVariants } from "./Avatar.types";
 
 const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
   (
@@ -47,7 +47,7 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
         {showImage ? (
           <img
             src={src}
-            alt="" 
+            alt=""
             className="size-full object-cover transition-opacity duration-300 ease"
             onError={() => setHasError(true)}
           />

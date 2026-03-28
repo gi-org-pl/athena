@@ -10,26 +10,26 @@ vi.mock("@/assets/icons/gi-female.svg", () => ({
 }));
 
 describe("Accessibility", () => {
-    it("should use an empty alt string and hide role when name/alt are missing", () => {
-      render(<Avatar src="valid.jpg" />);
-      const img = document.querySelector("img");
+  it("should use an empty alt string and hide role when name/alt are missing", () => {
+    render(<Avatar src="valid.jpg" />);
+    const img = document.querySelector("img");
 
-      expect(img).toHaveAttribute("alt", "");
-      expect(screen.queryByRole("img")).not.toBeInTheDocument();
-    });
-
-    it("should prioritize name for aria-label and append 'avatar'", () => {
-      render(<Avatar name="John Doe" />);
-      const avatar = screen.getByRole("img");
-      expect(avatar).toHaveAttribute("aria-label", "John Doe avatar");
-    });
-
-    it("should fallback to alt text for aria-label if name is missing", () => {
-      render(<Avatar alt="Custom Alt Text" />);
-      const avatar = screen.getByRole("img");
-      expect(avatar).toHaveAttribute("aria-label", "Custom Alt Text");
-    });
+    expect(img).toHaveAttribute("alt", "");
+    expect(screen.queryByRole("img")).not.toBeInTheDocument();
   });
+
+  it("should prioritize name for aria-label and append 'avatar'", () => {
+    render(<Avatar name="John Doe" />);
+    const avatar = screen.getByRole("img");
+    expect(avatar).toHaveAttribute("aria-label", "John Doe avatar");
+  });
+
+  it("should fallback to alt text for aria-label if name is missing", () => {
+    render(<Avatar alt="Custom Alt Text" />);
+    const avatar = screen.getByRole("img");
+    expect(avatar).toHaveAttribute("aria-label", "Custom Alt Text");
+  });
+});
 
 describe("<Avatar />", () => {
   describe("Internationalization & Initials", () => {
