@@ -1,12 +1,12 @@
+import { Slot } from "@radix-ui/react-slot";
 import {
   cloneElement,
   forwardRef,
   isValidElement,
+  type MouseEvent,
   type ReactElement,
   type ReactNode,
-  type MouseEvent,
 } from "react";
-import { Slot } from "@radix-ui/react-slot";
 import { cn } from "@/lib/utils";
 import { type ButtonProps, buttonVariants } from "./Button.types";
 
@@ -57,10 +57,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const decorateIcon = (icon: ReactElement) =>
-      cloneElement(icon as ReactElement<{ "aria-hidden"?: boolean; focusable?: string }>, {
-        "aria-hidden": true,
-        focusable: "false",
-      });
+      cloneElement(
+        icon as ReactElement<{ "aria-hidden"?: boolean; focusable?: string }>,
+        {
+          "aria-hidden": true,
+          focusable: "false",
+        },
+      );
 
     const renderContent = (content: ReactNode) => {
       if (isIconButton && isLoading) return <LoadingSpinner />;
@@ -78,7 +81,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         buttonVariants({ type, variant, size, isIconButton, className }),
         isLoading && "cursor-wait",
       ),
-      disabled: isActuallyDisabled, 
+      disabled: isActuallyDisabled,
       "aria-disabled": isActuallyDisabled,
       "aria-busy": isLoading,
       "aria-live": "polite" as const,

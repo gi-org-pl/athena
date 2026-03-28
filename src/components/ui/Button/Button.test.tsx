@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { vi } from "vitest";
 import { Button } from "./Button";
 
@@ -80,7 +80,11 @@ describe("<Button />", () => {
 
   describe("when rendering with icons", () => {
     it("should render as an icon button", () => {
-      render(<Button isIconButton aria-label="Launch">🚀</Button>);
+      render(
+        <Button isIconButton aria-label="Launch">
+          🚀
+        </Button>,
+      );
       const button = screen.getByRole("button");
       expect(button).toBeInTheDocument();
       expect(button).toHaveClass("p-0");
@@ -88,14 +92,14 @@ describe("<Button />", () => {
 
     it("should render LeftIcon", () => {
       render(
-        <Button LeftIcon={<span data-testid="left">L</span>}>Text</Button>
+        <Button LeftIcon={<span data-testid="left">L</span>}>Text</Button>,
       );
       expect(screen.getByTestId("left")).toBeInTheDocument();
     });
 
     it("should render RightIcon", () => {
       render(
-        <Button RightIcon={<span data-testid="right">R</span>}>Text</Button>
+        <Button RightIcon={<span data-testid="right">R</span>}>Text</Button>,
       );
       expect(screen.getByTestId("right")).toBeInTheDocument();
     });
@@ -105,11 +109,11 @@ describe("<Button />", () => {
     it("should show loading indicator and set disabled attributes", () => {
       render(<Button isLoading>Submit</Button>);
       const button = screen.getByRole("button");
-      
+
       expect(button).toHaveAttribute("aria-disabled", "true");
       expect(button).toHaveAttribute("data-disabled", "true");
       expect(button).toHaveClass("cursor-wait");
-      
+
       expect(button.querySelector(".animate-spin")).toBeInTheDocument();
     });
 
@@ -117,11 +121,11 @@ describe("<Button />", () => {
       render(
         <Button isIconButton isLoading aria-label="Loading action">
           <span data-testid="hidden-child">Hidden</span>
-        </Button>
+        </Button>,
       );
       expect(screen.queryByTestId("hidden-child")).not.toBeInTheDocument();
       expect(
-        screen.getByRole("button").querySelector(".animate-spin")
+        screen.getByRole("button").querySelector(".animate-spin"),
       ).toBeInTheDocument();
     });
   });
@@ -146,7 +150,7 @@ describe("<Button />", () => {
       render(
         <Button onClick={handleClick} disabled>
           Disabled
-        </Button>
+        </Button>,
       );
       const button = screen.getByRole("button");
       button.click();
@@ -154,60 +158,72 @@ describe("<Button />", () => {
     });
   });
 
-describe("handleInteraction logic", () => {
-  it("should stop propagation and prevent default when isLoading is true", () => {
-    const handleClick = vi.fn();
-    const preventDefaultSpy = vi.spyOn(MouseEvent.prototype, 'preventDefault');
-    const stopPropagationSpy = vi.spyOn(MouseEvent.prototype, 'stopPropagation');
+  describe("handleInteraction logic", () => {
+    it("should stop propagation and prevent default when isLoading is true", () => {
+      const handleClick = vi.fn();
+      const preventDefaultSpy = vi.spyOn(
+        MouseEvent.prototype,
+        "preventDefault",
+      );
+      const stopPropagationSpy = vi.spyOn(
+        MouseEvent.prototype,
+        "stopPropagation",
+      );
 
-    render(
-      <Button onClick={handleClick} isLoading asChild>
-        <div role="button">Loading...</div>
-      </Button>
-    );
+      render(
+        <Button onClick={handleClick} isLoading asChild>
+          <div role="button">Loading...</div>
+        </Button>,
+      );
 
-    const element = screen.getByRole("button");
-    
-    fireEvent.click(element);
+      const element = screen.getByRole("button");
 
-    expect(handleClick).not.toHaveBeenCalled();
-    expect(preventDefaultSpy).toHaveBeenCalled();
-    expect(stopPropagationSpy).toHaveBeenCalled();
+      fireEvent.click(element);
 
-    preventDefaultSpy.mockRestore();
-    stopPropagationSpy.mockRestore();
+      expect(handleClick).not.toHaveBeenCalled();
+      expect(preventDefaultSpy).toHaveBeenCalled();
+      expect(stopPropagationSpy).toHaveBeenCalled();
+
+      preventDefaultSpy.mockRestore();
+      stopPropagationSpy.mockRestore();
+    });
+
+    it("should stop propagation and prevent default when disabled is true", () => {
+      const handleClick = vi.fn();
+      const preventDefaultSpy = vi.spyOn(
+        MouseEvent.prototype,
+        "preventDefault",
+      );
+      const stopPropagationSpy = vi.spyOn(
+        MouseEvent.prototype,
+        "stopPropagation",
+      );
+
+      render(
+        <Button onClick={handleClick} disabled asChild>
+          <div role="button">Disabled</div>
+        </Button>,
+      );
+
+      const element = screen.getByRole("button");
+
+      fireEvent.click(element);
+
+      expect(handleClick).not.toHaveBeenCalled();
+      expect(preventDefaultSpy).toHaveBeenCalled();
+      expect(stopPropagationSpy).toHaveBeenCalled();
+
+      preventDefaultSpy.mockRestore();
+      stopPropagationSpy.mockRestore();
+    });
   });
-
-  it("should stop propagation and prevent default when disabled is true", () => {
-    const handleClick = vi.fn();
-    const preventDefaultSpy = vi.spyOn(MouseEvent.prototype, 'preventDefault');
-    const stopPropagationSpy = vi.spyOn(MouseEvent.prototype, 'stopPropagation');
-
-    render(
-      <Button onClick={handleClick} disabled asChild>
-        <div role="button">Disabled</div>
-      </Button>
-    );
-
-    const element = screen.getByRole("button");
-    
-    fireEvent.click(element);
-
-    expect(handleClick).not.toHaveBeenCalled();
-    expect(preventDefaultSpy).toHaveBeenCalled();
-    expect(stopPropagationSpy).toHaveBeenCalled();
-
-    preventDefaultSpy.mockRestore();
-    stopPropagationSpy.mockRestore();
-  });
-});
 
   describe("when asChild is provided as a prop", () => {
     it("should render as child element when asChild is true", () => {
       render(
         <Button asChild>
           <a href="/test">Link Button</a>
-        </Button>
+        </Button>,
       );
 
       const link = screen.getByRole("link", { name: "Link Button" });
@@ -218,7 +234,7 @@ describe("handleInteraction logic", () => {
       render(
         <Button asChild isLoading className="custom-slot-class">
           <button>Custom Child</button>
-        </Button>
+        </Button>,
       );
 
       const childBtn = screen.getByRole("button");
