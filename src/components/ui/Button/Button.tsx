@@ -7,8 +7,8 @@ import {
   type ReactElement,
   type ReactNode,
 } from "react";
-import { cn } from "@/lib/utils";
 import LoadingSpinner from "@/assets/icons/loading-spinner.svg";
+import { cn } from "@/lib/utils";
 import { type ButtonProps, buttonVariants } from "./Button.types";
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(

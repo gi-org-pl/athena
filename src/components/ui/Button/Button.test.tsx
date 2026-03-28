@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { Button } from "./Button";
 
 vi.mock("@/assets/icons/loading-spinner.svg", () => ({
@@ -50,16 +50,14 @@ describe("<Button />", () => {
       render(
         <Button isIconButton aria-label="Launch">
           🚀
-        </Button>
+        </Button>,
       );
       const button = screen.getByRole("button");
       expect(button).toHaveClass("p-0");
     });
 
     it("should render LeftIcon and apply accessibility attributes", () => {
-      render(
-        <Button LeftIcon={<svg data-testid="left-icon" />}>Text</Button>
-      );
+      render(<Button LeftIcon={<svg data-testid="left-icon" />}>Text</Button>);
       const icon = screen.getByTestId("left-icon");
       expect(icon).toHaveAttribute("aria-hidden", "true");
       expect(icon).toHaveAttribute("focusable", "false");
@@ -67,7 +65,7 @@ describe("<Button />", () => {
 
     it("should render RightIcon", () => {
       render(
-        <Button RightIcon={<span data-testid="right">R</span>}>Text</Button>
+        <Button RightIcon={<span data-testid="right">R</span>}>Text</Button>,
       );
       expect(screen.getByTestId("right")).toBeInTheDocument();
     });
@@ -90,7 +88,7 @@ describe("<Button />", () => {
       render(
         <Button isIconButton isLoading aria-label="Loading action">
           <span data-testid="hidden-child">Hidden</span>
-        </Button>
+        </Button>,
       );
       expect(screen.queryByTestId("hidden-child")).not.toBeInTheDocument();
       expect(screen.getByTestId("loading-spinner")).toBeInTheDocument();
@@ -126,7 +124,11 @@ describe("<Button />", () => {
 
     it("should not call onClick when disabled", () => {
       const handleClick = vi.fn();
-      render(<Button onClick={handleClick} disabled>Disabled</Button>);
+      render(
+        <Button onClick={handleClick} disabled>
+          Disabled
+        </Button>,
+      );
       screen.getByRole("button").click();
       expect(handleClick).not.toHaveBeenCalled();
     });
@@ -136,7 +138,7 @@ describe("<Button />", () => {
       render(
         <Button onClick={handleClick} isLoading asChild>
           <div role="button">Loading...</div>
-        </Button>
+        </Button>,
       );
 
       fireEvent.click(screen.getByRole("button"));
@@ -151,7 +153,7 @@ describe("<Button />", () => {
       render(
         <Button onClick={handleClick} disabled asChild>
           <div role="button">Disabled</div>
-        </Button>
+        </Button>,
       );
 
       fireEvent.click(screen.getByRole("button"));
@@ -167,16 +169,18 @@ describe("<Button />", () => {
       render(
         <Button asChild>
           <a href="/test">Link Button</a>
-        </Button>
+        </Button>,
       );
-      expect(screen.getByRole("link", { name: "Link Button" })).toBeInTheDocument();
+      expect(
+        screen.getByRole("link", { name: "Link Button" }),
+      ).toBeInTheDocument();
     });
 
     it("should apply loading attributes when asChild and isLoading are true", () => {
       render(
         <Button asChild isLoading className="custom-slot-class">
           <button>Custom Child</button>
-        </Button>
+        </Button>,
       );
 
       const childBtn = screen.getByRole("button");
