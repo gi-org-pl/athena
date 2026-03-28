@@ -159,7 +159,7 @@ export const IconCustomization: Story = {
 export const DismissibleActions: Story = {
   render: (args) => (
     <div className="flex flex-wrap gap-2">
-      <Badge {...args}  size="small">
+      <Badge {...args} size="small">
         Small
       </Badge>
       <Badge {...args} size="regular">

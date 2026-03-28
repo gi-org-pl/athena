@@ -1,8 +1,5 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import {
-  type ComponentProps,
-  type ReactNode,
-} from "react";
+import { type ComponentProps, type ReactNode } from "react";
 
 export interface BadgeProps
   extends ComponentProps<"span">,

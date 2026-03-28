@@ -1,14 +1,11 @@
-import {
-  forwardRef,
-  useMemo,
-} from "react";
-import { type BadgeProps, badgeVariants } from "./Badge.types";
+import { forwardRef, useMemo } from "react";
 import CheckIcon from "@/assets/icons/check-icon.svg";
+import DismissCircle from "@/assets/icons/dismiss-circle-icon.svg";
 import InfoIcon from "@/assets/icons/info-icon.svg";
 import WarningIcon from "@/assets/icons/warning-icon.svg";
 import XIcon from "@/assets/icons/x-icon.svg";
-import DismissCircle from "@/assets/icons/dismiss-circle-icon.svg";
 import { cn } from "@/lib/utils";
+import { type BadgeProps, badgeVariants } from "./Badge.types";
 
 const typeIconMap = {
   info: InfoIcon,
@@ -16,7 +13,6 @@ const typeIconMap = {
   warning: WarningIcon,
   error: XIcon,
 } as const;
-
 
 const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
   (
