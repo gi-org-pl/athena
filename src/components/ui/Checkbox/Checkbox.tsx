@@ -1,7 +1,7 @@
-import {Root, Indicator} from "@radix-ui/react-checkbox";
+import { Indicator, Root } from "@radix-ui/react-checkbox";
 import { useId } from "react";
-import type { CheckboxProps } from "./Checkbox.types";
 import { cn } from "@/lib/utils";
+import type { CheckboxProps } from "./Checkbox.types";
 
 export const Checkbox = ({
   className,
@@ -27,15 +27,14 @@ export const Checkbox = ({
           "data-[state=checked]:bg-gi-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-gi-dark-ash",
           "aria-invalid:border-gi-red aria-invalid:ring-gi-red/20 dark:aria-invalid:ring-gi-red/40",
           "disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer",
-          className
+          className,
         )}
         {...props}
       >
         <Indicator
           data-slot="checkbox-indicator"
           className="grid place-content-center text-current transition-none"
-        >
-        </Indicator>
+        ></Indicator>
       </Root>
 
       <div className="flex flex-col ml-2 select-none">
@@ -46,10 +45,7 @@ export const Checkbox = ({
           {label}
         </label>
         {secondaryLabel && (
-          <span 
-            id={descriptionId} 
-            className="text-gi-gray text-sm leading-5"
-          >
+          <span id={descriptionId} className="text-gi-gray text-sm leading-5">
             {secondaryLabel}
           </span>
         )}
