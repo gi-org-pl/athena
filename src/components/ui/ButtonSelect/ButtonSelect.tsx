@@ -1,17 +1,5 @@
 import { Button } from "../Button/Button.tsx";
-
-export interface ButtonOption {
-  id: string;
-  text: string;
-}
-
-export interface ButtonSelectProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
-  options: ButtonOption[];
-  isFullWidth?: boolean;
-  selectedOptionId: string;
-  onSelectedOptionIdChange: (id: string) => void;
-}
+import type { ButtonSelectProps } from "./ButtonSelect.types.tsx";
 
 export function ButtonSelect({
   options,
@@ -21,8 +9,12 @@ export function ButtonSelect({
   className,
   ...props
 }: ButtonSelectProps) {
+  if (!options.length) return null;
+
   return (
     <div
+      role="radiogroup"
+      aria-label={props["aria-label"]}
       className={`
         flex flex-row gap-2
         justify-center 
@@ -31,21 +23,28 @@ export function ButtonSelect({
       `}
       {...props}
     >
-      {options.map((option) => (
-        <Button
-          key={option.id}
-          className={isFullWidth ? "flex-1" : "w-max"}
-          type={selectedOptionId === option.id ? "primary" : "outlined"}
-          variant={"primary"}
-          onClick={() => {
-            if (selectedOptionId !== option.id) {
-              onSelectedOptionIdChange(option.id);
-            }
-          }}
-        >
-          {option.text}
-        </Button>
-      ))}
+      {options.map((option) => {
+        const isSelected = selectedOptionId === option.id;
+        
+        return (
+          <Button
+            key={option.id}
+            role="radio"
+            aria-checked={isSelected}
+            tabIndex={isSelected ? 0 : -1}
+            className={isFullWidth ? "flex-1" : "w-max"}
+            type={isSelected ? "primary" : "outlined"}
+            variant="primary"
+            onClick={() => {
+              if (!isSelected) {
+                onSelectedOptionIdChange(option.id);
+              }
+            }}
+          >
+            {option.text}
+          </Button>
+        );
+      })}
     </div>
   );
 }
