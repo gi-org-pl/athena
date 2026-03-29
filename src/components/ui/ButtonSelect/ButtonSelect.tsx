@@ -1,15 +1,15 @@
 import { Button } from "../Button/Button.tsx";
 import type { ButtonSelectProps } from "./ButtonSelect.types.tsx";
 
-export function ButtonSelect({
+export const ButtonSelect = ({
   options,
   selectedOptionId,
   isFullWidth = false,
   onSelectedOptionIdChange,
   className,
   ...props
-}: ButtonSelectProps) {
-  if (!options.length) return null;
+}: ButtonSelectProps) => {
+  if (options.length === 0) return null;
 
   return (
     <div
@@ -25,7 +25,7 @@ export function ButtonSelect({
     >
       {options.map((option) => {
         const isSelected = selectedOptionId === option.id;
-        
+
         return (
           <Button
             key={option.id}
@@ -47,4 +47,5 @@ export function ButtonSelect({
       })}
     </div>
   );
-}
+};
+ButtonSelect.displayName = "Button Select";

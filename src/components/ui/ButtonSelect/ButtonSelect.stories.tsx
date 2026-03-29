@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fn } from "storybook/test";
 import { ButtonSelect } from "./ButtonSelect";
 
@@ -38,11 +38,11 @@ const meta = {
       control: "boolean",
     },
   },
-args: {
+  args: {
     options: OPTIONS,
     selectedOptionId: "1",
     isFullWidth: false,
-    onSelectedOptionIdChange: fn(), 
+    onSelectedOptionIdChange: fn(),
   },
   render: (args) => {
     const [selectedId, setSelectedId] = useState(args.selectedOptionId);

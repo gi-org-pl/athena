@@ -11,10 +11,7 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: ["./setupTests.ts"],
     coverage: {
-      exclude: [
-        "src/assets/**",
-        '**/*.types.tsx',
-      ],
+      exclude: ["src/assets/**", "**/*.types.tsx"],
     },
   },
   resolve: {

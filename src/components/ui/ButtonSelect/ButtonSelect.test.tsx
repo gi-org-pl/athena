@@ -31,13 +31,15 @@ describe("<ButtonSelect />", () => {
 
       expect(first).toHaveAttribute("aria-checked", "true");
       expect(first).toHaveAttribute("tabindex", "0");
-      
+
       expect(second).toHaveAttribute("aria-checked", "false");
       expect(second).toHaveAttribute("tabindex", "-1");
     });
 
     it("should return null when options list is empty", () => {
-      const { container } = render(<ButtonSelect {...defaultProps} options={[]} />);
+      const { container } = render(
+        <ButtonSelect {...defaultProps} options={[]} />,
+      );
       expect(container.firstChild).toBeNull();
     });
   });
@@ -63,37 +65,52 @@ describe("<ButtonSelect />", () => {
     });
 
     it("should react to external selectedOptionId prop changes", () => {
-      const { rerender } = render(<ButtonSelect {...defaultProps} selectedOptionId="1" />);
-      
-      expect(screen.getByRole("radio", { name: "Option 1" })).toHaveAttribute("aria-checked", "true");
+      const { rerender } = render(
+        <ButtonSelect {...defaultProps} selectedOptionId="1" />,
+      );
+
+      expect(screen.getByRole("radio", { name: "Option 1" })).toHaveAttribute(
+        "aria-checked",
+        "true",
+      );
 
       rerender(<ButtonSelect {...defaultProps} selectedOptionId="2" />);
-      
-      expect(screen.getByRole("radio", { name: "Option 1" })).toHaveAttribute("aria-checked", "false");
-      expect(screen.getByRole("radio", { name: "Option 2" })).toHaveAttribute("aria-checked", "true");
+
+      expect(screen.getByRole("radio", { name: "Option 1" })).toHaveAttribute(
+        "aria-checked",
+        "false",
+      );
+      expect(screen.getByRole("radio", { name: "Option 2" })).toHaveAttribute(
+        "aria-checked",
+        "true",
+      );
     });
   });
 
   describe("Layout & Styling", () => {
     it("should apply full-width classes and flex-1 to children", () => {
-      const { container } = render(<ButtonSelect {...defaultProps} isFullWidth />);
+      const { container } = render(
+        <ButtonSelect {...defaultProps} isFullWidth />,
+      );
       const wrapper = container.firstChild;
 
       expect(wrapper).toHaveClass("w-full");
-      
+
       const buttons = screen.getAllByRole("radio");
-      buttons.forEach(btn => expect(btn).toHaveClass("flex-1"));
+      for (const btn of buttons) {
+        expect(btn).toHaveClass("flex-1");
+      }
     });
 
     it("should pass through standard HTML attributes and custom className", () => {
       render(
-        <ButtonSelect 
-          {...defaultProps} 
-          data-testid="custom-id" 
-          className="extra-class" 
-        />
+        <ButtonSelect
+          {...defaultProps}
+          data-testid="custom-id"
+          className="extra-class"
+        />,
       );
-      
+
       const wrapper = screen.getByTestId("custom-id");
       expect(wrapper).toHaveClass("extra-class");
     });
