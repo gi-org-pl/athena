@@ -48,6 +48,7 @@ const meta = {
     size: {
       table: { category: "Style" },
       control: "radio",
+      options: SIZES,
     },
     isLoading: {
       table: { category: "Interactions" },
@@ -62,8 +63,7 @@ const meta = {
       control: "boolean",
     },
     asChild: {
-      table: { category: "Interactions" },
-      control: "boolean",
+      table: { disable: true },
     },
     htmlType: {
       table: { category: "Interactions" },
@@ -150,6 +150,7 @@ export const IconCustomization: Story = {
       <Button
         {...args}
         isIconButton
+        aria-label="Icon Button"
         LeftIcon={<Crown />}
         children={undefined}
       />
