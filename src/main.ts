@@ -3,7 +3,6 @@ import "./index.css";
 export { Avatar } from "./components/ui/Avatar/Avatar";
 export * from "./components/ui/Badge/Badge";
 export { Button } from "./components/ui/Button/Button";
-export { buttonVariants } from "./components/ui/Button/Button.types";
 export { ButtonSelect } from "./components/ui/ButtonSelect/ButtonSelect";
 export { Checkbox } from "./components/ui/Checkbox/Checkbox";
 export {
