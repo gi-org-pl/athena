@@ -1,52 +1,61 @@
-import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
-import * as React from "react";
-
+import {Root, Indicator} from "@radix-ui/react-checkbox";
+import { useId } from "react";
+import type { CheckboxProps } from "./Checkbox.types";
 import { cn } from "@/lib/utils";
 
-type CheckboxProps = React.ComponentProps<typeof CheckboxPrimitive.Root> & {
-  label: string;
-  secondaryLabel?: string;
-};
-
-function Checkbox({
+export const Checkbox = ({
   className,
   label,
   secondaryLabel,
   id,
   ...props
-}: CheckboxProps) {
-  const checkboxId = id ?? React.useId();
+}: CheckboxProps) => {
+  const generatedId = useId();
+  const checkboxId = id ?? generatedId;
+  const descriptionId = `${checkboxId}-description`;
+
   return (
-    <div className="flex">
-      <CheckboxPrimitive.Root
+    <div className="flex items-start group">
+      <Root
         id={checkboxId}
         data-slot="checkbox"
+        aria-describedby={secondaryLabel ? descriptionId : undefined}
         className={cn(
-          "peer border-input dark:bg-gi-primary/30 data-[state=checked]:bg-gi-primary data-[state=checked]:text-primary-foreground dark:data-[state=checked]:bg-gi-primary data-[state=checked]:border-gi-dark-ash focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-gi-red/20 dark:aria-invalid:ring-gi-red/40 aria-invalid:border-gi-red size-3.5 shrink-0 rounded-xs border shadow-xs transition-shadow outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50",
-          className,
+          "peer shrink-0 rounded-xs border shadow-xs transition-all outline-none",
+          "size-3.5 border-input dark:bg-gi-primary/30",
+          "focus-visible:ring-2 focus-visible:ring-gi-primary focus-visible:ring-offset-2 ring-offset-background",
+          "data-[state=checked]:bg-gi-primary data-[state=checked]:text-primary-foreground data-[state=checked]:border-gi-dark-ash",
+          "aria-invalid:border-gi-red aria-invalid:ring-gi-red/20 dark:aria-invalid:ring-gi-red/40",
+          "disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer",
+          className
         )}
         {...props}
       >
-        <CheckboxPrimitive.Indicator
+        <Indicator
           data-slot="checkbox-indicator"
           className="grid place-content-center text-current transition-none"
-        ></CheckboxPrimitive.Indicator>
-      </CheckboxPrimitive.Root>
-      <div className="flex flex-col ml-2">
+        >
+        </Indicator>
+      </Root>
+
+      <div className="flex flex-col ml-2 select-none">
         <label
           htmlFor={checkboxId}
-          className="font-medium text-sm leading-3.5 text-gi-primary mb-1.5"
+          className="font-medium text-sm leading-3.5 text-gi-primary mb-1.5 cursor-pointer peer-disabled:cursor-not-allowed"
         >
           {label}
         </label>
         {secondaryLabel && (
-          <span className="text-gi-gray text-sm leading-5">
+          <span 
+            id={descriptionId} 
+            className="text-gi-gray text-sm leading-5"
+          >
             {secondaryLabel}
           </span>
         )}
       </div>
     </div>
   );
-}
+};
 
-export { Checkbox };
+Checkbox.displayName = "Checkbox";
