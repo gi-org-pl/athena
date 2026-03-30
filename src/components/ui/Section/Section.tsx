@@ -17,14 +17,14 @@ export const Section = forwardRef<HTMLElement, SectionProps>(
   ) => {
     const generatedId = useId();
     const titleId = `section_title_${generatedId}`;
-    
+
     const isRight = actions && actionsPosition === "right";
     const isBottom = actions && actionsPosition === "bottom";
 
     return (
       <section
         ref={ref}
-        data-testid={dataTestId}
+        data-test-id={dataTestId}
         aria-labelledby={titleId}
         className={cn(
           "w-full flex flex-col border border-gi-ash rounded-[48px]",
@@ -34,16 +34,16 @@ export const Section = forwardRef<HTMLElement, SectionProps>(
       >
         <header className="flex flex-col w-full p-6 gap-4">
           <div className="flex flex-row items-center justify-between w-full">
-            <h2 
+            <h2
               id={titleId}
               className="text-gi-light-primary font-extrabold text-[24px]/[120%]"
             >
               {title}
             </h2>
             {isRight && (
-              <div 
-                role="group" 
-                aria-label={`Actions for ${title}`} 
+              <div
+                role="group"
+                aria-label={`Actions for ${title}`}
                 className="flex flex-row items-center gap-3"
               >
                 {actions}
@@ -51,9 +51,9 @@ export const Section = forwardRef<HTMLElement, SectionProps>(
             )}
           </div>
           {isBottom && (
-            <div 
-              role="group" 
-              aria-label={`Actions for ${title}`} 
+            <div
+              role="group"
+              aria-label={`Actions for ${title}`}
               className="flex flex-row items-center gap-3"
             >
               {actions}
