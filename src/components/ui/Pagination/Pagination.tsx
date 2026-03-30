@@ -1,6 +1,6 @@
 import { forwardRef, useMemo } from "react";
-import ChevronLeftIcon from "@/assets/icons/chevron-left.svg";
-import ChevronRightIcon from "@/assets/icons/chevron-right.svg";
+import ChevronLeftIcon from "@/assets/icons/chevron-left-icon.svg";
+import ChevronRightIcon from "@/assets/icons/chevron-right-icon.svg";
 import { cn } from "@/lib/utils";
 import { Button } from "../Button/Button";
 import { generatePaginationRange } from "./Pagination.methods";
