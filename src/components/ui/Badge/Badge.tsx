@@ -7,14 +7,14 @@ import XIcon from "@/assets/icons/x-icon.svg";
 import { cn } from "@/lib/utils";
 import { type BadgeProps, badgeVariants } from "./Badge.types";
 
-export const typeIconMap = {
+const typeIconMap = {
   info: InfoIcon,
   success: CheckIcon,
   warning: WarningIcon,
   error: XIcon,
 } as const;
 
-const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
+export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
   (
     {
       className,
