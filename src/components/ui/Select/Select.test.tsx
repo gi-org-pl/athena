@@ -18,7 +18,7 @@ global.ResizeObserver = class {
   disconnect() {}
 };
 
-vi.mock("@/assets/icons/chevron-down.svg", () => ({
+vi.mock("@/assets/icons/chevron-down-icon.svg", () => ({
   default: () => <span data-testid="chevron" />,
 }));
 
