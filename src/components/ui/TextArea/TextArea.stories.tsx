@@ -8,37 +8,51 @@ const meta: Meta<typeof TextArea> = {
   component: TextArea,
   tags: ["autodocs"],
   argTypes: {
-    value: {
-      control: "text",
-    },
     label: {
       control: "text",
+      table: { category: "Content" },
     },
     placeholder: {
       control: "text",
+      table: { category: "Content" },
     },
     helper: {
       control: "text",
+      table: { category: "Content" },
     },
     errorText: {
       control: "text",
+      table: { category: "Content" },
     },
     characterLimit: {
       control: "number",
+      table: { category: "Content" },
     },
+
     isError: {
       control: "boolean",
+      table: { category: "State" },
     },
     isRequired: {
       control: "boolean",
+      table: { category: "State" },
     },
     isDisabled: {
       control: "boolean",
+      table: { category: "State" },
     },
-    dataTestId: {
+
+    value: {
       control: "text",
+      table: { category: "Data" },
     },
-    onChange: {},
+
+    dataTestId: {
+      table: { disable: true },
+    },
+    onChange: {
+      table: { disable: true },
+    },
   },
 };
 
