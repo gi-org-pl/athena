@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 import { fn } from "storybook/test";
-
 import { Switch } from "./Switch";
 
 const meta = {
@@ -11,12 +9,36 @@ const meta = {
     layout: "centered",
   },
   argTypes: {
-    checked: { control: "boolean" },
-    defaultChecked: { control: "boolean" },
-    disabled: { control: "boolean" },
-    required: { control: "boolean" },
-    name: { control: "text" },
-    value: { control: "text" },
+    checked: { 
+      control: "boolean",
+      table: { category: "Interactions" }
+    },
+    defaultChecked: { 
+      control: "boolean", 
+      table: { category: "Style" }
+    },
+    disabled: { 
+      control: "boolean", 
+      table: { category: "Style" }
+    },
+    required: { 
+      control: "boolean",
+      table: { category: "Style" }
+    },
+    name: { 
+      control: "text",
+      table: { category: "Content" }
+    },
+    value: { 
+      control: "text",
+      table: { category: "Content" }
+    },
+    onCheckedChange: {
+      table: { disable: true }
+    },
+    "aria-label": {
+      table: { category: "Content" }
+    }
   },
   tags: ["autodocs"],
   args: { onCheckedChange: fn() },
