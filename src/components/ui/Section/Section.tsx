@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import { forwardRef, useId } from "react";
 import { cn } from "@/lib/utils";
 import type { SectionProps } from "./Section.types";
 
@@ -15,6 +15,9 @@ export const Section = forwardRef<HTMLElement, SectionProps>(
     },
     ref,
   ) => {
+    const generatedId = useId();
+    const titleId = `section_title_${generatedId}`;
+    
     const isRight = actions && actionsPosition === "right";
     const isBottom = actions && actionsPosition === "bottom";
 
@@ -22,6 +25,7 @@ export const Section = forwardRef<HTMLElement, SectionProps>(
       <section
         ref={ref}
         data-testid={dataTestId}
+        aria-labelledby={titleId}
         className={cn(
           "w-full flex flex-col border border-gi-ash rounded-[48px]",
           className,
@@ -30,15 +34,30 @@ export const Section = forwardRef<HTMLElement, SectionProps>(
       >
         <header className="flex flex-col w-full p-6 gap-4">
           <div className="flex flex-row items-center justify-between w-full">
-            <div className="text-gi-light-primary font-extrabold text-[24px]/[120%]">
+            <h2 
+              id={titleId}
+              className="text-gi-light-primary font-extrabold text-[24px]/[120%]"
+            >
               {title}
-            </div>
+            </h2>
             {isRight && (
-              <div className="flex flex-row items-center gap-3">{actions}</div>
+              <div 
+                role="group" 
+                aria-label={`Actions for ${title}`} 
+                className="flex flex-row items-center gap-3"
+              >
+                {actions}
+              </div>
             )}
           </div>
           {isBottom && (
-            <div className="flex flex-row items-center gap-3">{actions}</div>
+            <div 
+              role="group" 
+              aria-label={`Actions for ${title}`} 
+              className="flex flex-row items-center gap-3"
+            >
+              {actions}
+            </div>
           )}
         </header>
         <div className="flex flex-col w-full border-gi-ash rounded-[48px] bg-gi-ash p-6 gap-4">
