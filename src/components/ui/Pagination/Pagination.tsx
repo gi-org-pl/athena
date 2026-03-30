@@ -37,7 +37,7 @@ export const Pagination = forwardRef<HTMLElement, PaginationProps>(
       <nav
         ref={ref}
         aria-label="Pagination"
-        data-testId={dataTestId}
+        data-test-id={dataTestId}
         className={cn(
           "flex items-center",
           isFullWidth ? "w-full justify-between" : "w-auto gap-2",
