@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import AddIcon from "@/assets/icons/add.svg";
-import DeleteIcon from "@/assets/icons/delete.svg";
-import EditIcon from "@/assets/icons/edit.svg";
+import AddIcon from "@/assets/icons/add-icon.svg";
+import DeleteIcon from "@/assets/icons/delete-icon.svg";
+import EditIcon from "@/assets/icons/edit-icon.svg";
 import { Button } from "../Button/Button";
 import { ActionList } from "./ActionList/ActionList";
 import { Select } from "./Select";
