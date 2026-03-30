@@ -26,33 +26,33 @@ const meta = {
     ),
   ],
   argTypes: {
-    title: { 
-      control: "text", 
-      table: { category: "Header" } 
+    title: {
+      control: "text",
+      table: { category: "Header" },
     },
-    titleSecondary: { 
-      control: "text", 
-      table: { category: "Header" } 
+    titleSecondary: {
+      control: "text",
+      table: { category: "Header" },
     },
-    childrenTitle: { 
-      control: "text", 
-      table: { category: "Content" } 
+    childrenTitle: {
+      control: "text",
+      table: { category: "Content" },
     },
-    childrenDescription: { 
-      control: "text", 
-      table: { category: "Content" } 
+    childrenDescription: {
+      control: "text",
+      table: { category: "Content" },
     },
-    showActions: { 
-      control: "boolean", 
-      table: { category: "Actions" } 
+    showActions: {
+      control: "boolean",
+      table: { category: "Actions" },
     },
-    action0: { 
-      control: "text", 
-      table: { category: "Actions" } 
+    action0: {
+      control: "text",
+      table: { category: "Actions" },
     },
-    action1: { 
-      control: "text", 
-      table: { category: "Actions" } 
+    action1: {
+      control: "text",
+      table: { category: "Actions" },
     },
     actionsPosition: {
       control: "radio",
@@ -74,7 +74,8 @@ const meta = {
   render: (args) => {
     const titleContent = (
       <div>
-        {args.title} <span style={{ fontWeight: 500 }}>{args.titleSecondary}</span>
+        {args.title}{" "}
+        <span style={{ fontWeight: 500 }}>{args.titleSecondary}</span>
       </div>
     );
 

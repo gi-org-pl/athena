@@ -1,5 +1,5 @@
-import type { SectionProps } from "./Section.types";
 import { cn } from "@/lib/utils";
+import type { SectionProps } from "./Section.types";
 
 export function Section({
   title,
