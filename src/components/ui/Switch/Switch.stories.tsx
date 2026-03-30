@@ -9,36 +9,36 @@ const meta = {
     layout: "centered",
   },
   argTypes: {
-    checked: { 
+    checked: {
       control: "boolean",
-      table: { category: "Interactions" }
+      table: { category: "Interactions" },
     },
-    defaultChecked: { 
-      control: "boolean", 
-      table: { category: "Style" }
-    },
-    disabled: { 
-      control: "boolean", 
-      table: { category: "Style" }
-    },
-    required: { 
+    defaultChecked: {
       control: "boolean",
-      table: { category: "Style" }
+      table: { category: "Style" },
     },
-    name: { 
-      control: "text",
-      table: { category: "Content" }
+    disabled: {
+      control: "boolean",
+      table: { category: "Style" },
     },
-    value: { 
+    required: {
+      control: "boolean",
+      table: { category: "Style" },
+    },
+    name: {
       control: "text",
-      table: { category: "Content" }
+      table: { category: "Content" },
+    },
+    value: {
+      control: "text",
+      table: { category: "Content" },
     },
     onCheckedChange: {
-      table: { disable: true }
+      table: { disable: true },
     },
     "aria-label": {
-      table: { category: "Content" }
-    }
+      table: { category: "Content" },
+    },
   },
   tags: ["autodocs"],
   args: { onCheckedChange: fn() },
