@@ -1,14 +1,14 @@
-import { DropdownMenuItem } from "./ActionList.methods";
-import { cn } from "@/lib/utils";
-import type { ActionListProps } from "./ActionList.types";
 import { forwardRef } from "react";
+import { cn } from "@/lib/utils";
+import { DropdownMenuItem } from "./ActionList.methods";
+import type { ActionListProps } from "./ActionList.types";
 
 export const ActionList = forwardRef<HTMLDivElement, ActionListProps>(
   ({ items, className, ...props }, ref) => {
     return (
-      <div 
-        ref={ref} 
-        className={cn("flex flex-col gap-0.5", className)} 
+      <div
+        ref={ref}
+        className={cn("flex flex-col gap-0.5", className)}
         {...props}
       >
         {items.map((item, index) => (

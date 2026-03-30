@@ -1,12 +1,12 @@
-import { forwardRef, useState, useRef, useCallback } from "react";
+import { forwardRef, useCallback, useRef, useState } from "react";
 import ChevronDown from "@/assets/icons/chevron-down.svg";
 import { cn } from "@/lib/utils";
-import { type SelectProps } from "./Select.types";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "./ActionList/ActionList.methods";
+import { type SelectProps } from "./Select.types";
 
 export const Select = forwardRef<HTMLDivElement, SelectProps>(
   (

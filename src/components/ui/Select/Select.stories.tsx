@@ -63,26 +63,26 @@ export const Default: Story = {
   render: (args) => (
     <Select {...args}>
       <ActionList
-          items={[
-            {
-              label: "Action 1",
-              icon: <EditIcon />,
-              onClick: () => console.log("Action 1"),
-            },
-            {
-              label: "Action 2",
-              icon: <AddIcon />,
-              onClick: () => console.log("Action 2"),
-            },
-            { label: "Action 3", onClick: () => console.log("Action 3") },
-            {
-              label: "Danger Action",
-              icon: <DeleteIcon />,
-              variant: "danger",
-              onClick: () => console.log("Danger Action"),
-            },
-          ]}
-        />
+        items={[
+          {
+            label: "Action 1",
+            icon: <EditIcon />,
+            onClick: () => console.log("Action 1"),
+          },
+          {
+            label: "Action 2",
+            icon: <AddIcon />,
+            onClick: () => console.log("Action 2"),
+          },
+          { label: "Action 3", onClick: () => console.log("Action 3") },
+          {
+            label: "Danger Action",
+            icon: <DeleteIcon />,
+            variant: "danger",
+            onClick: () => console.log("Danger Action"),
+          },
+        ]}
+      />
     </Select>
   ),
   args: {

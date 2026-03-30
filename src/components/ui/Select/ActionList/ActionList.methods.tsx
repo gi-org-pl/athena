@@ -1,23 +1,22 @@
-import { Root, Portal, Trigger, Content, Item } from "@radix-ui/react-dropdown-menu";
-import { type ComponentProps, } from "react";
+import {
+  Content,
+  Item,
+  Portal,
+  Root,
+  Trigger,
+} from "@radix-ui/react-dropdown-menu";
+import { type ComponentProps } from "react";
 
 import { cn } from "@/lib/utils";
 
-export function DropdownMenu({
-  ...props
-}: ComponentProps<typeof Root>) {
+export function DropdownMenu({ ...props }: ComponentProps<typeof Root>) {
   return <Root data-slot="dropdown-menu" {...props} />;
 }
 
 export function DropdownMenuTrigger({
   ...props
 }: ComponentProps<typeof Trigger>) {
-  return (
-    <Trigger
-      data-slot="dropdown-menu-trigger"
-      {...props}
-    />
-  );
+  return <Trigger data-slot="dropdown-menu-trigger" {...props} />;
 }
 
 export function DropdownMenuContent({

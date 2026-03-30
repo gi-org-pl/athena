@@ -9,4 +9,4 @@ export interface SelectProps extends HTMLAttributes<HTMLDivElement> {
   isDisabled?: boolean;
   dataTestId?: string;
   trigger?: React.ReactNode;
-};
+}

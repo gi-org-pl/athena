@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { afterEach, describe, expect, it, vi } from "vitest";
 import React, { createRef } from "react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { ActionList } from "./ActionList";
 import { DropdownMenu, DropdownMenuContent } from "./ActionList.methods"; // Assuming they are exported from the same file
 
@@ -17,7 +17,7 @@ describe("<ActionList />", () => {
         <DropdownMenuContent>
           <ActionList items={items} {...props} />
         </DropdownMenuContent>
-      </DropdownMenu>
+      </DropdownMenu>,
     );
   };
 
@@ -27,10 +27,10 @@ describe("<ActionList />", () => {
       onClick: vi.fn(),
       icon: <span data-testid="edit-icon">Icon</span>,
     },
-    { 
-      label: "Delete", 
-      variant: "danger" as const, 
-      onClick: vi.fn() 
+    {
+      label: "Delete",
+      variant: "danger" as const,
+      onClick: vi.fn(),
     },
   ];
 
@@ -48,11 +48,11 @@ describe("<ActionList />", () => {
 
     it("should render a placeholder div when no icon is provided (false path)", () => {
       renderActionList([{ label: "No Icon Item", onClick: vi.fn() }]);
-      
+
       const label = screen.getByText("No Icon Item");
       // The placeholder div is the next sibling of the label span
       const placeholder = label.nextElementSibling;
-      
+
       expect(placeholder).toHaveClass("size-4 shrink-0");
       expect(placeholder?.tagName).toBe("DIV");
     });
@@ -73,11 +73,11 @@ describe("<ActionList />", () => {
 
   describe("Technical Integration & Props", () => {
     it("should merge custom classNames using the cn utility", () => {
-      renderActionList(mockItems, { 
-        className: "custom-test-class", 
-        "data-testid": "container" 
+      renderActionList(mockItems, {
+        className: "custom-test-class",
+        "data-testid": "container",
       });
-      
+
       const container = screen.getByTestId("container");
       expect(container).toHaveClass("custom-test-class");
       expect(container).toHaveClass("flex flex-col gap-0.5");
@@ -85,13 +85,13 @@ describe("<ActionList />", () => {
 
     it("should pass a functional ref to the outer div (forwardRef)", () => {
       const ref = createRef<HTMLDivElement>();
-      
+
       render(
         <DropdownMenu open={true}>
           <DropdownMenuContent>
             <ActionList items={mockItems} ref={ref} />
           </DropdownMenuContent>
-        </DropdownMenu>
+        </DropdownMenu>,
       );
 
       expect(ref.current).not.toBeNull();
@@ -100,10 +100,10 @@ describe("<ActionList />", () => {
     });
 
     it("should spread additional props (like id or role) to the container", () => {
-      renderActionList(mockItems, { 
-        id: "unique-list-id", 
+      renderActionList(mockItems, {
+        id: "unique-list-id",
         role: "menu",
-        "data-testid": "container"
+        "data-testid": "container",
       });
 
       const container = screen.getByTestId("container");
