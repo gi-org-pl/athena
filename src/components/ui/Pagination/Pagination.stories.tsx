@@ -1,18 +1,51 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { fn } from "storybook/test";
 import { useState } from "react";
 import { Pagination } from "./Pagination";
 
-const meta: Meta<typeof Pagination> = {
+const meta = {
   title: "Pagination",
   component: Pagination,
-  argTypes: {
-    onChange: { action: "pageChanged" },
-    page: { control: { type: "number", min: 1 } },
-    totalPages: { control: { type: "number", min: 1 } },
-  },
-  tags: ["autodocs"],
   parameters: {
     layout: "padded",
+  },
+  tags: ["autodocs"],
+  argTypes: {
+    page: {
+      table: { category: "Content" },
+      control: { type: "number", min: 1 },
+    },
+    totalPages: {
+      table: { category: "Content" },
+      control: { type: "number", min: 1 },
+    },
+    siblingCount: {
+      table: { category: "Content" },
+      control: { type: "number", min: 0 },
+    },
+    isFullWidth: {
+      table: { category: "Style" },
+      control: "boolean",
+    },
+    isOnlyActions: {
+      table: { category: "Style" },
+      control: "boolean",
+    },
+    dataTestId: {
+      table: { category: "Content" },
+      control: "text",
+    },
+    onChange: {
+      table: { disable: true },
+    },
+  },
+  args: {
+    page: 1,
+    totalPages: 10,
+    siblingCount: 1,
+    isFullWidth: false,
+    isOnlyActions: false,
+    onChange: fn(),
   },
   render: (args) => {
     const [currentPage, setCurrentPage] = useState(args.page);
@@ -27,14 +60,13 @@ const meta: Meta<typeof Pagination> = {
       />
     );
   },
-};
+} satisfies Meta<typeof Pagination>;
 
 export default meta;
-type Story = StoryObj<typeof Pagination>;
+type Story = StoryObj<typeof meta>;
 
 export const SmallRange: Story = {
   args: {
-    page: 1,
     totalPages: 5,
     dataTestId: "pagination-small",
   },
@@ -69,7 +101,6 @@ export const OnlyActions: Story = {
 
 export const FullWidth: Story = {
   args: {
-    page: 1,
     totalPages: 10,
     isFullWidth: true,
     dataTestId: "pagination-full-width",
