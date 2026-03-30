@@ -1,11 +1,11 @@
-import { forwardRef, type ChangeEvent } from "react";
-import type { TextAreaProps } from "./TextArea.types";
+import { type ChangeEvent, forwardRef } from "react";
 import {
-  getTextAreaWrapperClasses,
-  getLabelClasses,
-  getHelperClasses,
   getCharacterCountClasses,
+  getHelperClasses,
+  getLabelClasses,
+  getTextAreaWrapperClasses,
 } from "./TextArea.methods";
+import type { TextAreaProps } from "./TextArea.types";
 
 export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   (
