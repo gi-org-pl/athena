@@ -1,5 +1,5 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import { type HTMLAttributes} from "react";
+import { type HTMLAttributes } from "react";
 
 export interface ProgressBarProps
   extends HTMLAttributes<HTMLDivElement>,

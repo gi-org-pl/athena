@@ -108,11 +108,15 @@ export const EdgeCases: Story = {
   render: (args) => (
     <div className="flex flex-col gap-4 w-[300px]">
       <div className="space-y-1">
-        <span className="text-xs font-mono opacity-50 text-red-400">Value: -15 (Clamped to 0)</span>
+        <span className="text-xs font-mono opacity-50 text-red-400">
+          Value: -15 (Clamped to 0)
+        </span>
         <ProgressBar {...args} value={-15} />
       </div>
       <div className="space-y-1">
-        <span className="text-xs font-mono opacity-50 text-red-400">Value: 120 (Clamped to 100)</span>
+        <span className="text-xs font-mono opacity-50 text-red-400">
+          Value: 120 (Clamped to 100)
+        </span>
         <ProgressBar {...args} value={120} />
       </div>
     </div>

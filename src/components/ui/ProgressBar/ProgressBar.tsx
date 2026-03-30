@@ -1,19 +1,13 @@
-import { type ProgressBarProps, progressBarVariants ,progressBarFillVariants } from "./ProgressBar.types";
-import { cn } from "@/lib/utils";
 import { forwardRef } from "react";
+import { cn } from "@/lib/utils";
+import {
+  type ProgressBarProps,
+  progressBarFillVariants,
+  progressBarVariants,
+} from "./ProgressBar.types";
 
 export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
-  (
-    {
-      className,
-      value,
-      size,
-      variant,
-      dataTestId,
-      ...props
-    },
-    ref,
-  ) => {
+  ({ className, value, size, variant, dataTestId, ...props }, ref) => {
     const clampedValue = Math.min(100, Math.max(0, value));
 
     return (
