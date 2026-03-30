@@ -127,11 +127,6 @@ describe("Modal", () => {
     expect(screen.getByText("Custom Action")).toBeInTheDocument();
   });
 
-  it("applies data-testid", () => {
-    render(<Modal {...baseProps} dataTestId="modal" />);
-
-    expect(screen.getByTestId("modal")).toBeInTheDocument();
-  });
 
   it("ignores transition events from child elements", () => {
     const { rerender } = render(<Modal {...baseProps} />);

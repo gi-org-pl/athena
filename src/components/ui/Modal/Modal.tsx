@@ -1,196 +1,162 @@
-import { cva, type VariantProps } from "class-variance-authority";
 import { XIcon } from "lucide-react";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, forwardRef, useId, useRef, useState, type TransitionEvent } from "react";
+import { type ModalProps, overlayVariants, modalVariants, headerVariants, footerVariants } from "./Modal.types";
 import { cn } from "@/lib/utils";
 
-const overlayVariants = cva(
-  "fixed inset-0 z-50 flex items-center justify-center bg-black/10 transition-opacity duration-300 ease",
-  {
-    variants: {
-      state: {
-        open: "opacity-100",
-        closed: "opacity-0",
-      },
+export const Modal = forwardRef<HTMLDivElement, ModalProps>(
+  (
+    {
+      title,
+      description,
+      children,
+      actions,
+      isOpen,
+      isClosable = true,
+      isCloseOnOverlayClick = true,
+      onClose,
+      className,
+      dataTestId,
+      ...props
     },
-  },
-);
-
-const modalVariants = cva(
-  "relative w-[512px] max-w-lg max-h-[85vh] overflow-y-auto rounded-3xl bg-white p-6 shadow-xl border border-gi-dark-ash transition-all duration-300 ease",
-  {
-    variants: {
-      state: {
-        open: "opacity-100 scale-100",
-        closed: "opacity-0 scale-95",
-      },
-    },
-  },
-);
-
-const headerVariants = cva("flex items-start justify-between text-gi-primary");
-
-const footerVariants = cva("flex justify-end gap-3 mt-6");
-
-export interface ModalProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
-  title: React.ReactNode;
-  description?: React.ReactNode;
-  children?: React.ReactNode;
-  actions?: React.ReactNode;
-
-  isOpen: boolean;
-  isClosable?: boolean;
-  isCloseOnOverlayClick?: boolean;
-  onClose: () => void;
-  dataTestId?: string;
-}
-
-export function Modal({
-  title,
-  description,
-  children,
-  actions,
-  isOpen,
-  isClosable = true,
-  isCloseOnOverlayClick = true,
-  onClose,
-  className,
-  dataTestId,
-  ...rest
-}: ModalProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const previouslyFocusedElement = useRef<HTMLElement | null>(null);
-
-  const titleId = useId();
-  const [isRendered, setIsRendered] = useState(isOpen);
-
-  useEffect(() => {
-    if (isOpen) setIsRendered(true);
-  }, [isOpen]);
-
-  const handleTransitionEnd = (
-    event: React.TransitionEvent<HTMLDivElement>,
+    ref,
   ) => {
-    if (event.target !== event.currentTarget) return;
-    if (!isOpen) setIsRendered(false);
-  };
+    const containerRef = useRef<HTMLDivElement>(null);
+    const previouslyFocusedElement = useRef<HTMLElement | null>(null);
 
-  useEffect(() => {
-    if (!isOpen) return;
+    const titleId = useId();
+    const [isRendered, setIsRendered] = useState(isOpen);
 
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "";
+    useEffect(() => {
+      if (isOpen) setIsRendered(true);
+    }, [isOpen]);
+
+    const handleTransitionEnd = (
+      event: TransitionEvent<HTMLDivElement>,
+    ) => {
+      if (event.target !== event.currentTarget) return;
+      if (!isOpen) setIsRendered(false);
     };
-  }, [isOpen]);
 
-  useEffect(() => {
-    if (!isOpen || !isRendered) return;
+    useEffect(() => {
+      if (!isOpen) return;
 
-    const modal = containerRef.current!;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = "";
+      };
+    }, [isOpen]);
 
-    previouslyFocusedElement.current = document.activeElement as HTMLElement;
+    useEffect(() => {
+      if (!isOpen || !isRendered) return;
 
-    const focusableElements = modal.querySelectorAll<HTMLElement>(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-    );
+      const modal = containerRef.current!;
 
-    const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements.length - 1];
+      previouslyFocusedElement.current = document.activeElement as HTMLElement;
 
-    firstElement?.focus();
+      const focusableElements = modal.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      );
 
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isClosable) {
-        onClose();
-        return;
-      }
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
 
-      if (e.key !== "Tab") return;
+      firstElement?.focus();
 
-      if (focusableElements.length === 0) {
-        e.preventDefault();
-        modal.focus();
-        return;
-      }
-
-      if (e.shiftKey) {
-        if (document.activeElement === firstElement) {
-          e.preventDefault();
-          lastElement?.focus();
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape" && isClosable) {
+          onClose();
+          return;
         }
-      } else {
-        if (document.activeElement === lastElement) {
+
+        if (e.key !== "Tab") return;
+
+        if (focusableElements.length === 0) {
           e.preventDefault();
-          firstElement?.focus();
+          modal.focus();
+          return;
         }
-      }
-    };
 
-    document.addEventListener("keydown", handleKeyDown);
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement?.focus();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement?.focus();
+          }
+        }
+      };
 
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      previouslyFocusedElement.current?.focus();
-    };
-  }, [isOpen, isRendered, isClosable, onClose]);
+      document.addEventListener("keydown", handleKeyDown);
 
-  if (!isRendered) return null;
+      return () => {
+        document.removeEventListener("keydown", handleKeyDown);
+        previouslyFocusedElement.current?.focus();
+      };
+    }, [isOpen, isRendered, isClosable, onClose]);
 
-  return (
-    <div
-      className={overlayVariants({ state: isOpen ? "open" : "closed" })}
-      onTransitionEnd={handleTransitionEnd}
-      onClick={() => {
-        if (isCloseOnOverlayClick && isClosable) onClose();
-      }}
-    >
+    if (!isRendered) return null;
+
+    return (
       <div
-        ref={containerRef}
-        {...rest}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={titleId}
-        tabIndex={-1}
-        data-testid={dataTestId}
-        className={cn(
-          modalVariants({ state: isOpen ? "open" : "closed" }),
-          className,
-        )}
-        onClick={(e) => {
-          e.stopPropagation();
-          rest.onClick?.(e);
+        className={overlayVariants({ state: isOpen ? "open" : "closed" })}
+        onTransitionEnd={handleTransitionEnd}
+        ref={ref}
+        onClick={() => {
+          if (isCloseOnOverlayClick && isClosable) onClose();
         }}
       >
-        <div className={headerVariants()}>
-          <div className="flex-1 min-w-0">
-            <h2 id={titleId} className="font-semibold break-words">
-              {title}
-            </h2>
+        <div
+          ref={containerRef}
+          {...props}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={titleId}
+          tabIndex={-1}
+          data-test-id={dataTestId}
+          className={cn(
+            modalVariants({ state: isOpen ? "open" : "closed" }),
+            className,
+          )}
+          onClick={(e) => {
+            e.stopPropagation();
+            props.onClick?.(e);
+          }}
+        >
+          <div className={headerVariants()}>
+            <div className="flex-1 min-w-0">
+              <h2 id={titleId} className="font-semibold break-words">
+                {title}
+              </h2>
 
-            {description && (
-              <p className="text-[14px] mt-2 break-words text-gi-gray">
-                {description}
-              </p>
-            )}
+              {description && (
+                <p className="text-[14px] mt-2 break-words text-gi-gray">
+                  {description}
+                </p>
+              )}
+            </div>
+
+              {isClosable && (
+                <button
+                  type="button"
+                  onClick={onClose}
+                  aria-label="Close modal"
+                  className="flex items-center cursor-pointer justify-center size-8 rounded-full shrink-0 transition hover:bg-gi-secondary/10 focus:outline-none focus:ring-2 focus:ring-gi-secondary/40 focus:ring-offset-2"
+                >
+                  <XIcon className="size-5 fill-gi-primary" />
+                </button>
+              )}
           </div>
 
-          {isClosable && (
-            <button
-              type="button"
-              onClick={onClose}
-              aria-label="Close modal"
-              className="flex items-center justify-center size-8 rounded-full shrink-0 transition hover:bg-gray-100"
-            >
-              <XIcon className="size-4" />
-            </button>
-          )}
+          {children && <div className="mt-2 break-words text-gi-primary">{children}</div>}
+
+          {actions && <div className={footerVariants()}>{actions}</div>}
         </div>
-
-        {children && <div className="mt-4 break-words">{children}</div>}
-
-        {actions && <div className={footerVariants()}>{actions}</div>}
       </div>
-    </div>
-  );
-}
+    );
+  }
+)
+
+Modal.displayName = "Modal"
