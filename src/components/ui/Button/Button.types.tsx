@@ -11,11 +11,10 @@ export interface BaseButtonProps
   htmlType?: "button" | "submit" | "reset";
 }
 
-export type ButtonProps = BaseButtonProps &
-  (
-    | { isIconButton: true; "aria-label": string }
-    | { isIconButton?: false; "aria-label"?: string }
-  );
+export type ButtonProps = BaseButtonProps & {
+  "aria-label"?: string;
+  isIconButton?: boolean;
+};
 
 export const buttonVariants = cva(
   "inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium transition-colors duration-300 ease-[ease] shrink-0 outline-none focus-visible:ring-gi-secondary/50 focus-visible:ring-[3px] data-[disabled=true]:pointer-events-none [&_svg]:size-4 [&_svg]:overflow-visible [&_svg_*]:fill-current [&_svg_*]:stroke-none",
