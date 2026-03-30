@@ -24,7 +24,7 @@ export const Section = forwardRef<HTMLElement, SectionProps>(
     return (
       <section
         ref={ref}
-        data-testId={dataTestId}
+        data-test-id={dataTestId}
         aria-labelledby={titleId}
         className={cn(
           "w-full flex flex-col border border-gi-ash rounded-[48px]",
