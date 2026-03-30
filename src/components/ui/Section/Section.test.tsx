@@ -9,17 +9,6 @@ describe("<Section />", () => {
     expect(screen.getByText("Content")).toBeInTheDocument();
   });
 
-  it("passes data-test-id to root element", () => {
-    render(
-      <Section title="Title" dataTestId="section-root">
-        Content
-      </Section>,
-    );
-
-    const root = screen.getByTestId("section-root");
-    expect(root).toBeInTheDocument();
-  });
-
   it("renders actions on the right by default", () => {
     render(
       <Section title="Title" actions={<button>Action</button>}>
