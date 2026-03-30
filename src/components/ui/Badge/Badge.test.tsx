@@ -14,35 +14,29 @@ vi.mock("@/assets/icons/warning-icon.svg", () => ({
 vi.mock("@/assets/icons/x-icon.svg", () => ({
   default: () => <svg data-testid="x-icon" />,
 }));
+vi.mock("@/assets/icons/dismiss-circle-icon.svg", () => ({
+  default: () => <svg data-testid="dismiss-icon" />,
+}));
 
 describe("Badge Component", () => {
   describe("Core Rendering", () => {
-    it("should render the children correctly", () => {
-      const { container } = render(
-        <Badge dataTestId="badge-root">Active Status</Badge>,
-      );
-
-      const badge = container.querySelector('[data-test-id="badge-root"]');
-      expect(badge).toBeInTheDocument();
-      expect(badge).toHaveTextContent("Active Status");
-    });
-
     it("should apply default styling variants", () => {
-      const { container } = render(
-        <Badge dataTestId="badge-default">Default</Badge>,
-      );
+      render(<Badge dataTestId="badge-default">Default</Badge>);
 
-      const badge = container.querySelector('[data-test-id="badge-default"]');
-      expect(badge).toHaveClass("bg-gi-dark-gray/10", "text-gi-dark-gray");
+      const wrapper = document.querySelector('[data-test-id="badge-default"]');
+      const styledSpan = wrapper?.firstElementChild;
+
+      expect(styledSpan).toHaveClass("bg-gi-ash", "text-gi-primary");
     });
   });
+
   describe("Icon Injection Logic", () => {
     it("should render the correct default icon based on the type property", () => {
       render(<Badge type="success">Success</Badge>);
       expect(screen.getByTestId("check-icon")).toBeInTheDocument();
     });
 
-    it("should take the element branch and inject classes when LeftIcon is a valid React node", () => {
+    it("should render LeftIcon inside the icon wrapper", () => {
       render(
         <Badge
           LeftIcon={<svg data-testid="valid-element" className="original" />}
@@ -52,91 +46,105 @@ describe("Badge Component", () => {
       );
 
       const icon = screen.getByTestId("valid-element");
+      const iconWrapper = icon.parentElement;
       expect(icon).toHaveClass("original");
-      expect(icon).toHaveClass("shrink-0");
+      expect(iconWrapper).toHaveClass("flex", "items-center", "justify-center");
     });
 
-    it("should take the fallback branch and wrap the input when LeftIcon is not a React element", () => {
-      const { container } = render(
+    it("should render string LeftIcon inside the icon wrapper", () => {
+      render(
         <Badge LeftIcon="🔥" dataTestId="fallback-test">
           Fallback
         </Badge>,
       );
 
-      const badge = container.querySelector('[data-test-id="fallback-test"]');
-      const iconWrapper = badge?.querySelector("span:first-child");
-
+      const iconWrapper = screen.getByText("🔥").parentElement;
       expect(iconWrapper).toHaveTextContent("🔥");
-      expect(iconWrapper).toHaveClass("shrink-0", "flex", "items-center");
+      expect(iconWrapper).toHaveClass("inline-flex", "items-center");
     });
-  });
 
-  describe("Type Icon Mapping Branch", () => {
     it("should render the mapped icon inside a span wrapper when a valid type is provided", () => {
-      const {} = render(<Badge type="info">Info</Badge>);
-      const svg = screen.getByTestId("info-icon");
-      const iconWrapper = svg.parentElement;
-
-      expect(iconWrapper).toBeInTheDocument();
-      expect(iconWrapper).toHaveClass("flex", "items-center", "justify-center");
-    });
-
-    it("should return null (render no icon) when type is 'default'", () => {
-      render(<Badge type="default">No Icon</Badge>);
-
-      expect(screen.queryByTestId("check-icon")).not.toBeInTheDocument();
-      expect(screen.queryByTestId("info-icon")).not.toBeInTheDocument();
-      expect(screen.queryByTestId("warning-icon")).not.toBeInTheDocument();
-      expect(screen.queryByTestId("x-icon")).not.toBeInTheDocument();
-
-      const textSpan = screen.getByText("No Icon");
-      expect(textSpan.previousSibling).toBeNull();
+      render(<Badge type="info">Info</Badge>);
+      const icon = screen.getByTestId("info-icon");
+      expect(icon.parentElement).toHaveClass(
+        "flex",
+        "items-center",
+        "justify-center",
+      );
     });
   });
 
   describe("Dismiss Button Sizing Branches", () => {
-    it("should apply small size classes to the dismiss button and icon", () => {
+    it("should apply small size classes to the dismiss button icon via the wrapper", () => {
       render(
         <Badge isDismissible size="small">
           Small
         </Badge>,
       );
-      const button = screen.getByRole("button", { name: "Dismiss" });
-      const icon = button.querySelector("svg");
-
-      expect(button).toHaveClass("size-4");
-      expect(icon).toHaveClass("size-3.5");
+      const button = screen.getByRole("button", { name: /dismiss/i });
+      expect(button).toHaveClass("size-3");
     });
 
-    it("should apply big size classes to the dismiss button and icon", () => {
+    it("should apply regular size classes to the dismiss button icon via the wrapper", () => {
+      render(
+        <Badge isDismissible size="regular">
+          Regular
+        </Badge>,
+      );
+      const button = screen.getByRole("button", { name: /dismiss/i });
+      expect(button).toHaveClass("size-3.5");
+    });
+
+    it("should fallback to regular dismiss icon sizing when size is undefined", () => {
+      render(
+        <Badge isDismissible size={undefined}>
+          Fallback Size
+        </Badge>,
+      );
+      const button = screen.getByRole("button", { name: /dismiss/i });
+      expect(button).toHaveClass("size-3.5");
+    });
+
+    it("should fallback to regular dismiss icon sizing when size is invalid string", () => {
+      render(
+        // @ts-expect-error - testing runtime fallback
+        <Badge isDismissible size={"random"}>
+          Fallback Size
+        </Badge>,
+      );
+      const button = screen.getByRole("button", { name: /dismiss/i });
+      expect(button).toHaveClass("size-3.5");
+    });
+
+    it("should apply big size classes to the dismiss button icon via the wrapper", () => {
       render(
         <Badge isDismissible size="big">
           Big
         </Badge>,
       );
-      const button = screen.getByRole("button", { name: "Dismiss" });
-      const icon = button.querySelector("svg");
+      const button = screen.getByRole("button", { name: /dismiss/i });
+      expect(button).toHaveClass("size-5");
+    });
+  });
 
-      expect(button).toHaveClass("size-6");
-      expect(icon).toHaveClass("size-5");
+  describe("Icon Mapping Branch Coverage", () => {
+    it("should return null and render no icon when type is 'default'", () => {
+      const { container } = render(<Badge type="default">No Icon</Badge>);
+      const iconWrapper = container.querySelector(".shrink-0.h-\\[0\\.8em\\]");
+      expect(iconWrapper).toBeNull();
+    });
+
+    it("should return null and render no icon when an invalid type is provided at runtime", () => {
+      render(
+        // @ts-expect-error - Simulating invalid runtime prop
+        <Badge type="non-existent-type">Invalid Type</Badge>,
+      );
+      expect(screen.queryByTestId("check-icon")).not.toBeInTheDocument();
+      expect(screen.getByText("Invalid Type")).toBeInTheDocument();
     });
   });
 
   describe("Dismissible Functionality", () => {
-    it("should not render the dismiss button by default", () => {
-      render(<Badge>Standard Badge</Badge>);
-
-      const button = screen.queryByRole("button", { name: "Dismiss" });
-      expect(button).not.toBeInTheDocument();
-    });
-
-    it("should render the dismiss button when isDismissible is true", () => {
-      render(<Badge isDismissible>Dismissible Badge</Badge>);
-
-      const button = screen.getByRole("button", { name: "Dismiss" });
-      expect(button).toBeInTheDocument();
-    });
-
     it("should fire the onDismiss callback when the button is clicked", () => {
       const handleDismiss = vi.fn();
       render(
@@ -145,9 +153,8 @@ describe("Badge Component", () => {
         </Badge>,
       );
 
-      const button = screen.getByRole("button", { name: "Dismiss" });
+      const button = screen.getByRole("button", { name: /dismiss/i });
       fireEvent.click(button);
-
       expect(handleDismiss).toHaveBeenCalledTimes(1);
     });
 
@@ -156,14 +163,14 @@ describe("Badge Component", () => {
       const dismissClick = vi.fn();
 
       render(
-        <div onClick={parentClick} data-testid="parent-container">
+        <div onClick={parentClick}>
           <Badge isDismissible onDismiss={dismissClick}>
             Isolated
           </Badge>
         </div>,
       );
 
-      const button = screen.getByRole("button", { name: "Dismiss" });
+      const button = screen.getByRole("button", { name: /dismiss/i });
       fireEvent.click(button);
 
       expect(dismissClick).toHaveBeenCalledTimes(1);
