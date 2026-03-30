@@ -1,24 +1,14 @@
-import * as React from "react";
+import { forwardRef, useState, useRef, useCallback } from "react";
 import ChevronDown from "@/assets/icons/chevron-down.svg";
 import { cn } from "@/lib/utils";
+import { type SelectProps } from "./Select.types";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "./ActionList/ActionList";
+} from "./ActionList/ActionList.methods";
 
-export interface SelectProps extends React.HTMLAttributes<HTMLDivElement> {
-  value?: React.ReactNode;
-  placeholder?: string;
-  size?: "regular" | "small";
-  openOn?: "click" | "hover";
-  children: React.ReactNode;
-  isDisabled?: boolean;
-  dataTestId?: string;
-  trigger?: React.ReactNode;
-}
-
-const Select = React.forwardRef<HTMLDivElement, SelectProps>(
+export const Select = forwardRef<HTMLDivElement, SelectProps>(
   (
     {
       value,
@@ -34,11 +24,11 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
     },
     ref,
   ) => {
-    const [open, setOpen] = React.useState(false);
-    const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-    const isOpenRef = React.useRef(false);
+    const [open, setOpen] = useState(false);
+    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const isOpenRef = useRef(false);
 
-    const handleOpen = React.useCallback(() => {
+    const handleOpen = useCallback(() => {
       if (isDisabled || openOn !== "hover") return;
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
@@ -48,7 +38,7 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
       }
     }, [isDisabled, openOn]);
 
-    const handleClose = React.useCallback(() => {
+    const handleClose = useCallback(() => {
       if (openOn !== "hover") return;
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
@@ -59,13 +49,8 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
     }, [openOn]);
 
     const onOpenChange = (nextOpen: boolean) => {
-      if (openOn === "hover") {
-        isOpenRef.current = false;
-        setOpen(false);
-      } else {
-        isOpenRef.current = nextOpen;
-        setOpen(nextOpen);
-      }
+      isOpenRef.current = nextOpen;
+      setOpen(nextOpen);
     };
 
     return (
@@ -125,5 +110,3 @@ const Select = React.forwardRef<HTMLDivElement, SelectProps>(
 );
 
 Select.displayName = "Select";
-
-export { Select };
