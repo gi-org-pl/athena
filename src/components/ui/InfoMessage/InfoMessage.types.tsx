@@ -1,14 +1,14 @@
 import { cva, type VariantProps } from "class-variance-authority";
+import type { ReactNode } from "react";
 import CheckIcon from "../../../assets/icons/check-icon.svg";
 import InfoIcon from "../../../assets/icons/info-icon.svg";
 import WarningIcon from "../../../assets/icons/warning-icon.svg";
 import XIcon from "../../../assets/icons/x-icon.svg";
-import type { ReactNode } from "react";
 
 export interface InfoMessageProps
   extends React.ComponentProps<"div">,
     VariantProps<typeof infoMessageVariants> {
-  children: ReactNode,
+  children: ReactNode;
   LeftIcon?: ReactNode;
 }
 

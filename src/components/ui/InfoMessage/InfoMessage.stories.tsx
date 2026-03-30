@@ -11,7 +11,7 @@ const meta = {
   args: {
     children: "Info Message",
     variant: "default",
-    LeftIcon: false, 
+    LeftIcon: false,
   },
   argTypes: {
     children: {
@@ -39,7 +39,6 @@ const meta = {
   },
   tags: ["autodocs"],
 } satisfies Meta<typeof InfoMessage>;
-
 
 export default meta;
 type Story = StoryObj<typeof meta>;
