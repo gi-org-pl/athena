@@ -1,6 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useEffect, useState } from "react";
+import { fn } from "storybook/test";
 import { ButtonSelect } from "./ButtonSelect";
+
+const OPTIONS = [
+  { id: "1", text: "Option 1" },
+  { id: "2", text: "Option 2" },
+  { id: "3", text: "Option 3" },
+];
 
 const meta = {
   title: "ButtonSelect",
@@ -10,11 +17,33 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div className="w-[500px] border border-dashed border-gray-300 p-4">
+      <div className="w-[500px] border border-dashed border-gray-200 p-8 rounded-lg">
         <Story />
       </div>
     ),
   ],
+  argTypes: {
+    options: {
+      table: { category: "Content" },
+    },
+    selectedOptionId: {
+      table: { category: "State" },
+      control: "text",
+    },
+    onSelectedOptionIdChange: {
+      table: { disable: true },
+    },
+    isFullWidth: {
+      table: { category: "Layout" },
+      control: "boolean",
+    },
+  },
+  args: {
+    options: OPTIONS,
+    selectedOptionId: "1",
+    isFullWidth: false,
+    onSelectedOptionIdChange: fn(),
+  },
   render: (args) => {
     const [selectedId, setSelectedId] = useState(args.selectedOptionId);
 
@@ -26,19 +55,12 @@ const meta = {
       <ButtonSelect
         {...args}
         selectedOptionId={selectedId}
-        onSelectedOptionIdChange={setSelectedId}
+        onSelectedOptionIdChange={(id) => {
+          setSelectedId(id);
+          args.onSelectedOptionIdChange(id);
+        }}
       />
     );
-  },
-  args: {
-    options: [
-      { id: "1", text: "Selected" },
-      { id: "2", text: "Option" },
-      { id: "3", text: "Other option" },
-    ],
-    isFullWidth: false,
-    selectedOptionId: "1",
-    onSelectedOptionIdChange: () => {},
   },
   tags: ["autodocs"],
 } satisfies Meta<typeof ButtonSelect>;
@@ -46,9 +68,14 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  args: {
+    selectedOptionId: "1",
+  },
+};
 
-export const isFullWidth: Story = {
+export const FullWidth: Story = {
+  name: "Full Width Layout",
   args: {
     isFullWidth: true,
   },

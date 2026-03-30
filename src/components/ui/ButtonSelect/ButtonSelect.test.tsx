@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { type ButtonOption, ButtonSelect } from "./ButtonSelect";
+import { ButtonSelect } from "./ButtonSelect";
+import { type ButtonOption } from "./ButtonSelect.types";
 
 const mockOptions: ButtonOption[] = [
   { id: "1", text: "Option 1" },
@@ -13,74 +14,38 @@ describe("<ButtonSelect />", () => {
     options: mockOptions,
     selectedOptionId: "1",
     onSelectedOptionIdChange: vi.fn(),
+    "aria-label": "Test Select",
   };
 
-  describe("rendering", () => {
-    it("should render all provided options", () => {
+  describe("Rendering & Accessibility", () => {
+    it("should render the container with the radiogroup role", () => {
       render(<ButtonSelect {...defaultProps} />);
-
-      for (const option of mockOptions) {
-        expect(
-          screen.getByRole("button", { name: option.text }),
-        ).toBeInTheDocument();
-      }
+      expect(screen.getByRole("radiogroup")).toBeInTheDocument();
     });
 
-    it("should apply primary styles to the selected option and outlined styles to others", () => {
-      render(<ButtonSelect {...defaultProps} selectedOptionId="2" />);
+    it("should render all options as radio roles with correct checked states", () => {
+      render(<ButtonSelect {...defaultProps} selectedOptionId="1" />);
 
-      const selectedButton = screen.getByRole("button", { name: "Option 2" });
-      const unselectedButton = screen.getByRole("button", { name: "Option 1" });
+      const first = screen.getByRole("radio", { name: "Option 1" });
+      const second = screen.getByRole("radio", { name: "Option 2" });
 
-      expect(selectedButton).toHaveClass("bg-gi-primary");
-      expect(unselectedButton).toHaveClass(
-        "border-gi-primary",
-        "bg-transparent",
+      expect(first).toHaveAttribute("aria-checked", "true");
+      expect(first).toHaveAttribute("tabindex", "0");
+
+      expect(second).toHaveAttribute("aria-checked", "false");
+      expect(second).toHaveAttribute("tabindex", "-1");
+    });
+
+    it("should return null when options list is empty", () => {
+      const { container } = render(
+        <ButtonSelect {...defaultProps} options={[]} />,
       );
+      expect(container.firstChild).toBeNull();
     });
   });
 
-  describe("layout and styling", () => {
-    it("should apply full width classes when isFullWidth is true", () => {
-      const { container } = render(
-        <ButtonSelect {...defaultProps} isFullWidth={true} />,
-      );
-      const wrapper = container.firstChild;
-
-      expect(wrapper).toHaveClass("w-full");
-
-      const buttons = screen.getAllByRole("button");
-      for (const btn of buttons) {
-        expect(btn).toHaveClass("flex-1");
-      }
-    });
-
-    it("should apply custom className to the wrapper", () => {
-      const { container } = render(
-        <ButtonSelect {...defaultProps} className="custom-wrapper" />,
-      );
-      expect(container.firstChild).toHaveClass("custom-wrapper");
-    });
-  });
-
-  describe("interaction and guard logic", () => {
-    it("should call onSelectedOptionIdChange when a NEW option is clicked", () => {
-      const handleChange = vi.fn();
-      render(
-        <ButtonSelect
-          {...defaultProps}
-          onSelectedOptionIdChange={handleChange}
-        />,
-      );
-
-      const secondOption = screen.getByRole("button", { name: "Option 2" });
-      fireEvent.click(secondOption);
-
-      expect(handleChange).toHaveBeenCalledTimes(1);
-      expect(handleChange).toHaveBeenCalledWith("2");
-    });
-
-    it("should NOT call onSelectedOptionIdChange when the ALREADY SELECTED option is clicked", () => {
+  describe("Interaction Logic", () => {
+    it("should trigger onSelectedOptionIdChange only when a new option is clicked", () => {
       const handleChange = vi.fn();
       render(
         <ButtonSelect
@@ -90,10 +55,64 @@ describe("<ButtonSelect />", () => {
         />,
       );
 
-      const firstOption = screen.getByRole("button", { name: "Option 1" });
-      fireEvent.click(firstOption);
-
+      // Click already selected
+      fireEvent.click(screen.getByRole("radio", { name: "Option 1" }));
       expect(handleChange).not.toHaveBeenCalled();
+
+      // Click new option
+      fireEvent.click(screen.getByRole("radio", { name: "Option 2" }));
+      expect(handleChange).toHaveBeenCalledWith("2");
+    });
+
+    it("should react to external selectedOptionId prop changes", () => {
+      const { rerender } = render(
+        <ButtonSelect {...defaultProps} selectedOptionId="1" />,
+      );
+
+      expect(screen.getByRole("radio", { name: "Option 1" })).toHaveAttribute(
+        "aria-checked",
+        "true",
+      );
+
+      rerender(<ButtonSelect {...defaultProps} selectedOptionId="2" />);
+
+      expect(screen.getByRole("radio", { name: "Option 1" })).toHaveAttribute(
+        "aria-checked",
+        "false",
+      );
+      expect(screen.getByRole("radio", { name: "Option 2" })).toHaveAttribute(
+        "aria-checked",
+        "true",
+      );
+    });
+  });
+
+  describe("Layout & Styling", () => {
+    it("should apply full-width classes and flex-1 to children", () => {
+      const { container } = render(
+        <ButtonSelect {...defaultProps} isFullWidth />,
+      );
+      const wrapper = container.firstChild;
+
+      expect(wrapper).toHaveClass("w-full");
+
+      const buttons = screen.getAllByRole("radio");
+      for (const btn of buttons) {
+        expect(btn).toHaveClass("flex-1");
+      }
+    });
+
+    it("should pass through standard HTML attributes and custom className", () => {
+      render(
+        <ButtonSelect
+          {...defaultProps}
+          data-testid="custom-id"
+          className="extra-class"
+        />,
+      );
+
+      const wrapper = screen.getByTestId("custom-id");
+      expect(wrapper).toHaveClass("extra-class");
     });
   });
 });
