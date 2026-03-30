@@ -11,7 +11,7 @@ type ModalStoryArgs = ModalProps & {
 };
 
 const meta = {
-  title: "Components/Modal",
+  title: "Modal",
   component: Modal,
   parameters: {
     layout: "centered",
