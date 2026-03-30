@@ -7,7 +7,7 @@ import XIcon from "@/assets/icons/x-icon.svg";
 import { cn } from "@/lib/utils";
 import { type BadgeProps, badgeVariants } from "./Badge.types";
 
-const typeIconMap = {
+export const typeIconMap = {
   info: InfoIcon,
   success: CheckIcon,
   warning: WarningIcon,
@@ -100,5 +100,3 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
 );
 
 Badge.displayName = "Badge";
-
-export { Badge };
