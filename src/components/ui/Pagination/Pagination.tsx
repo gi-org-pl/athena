@@ -1,10 +1,10 @@
-import { useMemo, forwardRef } from "react";
-import type { PaginationProps } from "./Pagination.types";
+import { forwardRef, useMemo } from "react";
 import ChevronLeftIcon from "@/assets/icons/chevron-left.svg";
 import ChevronRightIcon from "@/assets/icons/chevron-right.svg";
 import { cn } from "@/lib/utils";
 import { Button } from "../Button/Button";
 import { generatePaginationRange } from "./Pagination.methods";
+import type { PaginationProps } from "./Pagination.types";
 
 export const Pagination = forwardRef<HTMLElement, PaginationProps>(
   (
@@ -108,7 +108,7 @@ export const Pagination = forwardRef<HTMLElement, PaginationProps>(
         </Button>
       </nav>
     );
-  }
-)
+  },
+);
 
 Pagination.displayName = "Pagination";
