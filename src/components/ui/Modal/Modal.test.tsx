@@ -127,7 +127,6 @@ describe("Modal", () => {
     expect(screen.getByText("Custom Action")).toBeInTheDocument();
   });
 
-
   it("ignores transition events from child elements", () => {
     const { rerender } = render(<Modal {...baseProps} />);
     const overlay = screen.getByRole("dialog").parentElement!;

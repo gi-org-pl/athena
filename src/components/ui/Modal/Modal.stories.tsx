@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useArgs } from "storybook/preview-api";
+import { fn } from "storybook/test";
 import { Button } from "../Button/Button";
 import { Modal } from "../Modal/Modal";
 import type { ModalProps } from "./Modal.types";
-import { fn } from "storybook/test";
 
 type ModalStoryArgs = ModalProps & {
   primaryAction?: string;
@@ -95,7 +95,9 @@ export const Default: Story = {
           </Button>
         )}
         {args.primaryAction && (
-          <Button onClick={handleClose} variant="danger">{args.primaryAction}</Button>
+          <Button onClick={handleClose} variant="danger">
+            {args.primaryAction}
+          </Button>
         )}
       </>
     );

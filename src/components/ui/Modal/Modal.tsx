@@ -1,7 +1,20 @@
 import { XIcon } from "lucide-react";
-import { useEffect, forwardRef, useId, useRef, useState, type TransitionEvent } from "react";
-import { type ModalProps, overlayVariants, modalVariants, headerVariants, footerVariants } from "./Modal.types";
+import {
+  forwardRef,
+  type TransitionEvent,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from "react";
 import { cn } from "@/lib/utils";
+import {
+  footerVariants,
+  headerVariants,
+  type ModalProps,
+  modalVariants,
+  overlayVariants,
+} from "./Modal.types";
 
 export const Modal = forwardRef<HTMLDivElement, ModalProps>(
   (
@@ -30,9 +43,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
       if (isOpen) setIsRendered(true);
     }, [isOpen]);
 
-    const handleTransitionEnd = (
-      event: TransitionEvent<HTMLDivElement>,
-    ) => {
+    const handleTransitionEnd = (event: TransitionEvent<HTMLDivElement>) => {
       if (event.target !== event.currentTarget) return;
       if (!isOpen) setIsRendered(false);
     };
@@ -138,25 +149,27 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
               )}
             </div>
 
-              {isClosable && (
-                <button
-                  type="button"
-                  onClick={onClose}
-                  aria-label="Close modal"
-                  className="flex items-center cursor-pointer justify-center size-8 rounded-full shrink-0 transition hover:bg-gi-secondary/10 focus:outline-none focus:ring-2 focus:ring-gi-secondary/40 focus:ring-offset-2"
-                >
-                  <XIcon className="size-5 fill-gi-primary" />
-                </button>
-              )}
+            {isClosable && (
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label="Close modal"
+                className="flex items-center cursor-pointer justify-center size-8 rounded-full shrink-0 transition hover:bg-gi-secondary/10 focus:outline-none focus:ring-2 focus:ring-gi-secondary/40 focus:ring-offset-2"
+              >
+                <XIcon className="size-5 fill-gi-primary" />
+              </button>
+            )}
           </div>
 
-          {children && <div className="mt-2 break-words text-gi-primary">{children}</div>}
+          {children && (
+            <div className="mt-2 break-words text-gi-primary">{children}</div>
+          )}
 
           {actions && <div className={footerVariants()}>{actions}</div>}
         </div>
       </div>
     );
-  }
-)
+  },
+);
 
-Modal.displayName = "Modal"
+Modal.displayName = "Modal";

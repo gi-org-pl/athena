@@ -38,6 +38,8 @@ export const modalVariants = cva(
   },
 );
 
-export const headerVariants = cva("flex items-start justify-between text-gi-primary");
+export const headerVariants = cva(
+  "flex items-start justify-between text-gi-primary",
+);
 
 export const footerVariants = cva("flex justify-end gap-3 mt-6");
