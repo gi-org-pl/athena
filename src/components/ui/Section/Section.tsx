@@ -1,17 +1,5 @@
-import * as React from "react";
-
+import type { SectionProps } from "./Section.types";
 import { cn } from "@/lib/utils";
-
-export type SectionActionsPosition = "right" | "bottom";
-
-export interface SectionProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
-  title: React.ReactNode;
-  actions?: React.ReactNode;
-  actionsPosition?: SectionActionsPosition;
-  children: React.ReactNode;
-  dataTestId?: string;
-}
 
 export function Section({
   title,
