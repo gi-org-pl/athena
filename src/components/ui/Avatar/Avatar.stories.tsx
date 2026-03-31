@@ -41,7 +41,6 @@ const meta = {
         "text-gi-red",
         "text-gi-blue",
       ],
-      description: "Approved brand color tokens",
       table: { category: "Style" },
     },
   },
