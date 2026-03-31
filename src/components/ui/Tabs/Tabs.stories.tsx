@@ -58,7 +58,7 @@ const meta = {
     },
     dataTestId: {
       control: "text",
-      table: { category: "Content" }
+      table: { category: "Content" },
     },
     size: {
       control: "radio",

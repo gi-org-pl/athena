@@ -1,4 +1,10 @@
-import { useEffect, useRef, useState, forwardRef, type KeyboardEvent } from "react";
+import {
+  forwardRef,
+  type KeyboardEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { measureTabElement } from "./Tabs.methods";
 import type { TabsProps } from "./Tabs.types";
 

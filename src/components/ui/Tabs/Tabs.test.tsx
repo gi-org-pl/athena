@@ -28,14 +28,18 @@ describe("<Tabs />", () => {
     expect(tabs).toHaveLength(3);
     expect(tabs[0]).toHaveTextContent("First Tab");
   });
-  
+
   describe("Keyboard Navigation", () => {
     it("should shift focus and change value to the next tab on ArrowRight", () => {
       const handleValueChange = vi.fn();
       render(
-        <Tabs items={defaultItems} value="tab1" onValueChange={handleValueChange} />
+        <Tabs
+          items={defaultItems}
+          value="tab1"
+          onValueChange={handleValueChange}
+        />,
       );
-      
+
       const tablist = screen.getByRole("tablist");
       const tabs = screen.getAllByRole("tab");
 
@@ -48,9 +52,13 @@ describe("<Tabs />", () => {
     it("should wrap focus to the first tab when ArrowRight is pressed on the final tab", () => {
       const handleValueChange = vi.fn();
       render(
-        <Tabs items={defaultItems} value="tab3" onValueChange={handleValueChange} />
+        <Tabs
+          items={defaultItems}
+          value="tab3"
+          onValueChange={handleValueChange}
+        />,
       );
-      
+
       const tablist = screen.getByRole("tablist");
       const tabs = screen.getAllByRole("tab");
 
@@ -63,9 +71,13 @@ describe("<Tabs />", () => {
     it("should shift focus and change value to the previous tab on ArrowLeft", () => {
       const handleValueChange = vi.fn();
       render(
-        <Tabs items={defaultItems} value="tab2" onValueChange={handleValueChange} />
+        <Tabs
+          items={defaultItems}
+          value="tab2"
+          onValueChange={handleValueChange}
+        />,
       );
-      
+
       const tablist = screen.getByRole("tablist");
       const tabs = screen.getAllByRole("tab");
 
@@ -78,9 +90,13 @@ describe("<Tabs />", () => {
     it("should wrap focus to the final tab when ArrowLeft is pressed on the first tab", () => {
       const handleValueChange = vi.fn();
       render(
-        <Tabs items={defaultItems} value="tab1" onValueChange={handleValueChange} />
+        <Tabs
+          items={defaultItems}
+          value="tab1"
+          onValueChange={handleValueChange}
+        />,
       );
-      
+
       const tablist = screen.getByRole("tablist");
       const tabs = screen.getAllByRole("tab");
 
@@ -93,9 +109,13 @@ describe("<Tabs />", () => {
     it("should immediately shift focus to the first tab when Home is pressed", () => {
       const handleValueChange = vi.fn();
       render(
-        <Tabs items={defaultItems} value="tab3" onValueChange={handleValueChange} />
+        <Tabs
+          items={defaultItems}
+          value="tab3"
+          onValueChange={handleValueChange}
+        />,
       );
-      
+
       const tablist = screen.getByRole("tablist");
       const tabs = screen.getAllByRole("tab");
 
@@ -108,9 +128,13 @@ describe("<Tabs />", () => {
     it("should immediately shift focus to the final tab when End is pressed", () => {
       const handleValueChange = vi.fn();
       render(
-        <Tabs items={defaultItems} value="tab1" onValueChange={handleValueChange} />
+        <Tabs
+          items={defaultItems}
+          value="tab1"
+          onValueChange={handleValueChange}
+        />,
       );
-      
+
       const tablist = screen.getByRole("tablist");
       const tabs = screen.getAllByRole("tab");
 
@@ -123,9 +147,13 @@ describe("<Tabs />", () => {
     it("should ignore unsupported keys and not trigger changes", () => {
       const handleValueChange = vi.fn();
       render(
-        <Tabs items={defaultItems} value="tab1" onValueChange={handleValueChange} />
+        <Tabs
+          items={defaultItems}
+          value="tab1"
+          onValueChange={handleValueChange}
+        />,
       );
-      
+
       const tablist = screen.getByRole("tablist");
 
       fireEvent.keyDown(tablist, { key: "Enter" });

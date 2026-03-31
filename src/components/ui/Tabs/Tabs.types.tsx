@@ -1,4 +1,4 @@
-import { type ReactNode, type ComponentPropsWithoutRef } from "react";
+import { type ComponentPropsWithoutRef, type ReactNode } from "react";
 
 export interface TabItem {
   label: ReactNode;
