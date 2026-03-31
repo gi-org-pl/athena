@@ -48,7 +48,8 @@ const meta: Meta<typeof TextArea> = {
     },
 
     dataTestId: {
-      table: { disable: true },
+      control: "text",
+      table: { category: "Content" },
     },
     onChange: {
       table: { disable: true },
