@@ -1,5 +1,9 @@
 import { Root } from "@radix-ui/react-radio-group";
-import { type ComponentPropsWithoutRef, forwardRef, type ComponentRef } from "react";
+import {
+  type ComponentPropsWithoutRef,
+  type ComponentRef,
+  forwardRef,
+} from "react";
 import { cn } from "@/lib/utils";
 
 export const RadioGroup = forwardRef<
@@ -24,4 +28,3 @@ export const RadioGroup = forwardRef<
 });
 
 RadioGroup.displayName = "RadioGroup";
-

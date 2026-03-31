@@ -7,7 +7,7 @@ const meta = {
   component: RadioGroup,
   tags: ["autodocs"],
   argTypes: {
-    defaultValue: { 
+    defaultValue: {
       control: "text",
       table: { category: "Content" },
     },
@@ -15,7 +15,7 @@ const meta = {
       control: "boolean",
       table: { category: "Style" },
     },
-    required: { 
+    required: {
       control: "boolean",
       table: { category: "Style" },
     },

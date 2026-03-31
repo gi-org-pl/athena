@@ -1,6 +1,10 @@
-import { forwardRef, type ComponentPropsWithoutRef, type ComponentRef } from "react";
-import { Item, Indicator } from "@radix-ui/react-radio-group";
+import { Indicator, Item } from "@radix-ui/react-radio-group";
 import { CircleIcon } from "lucide-react";
+import {
+  type ComponentPropsWithoutRef,
+  type ComponentRef,
+  forwardRef,
+} from "react";
 import { cn } from "@/lib/utils";
 
 export const RadioGroupItem = forwardRef<
