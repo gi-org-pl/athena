@@ -66,7 +66,7 @@ describe("Input Component - 100% Coverage Suite", () => {
     expect(screen.getByText("Error")).toBeInTheDocument();
   });
 
-it("handles disabled state correctly", () => {
+  it("handles disabled state correctly", () => {
     const onChange = vi.fn();
     render(<Input isDisabled value="test value" onChange={onChange} />);
 

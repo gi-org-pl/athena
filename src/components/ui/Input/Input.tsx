@@ -105,7 +105,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
         <div
           className={cn(
-            "flex items-center w-full min-h-[40px] pl-3 pr-3 bg-white border rounded-[24px] transition-all duration-300 ease",
+            "flex items-center w-full min-h-[40px] px-3 bg-white border rounded-[24px] transition-all duration-300 ease",
             !isError &&
               !isDisabled &&
               "border-gi-primary/10 hover:border-gi-primary/33 focus-within:border-gi-primary/33 cursor-text",
@@ -131,7 +131,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             data-testid="input-click-wrapper"
           >
             {shouldShowOverlay ? (
-              <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none w-full">
+              <div
+                className={cn(
+                  "absolute inset-y-0 left-0 flex items-center pointer-events-none w-full",
+                  !LeftIcon && "pl-1",
+                  !RightIcon && "pr-1"
+                )}
+              >
                 {prefix && hasValue ? (
                   <span className="text-sm mr-0.2 text-gi-primary/50 select-none">
                     {prefix}
@@ -176,6 +182,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                 shouldShowOverlay &&
                   "text-transparent placeholder:text-transparent",
                 isDisabled && "cursor-not-allowed",
+                !LeftIcon && "pl-1",
+                !RightIcon && "pr-1"
               )}
             />
           </div>
