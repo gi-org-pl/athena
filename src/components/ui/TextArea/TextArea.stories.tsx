@@ -16,6 +16,7 @@ const meta: Meta<typeof TextArea> = {
       control: "text",
       table: { category: "Content" },
     },
+
     helper: {
       control: "text",
       table: { category: "Content" },
@@ -36,6 +37,13 @@ const meta: Meta<typeof TextArea> = {
     isRequired: {
       control: "boolean",
       table: { category: "State" },
+    },
+    isResizable: {
+      control: "boolean",
+      table: {
+        category: "State",
+        defaultValue: { summary: "false" },
+      },
     },
     isDisabled: {
       control: "boolean",

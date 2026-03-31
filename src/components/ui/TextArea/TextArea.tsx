@@ -8,7 +8,7 @@ const getTextAreaWrapperClasses = (
 ): string => {
   const resizeClass = isResizable ? "resize-y" : "resize-none";
 
-  const base = `w-full min-h-[122px] rounded-3xl border bg-transparent p-4 text-sm transition-all duration-300 ${resizeClass} focus:outline-none`;
+  const base = `w-full min-h-[122px] rounded-3xl border bg-transparent p-4 text-sm transition-colors duration-300 ${resizeClass} focus:outline-none`;
 
   if (isDisabled) {
     return `${base} border-gi-ash text-gi-gray placeholder:text-gi-ash cursor-not-allowed`;
@@ -54,7 +54,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       isError = false,
       isRequired = false,
       isDisabled = false,
-      isResizable = false, // Domyślnie wyłączone wg prośby Kamila
+      isResizable = false,
       ...props
     },
     ref,
