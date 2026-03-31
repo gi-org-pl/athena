@@ -4,16 +4,20 @@ import type { TextAreaProps } from "./TextArea.types";
 const getTextAreaWrapperClasses = (
   isError: boolean,
   isDisabled: boolean,
+  isResizable: boolean,
 ): string => {
-  const base =
-    "w-full h-[122px] rounded-3xl border bg-transparent p-4 text-sm transition ease-[ease] duration-300 resize-y focus:outline-none";
+  const resizeClass = isResizable ? "resize-y" : "resize-none";
+
+  const base = `w-full min-h-[122px] rounded-3xl border bg-transparent p-4 text-sm transition-all duration-300 ${resizeClass} focus:outline-none`;
 
   if (isDisabled) {
     return `${base} border-gi-ash text-gi-gray placeholder:text-gi-ash cursor-not-allowed`;
   }
+
   if (isError) {
     return `${base} border-gi-red text-gi-dark-primary placeholder:text-gi-gray hover:border-gi-red-hover focus:border-2 focus:border-gi-red-hover`;
   }
+
   return `${base} border-gi-primary/10 text-gi-dark-primary placeholder:text-gi-gray hover:border-gi-primary/20 focus:border-2 focus:border-gi-primary/20`;
 };
 
@@ -35,6 +39,7 @@ const getCharacterCountClasses = (
   if (isError) return "text-xs text-gi-red";
   return "text-xs text-gi-gray";
 };
+
 export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   (
     {
@@ -49,6 +54,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       isError = false,
       isRequired = false,
       isDisabled = false,
+      isResizable = false, // Domyślnie wyłączone wg prośby Kamila
       ...props
     },
     ref,
@@ -91,7 +97,11 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
               ? `${dataTestId ?? "textarea"}-description`
               : undefined
           }
-          className={getTextAreaWrapperClasses(isError, isDisabled)}
+          className={getTextAreaWrapperClasses(
+            isError,
+            isDisabled,
+            isResizable,
+          )}
           rows={4}
           {...props}
         />
