@@ -4,10 +4,11 @@ export type TextAreaData = {
   value: string;
 };
 
-export interface TextAreaProps extends Omit<
-  ComponentProps<"textarea">,
-  "onChange" | "disabled" | "required"
-> {
+export interface TextAreaProps
+  extends Omit<
+    ComponentProps<"textarea">,
+    "onChange" | "disabled" | "required"
+  > {
   dataTestId?: string;
   value: string;
   onChange: (value: string) => void;
