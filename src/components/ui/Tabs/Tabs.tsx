@@ -1,21 +1,8 @@
-import * as React from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, forwardRef, type KeyboardEvent } from "react";
+import { measureTabElement } from "./Tabs.methods";
+import type { TabsProps } from "./Tabs.types";
 
-export interface TabItem {
-  label: React.ReactNode;
-  value: string;
-}
-
-export interface TabsProps extends React.ComponentPropsWithoutRef<"div"> {
-  value: string;
-  onValueChange: (value: string) => void;
-  items: Array<TabItem>;
-  size?: "regular" | "large";
-  isFullWidth?: boolean;
-  dataTestId?: string;
-}
-
-export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
+export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
   (
     {
       value,
@@ -35,9 +22,35 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
     useEffect(() => {
       const activeIndex = items.findIndex((item) => item.value === value);
       const activeElement = tabsRef.current[activeIndex];
-
       setIndicatorStyle(measureTabElement(activeElement));
     }, [value, items, size, isFullWidth]);
+
+    const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+      const currentIndex = items.findIndex((item) => item.value === value);
+      let nextIndex: number | null = null;
+
+      switch (event.key) {
+        case "ArrowRight":
+          nextIndex = (currentIndex + 1) % items.length;
+          break;
+        case "ArrowLeft":
+          nextIndex = (currentIndex - 1 + items.length) % items.length;
+          break;
+        case "Home":
+          nextIndex = 0;
+          break;
+        case "End":
+          nextIndex = items.length - 1;
+          break;
+        default:
+          return;
+      }
+
+      event.preventDefault();
+      const nextItem = items[nextIndex];
+      onValueChange(nextItem.value);
+      tabsRef.current[nextIndex]?.focus();
+    };
 
     const sizeClasses =
       size === "large" ? "text-lg pt-4 pb-3 px-3" : "text-base pt-3 pb-2 px-3";
@@ -49,6 +62,8 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
       <div
         ref={ref}
         role="tablist"
+        aria-orientation="horizontal"
+        onKeyDown={handleKeyDown}
         data-test-id={dataTestId}
         className={`relative border-b-4 border-slate-200 ${containerWidthClass} ${className}`}
         {...props}
@@ -58,18 +73,21 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
           return (
             <button
               key={item.value}
+              id={`tab-${item.value}`}
               ref={(el) => {
                 tabsRef.current[index] = el;
               }}
               role="tab"
               aria-selected={isActive}
+              aria-controls={`panel-${item.value}`}
+              tabIndex={isActive ? 0 : -1}
               onClick={() => onValueChange(item.value)}
               className={`
                 ${sizeClasses}
                 ${isFullWidth ? "flex-1" : ""}
                 flex items-center justify-center
-                text-slate-800 font-bold
-                relative z-10 transition-colors duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-600
+                text-gi-primary font-bold
+                relative z-10 transition-colors duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-gi-primary
               `}
             >
               {item.label}
@@ -77,7 +95,7 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
           );
         })}
         <div
-          className="absolute bottom-[-4px] h-[4px] bg-slate-800 transition-all duration-300 ease"
+          className="absolute bottom-[-4px] h-[4px] bg-gi-primary transition-all duration-300 ease"
           style={{
             left: `${indicatorStyle.left}px`,
             width: `${indicatorStyle.width}px`,
@@ -90,13 +108,3 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
 );
 
 Tabs.displayName = "Tabs";
-
-const measureTabElement = (element: HTMLElement | null) => {
-  if (!element) {
-    return { left: 0, width: 0 };
-  }
-  return {
-    left: element.offsetLeft,
-    width: element.offsetWidth,
-  };
-};

@@ -7,6 +7,7 @@ const meta = {
   component: Tabs,
   parameters: {
     layout: "padded",
+    controls: { expanded: true },
   },
   decorators: [
     (Story) => (
@@ -52,16 +53,30 @@ const meta = {
   },
   tags: ["autodocs"],
   argTypes: {
-    /* Explicitly disabling the controls you want hidden */
-    className: { table: { disable: true } },
-    value: { table: { disable: true } },
-    onValueChange: { table: { disable: true } },
+    items: {
+      table: { category: "Content" },
+    },
+    dataTestId: {
+      control: "text",
+      table: { category: "Content" }
+    },
     size: {
       control: "radio",
       options: ["regular", "large"],
+      table: { category: "Style" },
     },
     isFullWidth: {
       control: "boolean",
+      table: { category: "Style" },
+    },
+    className: {
+      table: { category: "Style", disable: true },
+    },
+    onValueChange: {
+      table: { disable: true },
+    },
+    value: {
+      table: { disable: true },
     },
   },
 } satisfies Meta<typeof Tabs>;

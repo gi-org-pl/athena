@@ -28,6 +28,113 @@ describe("<Tabs />", () => {
     expect(tabs).toHaveLength(3);
     expect(tabs[0]).toHaveTextContent("First Tab");
   });
+  
+  describe("Keyboard Navigation", () => {
+    it("should shift focus and change value to the next tab on ArrowRight", () => {
+      const handleValueChange = vi.fn();
+      render(
+        <Tabs items={defaultItems} value="tab1" onValueChange={handleValueChange} />
+      );
+      
+      const tablist = screen.getByRole("tablist");
+      const tabs = screen.getAllByRole("tab");
+
+      fireEvent.keyDown(tablist, { key: "ArrowRight" });
+
+      expect(handleValueChange).toHaveBeenCalledWith("tab2");
+      expect(tabs[1]).toHaveFocus();
+    });
+
+    it("should wrap focus to the first tab when ArrowRight is pressed on the final tab", () => {
+      const handleValueChange = vi.fn();
+      render(
+        <Tabs items={defaultItems} value="tab3" onValueChange={handleValueChange} />
+      );
+      
+      const tablist = screen.getByRole("tablist");
+      const tabs = screen.getAllByRole("tab");
+
+      fireEvent.keyDown(tablist, { key: "ArrowRight" });
+
+      expect(handleValueChange).toHaveBeenCalledWith("tab1");
+      expect(tabs[0]).toHaveFocus();
+    });
+
+    it("should shift focus and change value to the previous tab on ArrowLeft", () => {
+      const handleValueChange = vi.fn();
+      render(
+        <Tabs items={defaultItems} value="tab2" onValueChange={handleValueChange} />
+      );
+      
+      const tablist = screen.getByRole("tablist");
+      const tabs = screen.getAllByRole("tab");
+
+      fireEvent.keyDown(tablist, { key: "ArrowLeft" });
+
+      expect(handleValueChange).toHaveBeenCalledWith("tab1");
+      expect(tabs[0]).toHaveFocus();
+    });
+
+    it("should wrap focus to the final tab when ArrowLeft is pressed on the first tab", () => {
+      const handleValueChange = vi.fn();
+      render(
+        <Tabs items={defaultItems} value="tab1" onValueChange={handleValueChange} />
+      );
+      
+      const tablist = screen.getByRole("tablist");
+      const tabs = screen.getAllByRole("tab");
+
+      fireEvent.keyDown(tablist, { key: "ArrowLeft" });
+
+      expect(handleValueChange).toHaveBeenCalledWith("tab3");
+      expect(tabs[2]).toHaveFocus();
+    });
+
+    it("should immediately shift focus to the first tab when Home is pressed", () => {
+      const handleValueChange = vi.fn();
+      render(
+        <Tabs items={defaultItems} value="tab3" onValueChange={handleValueChange} />
+      );
+      
+      const tablist = screen.getByRole("tablist");
+      const tabs = screen.getAllByRole("tab");
+
+      fireEvent.keyDown(tablist, { key: "Home" });
+
+      expect(handleValueChange).toHaveBeenCalledWith("tab1");
+      expect(tabs[0]).toHaveFocus();
+    });
+
+    it("should immediately shift focus to the final tab when End is pressed", () => {
+      const handleValueChange = vi.fn();
+      render(
+        <Tabs items={defaultItems} value="tab1" onValueChange={handleValueChange} />
+      );
+      
+      const tablist = screen.getByRole("tablist");
+      const tabs = screen.getAllByRole("tab");
+
+      fireEvent.keyDown(tablist, { key: "End" });
+
+      expect(handleValueChange).toHaveBeenCalledWith("tab3");
+      expect(tabs[2]).toHaveFocus();
+    });
+
+    it("should ignore unsupported keys and not trigger changes", () => {
+      const handleValueChange = vi.fn();
+      render(
+        <Tabs items={defaultItems} value="tab1" onValueChange={handleValueChange} />
+      );
+      
+      const tablist = screen.getByRole("tablist");
+
+      fireEvent.keyDown(tablist, { key: "Enter" });
+      fireEvent.keyDown(tablist, { key: "Space" });
+      fireEvent.keyDown(tablist, { key: "Tab" });
+
+      expect(handleValueChange).not.toHaveBeenCalled();
+    });
+  });
 
   describe("Accessibility and ARIA attributes", () => {
     it("should correctly set aria-selected based on the active value", () => {
