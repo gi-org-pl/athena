@@ -28,7 +28,6 @@ const meta = {
       },
     },
     LeftIcon: {
-      // Use boolean control but ensure the mapping is present
       control: "boolean",
       mapping: {
         true: Crown,
