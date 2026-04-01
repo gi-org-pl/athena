@@ -30,6 +30,8 @@ const meta = {
     placeholder: { control: "text", table: { category: "Content" } },
     helper: { control: "text", table: { category: "Content" } },
     errorText: { control: "text", table: { category: "Content" } },
+    prefix: { control: "text", table: { category: "Content" } },
+    suffix: { control: "text", table: { category: "Content" } },
 
     isError: { control: "boolean", table: { category: "Style" } },
     isDisabled: { control: "boolean", table: { category: "Style" } },
@@ -45,9 +47,6 @@ const meta = {
       mapping: { true: <CrownIcon />, false: undefined },
       table: { category: "Icons" },
     },
-
-    prefix: { control: "text", table: { category: "Addons" } },
-    suffix: { control: "text", table: { category: "Addons" } },
 
     onChange: { table: { disable: true } },
     onFocus: { table: { disable: true } },

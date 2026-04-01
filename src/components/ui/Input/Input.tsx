@@ -1,4 +1,3 @@
-import type { ChangeEvent, FocusEvent } from "react";
 import {
   forwardRef,
   useEffect,
@@ -7,6 +6,7 @@ import {
   useRef,
   useState,
 } from "react";
+import type { ChangeEvent, FocusEvent } from "react";
 import { cn } from "@/lib/utils";
 import { getOverlayContent } from "./Input.methods";
 import type { InputProps } from "./Input.types";
@@ -135,7 +135,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                 className={cn(
                   "absolute inset-y-0 left-0 flex items-center pointer-events-none w-full",
                   !LeftIcon && "pl-1",
-                  !RightIcon && "pr-1"
+                  !RightIcon && "pr-1",
                 )}
               >
                 {prefix && hasValue ? (
@@ -183,7 +183,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                   "text-transparent placeholder:text-transparent",
                 isDisabled && "cursor-not-allowed",
                 !LeftIcon && "pl-1",
-                !RightIcon && "pr-1"
+                !RightIcon && "pr-1",
               )}
             />
           </div>
