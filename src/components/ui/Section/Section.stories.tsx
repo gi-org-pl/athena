@@ -5,7 +5,6 @@ import { Section } from "./Section";
 type SectionStoryArgs = {
   title: string;
   titleSecondary: string;
-  description: string;
   childrenTitle: string;
   childrenDescription: string;
   action0: string;
@@ -21,31 +20,51 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div style={{ width: 600, height: 200, margin: "0 auto" }}>
+      <div style={{ width: 600, height: 250, margin: "0 auto" }}>
         <Story />
       </div>
     ),
   ],
   argTypes: {
-    title: { control: "text" },
-    titleSecondary: { control: "text" },
-    description: { control: "text" },
-    childrenTitle: { control: "text" },
-    childrenDescription: { control: "text" },
-    action0: { control: "text" },
-    action1: { control: "text" },
-    actionsPosition: {
-      control: "select",
-      options: ["right", "bottom"],
+    title: {
+      control: "text",
+      table: { category: "Header" },
     },
-    showActions: { control: "boolean" },
+    titleSecondary: {
+      control: "text",
+      table: { category: "Header" },
+    },
+    childrenTitle: {
+      control: "text",
+      table: { category: "Content" },
+    },
+    childrenDescription: {
+      control: "text",
+      table: { category: "Content" },
+    },
+    showActions: {
+      control: "boolean",
+      table: { category: "Actions" },
+    },
+    action0: {
+      control: "text",
+      table: { category: "Actions" },
+    },
+    action1: {
+      control: "text",
+      table: { category: "Actions" },
+    },
+    actionsPosition: {
+      control: "radio",
+      options: ["right", "bottom"],
+      table: { category: "Actions" },
+    },
   },
   args: {
-    title: "News",
-    titleSecondary: "(3)",
-    description: "Main section description",
-    childrenTitle: "First news:",
-    childrenDescription: "It is great to be a part of the GI foundation!",
+    title: "Title",
+    titleSecondary: "(Secondary)",
+    childrenTitle: "Childeren Title:",
+    childrenDescription: "Children Description",
     action0: "Action 0",
     action1: "Action 1",
     actionsPosition: "right",
@@ -67,20 +86,16 @@ const meta = {
       </>
     ) : undefined;
 
-    const childrenContent = (
-      <div>
-        <p style={{ fontWeight: 800, fontSize: 16 }}>{args.childrenTitle}</p>
-        <p>{args.childrenDescription}</p>
-      </div>
-    );
-
     return (
       <Section
         title={titleContent}
         actions={actionsContent}
         actionsPosition={args.actionsPosition}
       >
-        {childrenContent}
+        <div>
+          <p style={{ fontWeight: 800, fontSize: 16 }}>{args.childrenTitle}</p>
+          <p>{args.childrenDescription}</p>
+        </div>
       </Section>
     );
   },
