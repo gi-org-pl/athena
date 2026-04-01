@@ -1,3 +1,4 @@
+import type { ChangeEvent, FocusEvent } from "react";
 import {
   forwardRef,
   useEffect,
@@ -6,7 +7,6 @@ import {
   useRef,
   useState,
 } from "react";
-import type { ChangeEvent, FocusEvent } from "react";
 import { cn } from "@/lib/utils";
 import { getOverlayContent } from "./Input.methods";
 import type { InputProps } from "./Input.types";
@@ -93,7 +93,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           <label
             htmlFor={inputId}
             className={cn(
-              "text-sm font-medium block transition-all duration-300 ease cursor-pointer",
+              "text-sm font-medium block transition-all duration-300 ease",
               isError ? "text-gi-red" : "text-gi-primary",
               isDisabled && "opacity-50 cursor-not-allowed",
             )}
