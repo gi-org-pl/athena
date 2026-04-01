@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
+import Crown from "@/assets/icons/crown.svg";
 import { InfoMessage } from "./InfoMessage";
 
 const meta = {
@@ -8,15 +8,35 @@ const meta = {
   parameters: {
     layout: "centered",
   },
+  args: {
+    children: "Info Message",
+    variant: "default",
+    LeftIcon: false,
+  },
   argTypes: {
-    children: { control: "text" },
+    children: {
+      control: "text",
+      table: {
+        category: "Content",
+      },
+    },
     variant: {
-      control: "select",
+      control: "radio",
       options: ["default", "info", "error", "warning", "success"],
+      table: {
+        category: "Style",
+      },
+    },
+    LeftIcon: {
+      control: "boolean",
+      mapping: {
+        true: Crown,
+        false: undefined,
+      },
+      table: { category: "Content" },
     },
   },
   tags: ["autodocs"],
-  args: { children: "Info Message" },
 } satisfies Meta<typeof InfoMessage>;
 
 export default meta;
@@ -46,8 +66,13 @@ export const Warning: Story = {
   },
 };
 
-export const success: Story = {
+export const Success: Story = {
   args: {
     variant: "success",
+  },
+};
+export const CustomIcon: Story = {
+  args: {
+    LeftIcon: true,
   },
 };

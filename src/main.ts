@@ -5,10 +5,7 @@ export { Badge } from "./components/ui/Badge/Badge";
 export { Button } from "./components/ui/Button/Button";
 export { ButtonSelect } from "./components/ui/ButtonSelect/ButtonSelect";
 export { Checkbox } from "./components/ui/Checkbox/Checkbox";
-export {
-  InfoMessage,
-  infoMessageVariants,
-} from "./components/ui/InfoMessage/InfoMessage";
+export { InfoMessage } from "./components/ui/InfoMessage/InfoMessage";
 export { Input } from "./components/ui/Input/Input";
 export { Modal } from "./components/ui/Modal/Modal";
 export { Pagination } from "./components/ui/Pagination/Pagination";

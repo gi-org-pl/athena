@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { getInitials } from "./Avatar.methods";
 import { type AvatarProps, avatarVariants } from "./Avatar.types";
 
-const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
+export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
   (
     {
       className,
@@ -71,5 +71,3 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
 );
 
 Avatar.displayName = "Avatar";
-
-export { Avatar };

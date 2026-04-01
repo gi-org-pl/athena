@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 import { ProgressBar } from "./ProgressBar";
 
 const meta = {
@@ -8,26 +7,35 @@ const meta = {
   parameters: {
     layout: "centered",
   },
+  args: {
+    value: 50,
+    size: "regular",
+    variant: "default",
+  },
   argTypes: {
     value: {
-      control: "number",
-      min: 0,
-      max: 100,
-      step: 1,
-    },
-    size: {
-      control: "select",
-      options: ["small", "regular"],
+      control: { type: "range", min: 0, max: 100, step: 1 },
+      table: { category: "Content" },
     },
     variant: {
-      control: "select",
+      control: "radio",
       options: ["default", "info", "success", "warning", "error"],
+      table: { category: "Style" },
     },
-    dataTestId: { control: "text" },
+    size: {
+      control: "radio",
+      options: ["small", "regular"],
+      table: { category: "Style" },
+    },
+    className: { table: { disable: true } },
+    dataTestId: { table: { category: "Content" } },
   },
   tags: ["autodocs"],
-  render: (args) => <ProgressBar className="w-[200px] max-w-full" {...args} />,
-  args: { value: 50 },
+  render: (args) => (
+    <div className="w-[300px]">
+      <ProgressBar {...args} />
+    </div>
+  ),
 } satisfies Meta<typeof ProgressBar>;
 
 export default meta;
@@ -39,149 +47,77 @@ export const Default: Story = {
   },
 };
 
-export const Zero: Story = {
-  args: {
-    value: 0,
-  },
-};
-
-export const Quarter: Story = {
-  args: {
-    value: 25,
-  },
-};
-
-export const Half: Story = {
-  args: {
-    value: 50,
-  },
-};
-
-export const ThreeQuarters: Story = {
-  args: {
-    value: 75,
-  },
-};
-
-export const Full: Story = {
-  args: {
-    value: 100,
-  },
-};
-
-export const ClampedBelowZero: Story = {
-  args: {
-    value: -10,
-  },
-};
-
-export const ClampedAboveHundred: Story = {
-  args: {
-    value: 150,
-  },
-};
-
-export const Small: Story = {
-  args: {
-    value: 60,
-    size: "small",
-  },
-};
-
-export const Regular: Story = {
-  args: {
-    value: 60,
-    size: "regular",
-  },
-};
-
-export const InfoVariant: Story = {
-  args: {
-    value: 65,
-    variant: "info",
-  },
-};
-
-export const SuccessVariant: Story = {
-  args: {
-    value: 80,
-    variant: "success",
-  },
-};
-
-export const WarningVariant: Story = {
-  args: {
-    value: 45,
-    variant: "warning",
-  },
-};
-
-export const ErrorVariant: Story = {
-  args: {
-    value: 30,
-    variant: "error",
-  },
-};
-
-export const WithDataTestId: Story = {
-  args: {
-    value: 55,
-    dataTestId: "progress-bar-test",
-  },
-};
-
-export const WithCustomClass: Story = {
-  args: {
-    value: 70,
-    className: "max-w-sm",
-  },
-};
-
-export const AllVariants: Story = {
-  args: {
-    value: 70,
-    className: "max-w-sm",
-  },
+export const VariantShowcase: Story = {
   render: (args) => (
-    <div className="space-y-4 w-64">
-      <div className="space-y-2">
-        <p className="text-sm font-medium">Default</p>
-        <ProgressBar {...args} />
+    <div className="flex flex-col gap-6 w-[300px]">
+      <div className="space-y-1">
+        <span className="text-xs font-mono opacity-50">Default</span>
+        <ProgressBar {...args} variant="default" />
       </div>
-      <div className="space-y-2">
-        <p className="text-sm font-medium">Info</p>
-        <ProgressBar variant="info" {...args} />
+      <div className="space-y-1">
+        <span className="text-xs font-mono text-blue-500">Info</span>
+        <ProgressBar {...args} variant="info" />
       </div>
-      <div className="space-y-2">
-        <p className="text-sm font-medium">Success</p>
-        <ProgressBar variant="success" {...args} />
+      <div className="space-y-1">
+        <span className="text-xs font-mono text-green-500">Success</span>
+        <ProgressBar {...args} variant="success" />
       </div>
-      <div className="space-y-2">
-        <p className="text-sm font-medium">Warning</p>
-        <ProgressBar variant="warning" {...args} />
+      <div className="space-y-1">
+        <span className="text-xs font-mono text-orange-500">Warning</span>
+        <ProgressBar {...args} variant="warning" />
       </div>
-      <div className="space-y-2">
-        <p className="text-sm font-medium">Error</p>
-        <ProgressBar variant="error" {...args} />
+      <div className="space-y-1">
+        <span className="text-xs font-mono text-red-500">Error</span>
+        <ProgressBar {...args} variant="error" />
       </div>
     </div>
   ),
 };
 
-export const AllSizes: Story = {
-  args: {
-    value: 70,
-    className: "max-w-sm",
-  },
+export const SizeComparison: Story = {
   render: (args) => (
-    <div className="space-y-4 w-64">
-      <div className="space-y-2">
-        <p className="text-sm font-medium">Small</p>
-        <ProgressBar size="small" {...args} />
+    <div className="flex flex-col gap-4 w-[300px]">
+      <div className="space-y-1">
+        <span className="text-xs font-mono opacity-50">Small (4px)</span>
+        <ProgressBar {...args} size="small" />
       </div>
-      <div className="space-y-2">
-        <p className="text-sm font-medium">Regular</p>
-        <ProgressBar size="regular" {...args} />
+      <div className="space-y-1">
+        <span className="text-xs font-mono opacity-50">Regular (8px)</span>
+        <ProgressBar {...args} size="regular" />
+      </div>
+    </div>
+  ),
+  args: {
+    value: 75,
+  },
+};
+
+export const ProgressStages: Story = {
+  render: (args) => (
+    <div className="flex flex-col gap-4 w-[300px]">
+      <ProgressBar {...args} value={0} />
+      <ProgressBar {...args} value={25} />
+      <ProgressBar {...args} value={50} />
+      <ProgressBar {...args} value={75} />
+      <ProgressBar {...args} value={100} variant="success" />
+    </div>
+  ),
+};
+
+export const EdgeCases: Story = {
+  render: (args) => (
+    <div className="flex flex-col gap-4 w-[300px]">
+      <div className="space-y-1">
+        <span className="text-xs font-mono opacity-50 text-red-400">
+          Value: -15 (Clamped to 0)
+        </span>
+        <ProgressBar {...args} value={-15} />
+      </div>
+      <div className="space-y-1">
+        <span className="text-xs font-mono opacity-50 text-red-400">
+          Value: 120 (Clamped to 100)
+        </span>
+        <ProgressBar {...args} value={120} />
       </div>
     </div>
   ),
