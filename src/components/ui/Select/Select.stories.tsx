@@ -41,7 +41,6 @@ const meta = {
       control: "boolean",
       table: { category: "Interactions" },
     },
-    // Behavior
     openOn: {
       control: "inline-radio",
       options: ["click", "hover"],

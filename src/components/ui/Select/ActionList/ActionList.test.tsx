@@ -3,14 +3,13 @@ import userEvent from "@testing-library/user-event";
 import React, { createRef } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ActionList } from "./ActionList";
-import { DropdownMenu, DropdownMenuContent } from "./ActionList.methods"; // Assuming they are exported from the same file
+import { DropdownMenu, DropdownMenuContent } from "./ActionList.methods";
 
 describe("<ActionList />", () => {
   afterEach(() => {
     cleanup();
   });
 
-  // Helper to wrap the component in the required Radix context
   const renderActionList = (items: any[], props = {}) => {
     return render(
       <DropdownMenu open={true}>
@@ -50,7 +49,6 @@ describe("<ActionList />", () => {
       renderActionList([{ label: "No Icon Item", onClick: vi.fn() }]);
 
       const label = screen.getByText("No Icon Item");
-      // The placeholder div is the next sibling of the label span
       const placeholder = label.nextElementSibling;
 
       expect(placeholder).toHaveClass("size-4 shrink-0");
