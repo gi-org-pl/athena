@@ -261,4 +261,17 @@ describe("TextArea", () => {
     const count = screen.getByText("2/100");
     expect(count.className).toContain("text-gi-ash");
   });
+  it("applies resize-y class when isResizable is true", () => {
+    render(<TextArea {...defaultProps} isResizable />);
+    const textarea = screen.getByRole("textbox");
+    expect(textarea.className).toContain("resize-y");
+    expect(textarea.className).not.toContain("resize-none");
+  });
+
+  it("applies resize-none class when isResizable is false (default)", () => {
+    render(<TextArea {...defaultProps} />);
+    const textarea = screen.getByRole("textbox");
+    expect(textarea.className).toContain("resize-none");
+    expect(textarea.className).not.toContain("resize-y");
+  });
 });
