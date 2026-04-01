@@ -9,11 +9,11 @@ describe("<Pagination />", () => {
     onChange: vi.fn(),
   };
 
-  vi.mock("@/assets/icons/chevron-left.svg", () => ({
+  vi.mock("@/assets/icons/chevron-left-icon.svg", () => ({
     default: () => <span data-testid="chevron-left" />,
   }));
 
-  vi.mock("@/assets/icons/chevron-right.svg", () => ({
+  vi.mock("@/assets/icons/chevron-right-icon.svg", () => ({
     default: () => <span data-testid="chevron-right" />,
   }));
   const getPrevButton = () => screen.getByRole("button", { name: /previous/i });

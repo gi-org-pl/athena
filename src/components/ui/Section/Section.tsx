@@ -1,57 +1,73 @@
-import * as React from "react";
-
+import { forwardRef, useId } from "react";
 import { cn } from "@/lib/utils";
+import type { SectionProps } from "./Section.types";
 
-export type SectionActionsPosition = "right" | "bottom";
+export const Section = forwardRef<HTMLElement, SectionProps>(
+  (
+    {
+      title,
+      actions,
+      actionsPosition = "right",
+      children,
+      className,
+      dataTestId,
+      ...rest
+    },
+    ref,
+  ) => {
+    const generatedId = useId();
+    const titleId = `section_title_${generatedId}`;
 
-export interface SectionProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
-  title: React.ReactNode;
-  actions?: React.ReactNode;
-  actionsPosition?: SectionActionsPosition;
-  children: React.ReactNode;
-  dataTestId?: string;
-}
+    const isRight = actions && actionsPosition === "right";
+    const isBottom = actions && actionsPosition === "bottom";
 
-export function Section({
-  title,
-  actions,
-  actionsPosition = "right",
-  children,
-  className,
-  dataTestId,
-  ...rest
-}: SectionProps) {
-  const showInlineActions = actions && actionsPosition === "right";
-  const showBottomActions = actions && actionsPosition === "bottom";
-
-  return (
-    <section
-      data-testid={dataTestId}
-      className={cn(
-        "w-full flex flex-col border border-gi-ash rounded-[48px] ",
-        className,
-      )}
-      {...rest}
-    >
-      <header className="flex flex-col w-full p-6 gap-4">
-        <div className="flex flex-row items-center justify-between w-full">
-          <div className="text-gi-light-primary font-extrabold text-[24px]/[120%]">
-            {title}
-          </div>
-          {showInlineActions && (
-            <div className="flex flex-row items-center gap-3">{actions}</div>
-          )}
-        </div>
-        {showBottomActions && (
-          <div className="flex flex-row items-center gap-3">{actions}</div>
+    return (
+      <section
+        ref={ref}
+        data-test-id={dataTestId}
+        aria-labelledby={titleId}
+        className={cn(
+          "w-full flex flex-col border border-gi-ash rounded-[48px]",
+          className,
         )}
-      </header>
-      <div className="flex flex-col w-full border-gi-ash rounded-[48px] bg-gi-ash p-6 gap-4">
-        <div className="text-gi-light-primary bg-background rounded-[32px] border py-4.5 px-6  border-gi-dark-ash">
-          {children}
+        {...rest}
+      >
+        <header className="flex flex-col w-full p-6 gap-4">
+          <div className="flex flex-row items-center justify-between w-full">
+            <h2
+              id={titleId}
+              className="text-gi-light-primary font-extrabold text-[24px]/[120%]"
+            >
+              {title}
+            </h2>
+            {isRight && (
+              <div
+                role="group"
+                aria-label={`Actions for ${title}`}
+                className="flex flex-row items-center gap-3"
+              >
+                {actions}
+              </div>
+            )}
+          </div>
+          {isBottom && (
+            <div
+              role="group"
+              aria-label={`Actions for ${title}`}
+              className="flex flex-row items-center gap-3"
+            >
+              {actions}
+            </div>
+          )}
+        </header>
+        <div className="flex flex-col w-full border-gi-ash rounded-[48px] bg-gi-ash p-6 gap-4">
+          <div className="text-gi-light-primary bg-background rounded-[32px] border py-4.5 px-6 border-gi-dark-ash">
+            {children}
+          </div>
         </div>
-      </div>
-    </section>
-  );
-}
+      </section>
+    );
+  },
+);
+
+Section.displayName = "Section";

@@ -1,6 +1,18 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import type { HTMLAttributes } from "react";
 
+export interface AvatarProps
+  extends HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof avatarVariants> {
+  src?: string;
+  alt?: string;
+  fallback?: "initials" | "icon";
+  name?: string;
+  gender?: "male" | "female";
+  color?: string;
+  dataTestId?: string;
+}
+
 export const avatarVariants = cva(
   "relative flex shrink-0 overflow-hidden rounded-full items-center justify-center bg-gi-ash",
   {
@@ -16,15 +28,3 @@ export const avatarVariants = cva(
     },
   },
 );
-
-export interface AvatarProps
-  extends HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof avatarVariants> {
-  src?: string;
-  alt?: string;
-  fallback?: "initials" | "icon";
-  name?: string;
-  gender?: "male" | "female";
-  color?: string;
-  dataTestId?: string;
-}

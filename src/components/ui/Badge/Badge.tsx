@@ -14,7 +14,7 @@ const typeIconMap = {
   error: XIcon,
 } as const;
 
-const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
+export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
   (
     {
       className,
@@ -100,5 +100,3 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
 );
 
 Badge.displayName = "Badge";
-
-export { Badge };
