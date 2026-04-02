@@ -1,40 +1,42 @@
-import * as React from "react";
+import { forwardRef } from "react";
 import {
   Tooltip as ShadcnTooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "./tooltip-base";
+import type { TooltipProps } from "./Tooltip.types";
 
-export interface TooltipProps {
-  children: React.ReactNode;
-  content: React.ReactNode;
-  side?: "top" | "right" | "bottom" | "left";
-  align?: "start" | "center" | "end";
-  delay?: number;
-  dataTestId?: string;
-}
+const Tooltip = forwardRef<HTMLSpanElement, TooltipProps>(
+  (
+    {
+      children,
+      content,
+      side = "top",
+      align = "center",
+      delay = 200,
+      dataTestId,
+      ...props
+    },
+    ref,
+  ) => {
+    return (
+      <TooltipProvider delayDuration={delay}>
+        <ShadcnTooltip {...props}>
+          <TooltipTrigger asChild>
+            <span ref={ref} className="cursor-default inline-block">
+              {children}
+            </span>
+          </TooltipTrigger>
+          <TooltipContent side={side} align={align} data-test-id={dataTestId}>
+            {content}
+          </TooltipContent>
+        </ShadcnTooltip>
+      </TooltipProvider>
+    );
+  },
+);
 
-const Tooltip = ({
-  children,
-  content,
-  side = "top",
-  align = "center",
-  delay = 200,
-  dataTestId,
-}: TooltipProps) => {
-  return (
-    <TooltipProvider delayDuration={delay}>
-      <ShadcnTooltip>
-        <TooltipTrigger asChild>
-          <span className="cursor-default inline-block">{children}</span>
-        </TooltipTrigger>
-        <TooltipContent side={side} align={align} data-test-id={dataTestId}>
-          {content}
-        </TooltipContent>
-      </ShadcnTooltip>
-    </TooltipProvider>
-  );
-};
+Tooltip.displayName = "Tooltip";
 
 export { Tooltip };

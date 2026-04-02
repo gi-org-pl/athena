@@ -9,21 +9,30 @@ const meta: Meta<typeof Tooltip> = {
     content: {
       control: "text",
       description: "Text displayed in the tooltip",
+      table: { category: "Content" },
     },
     children: {
       control: "text",
       description: "Trigger element",
+      table: { category: "Content" },
+    },
+    dataTestId: {
+      control: "text",
+      table: { category: "Content" },
     },
     side: {
       control: "select",
       options: ["top", "right", "bottom", "left"],
+      table: { category: "Style" },
     },
     align: {
       control: "select",
       options: ["start", "center", "end"],
+      table: { category: "Style" },
     },
     delay: {
       control: "number",
+      table: { category: "State" },
     },
   },
 };
@@ -34,7 +43,7 @@ type Story = StoryObj<typeof Tooltip>;
 export const Default: Story = {
   args: {
     children: "Hover me",
-    content: "This is a default tooltip",
+    content: "Tooltip content",
     side: "top",
   },
   render: (args) => (
@@ -56,17 +65,40 @@ export const DifferentSides: Story = {
   ],
   render: () => (
     <div className="flex items-center gap-8">
-      <Tooltip content="Tooltip on the left" side="left">
+      <Tooltip content="Tooltip content" side="left">
         <button className="px-3 py-1 border rounded">Left</button>
       </Tooltip>
-      <Tooltip content="Tooltip on the top" side="top">
+      <Tooltip content="Tooltip content" side="top">
         <button className="px-3 py-1 border rounded">Top</button>
       </Tooltip>
-      <Tooltip content="Tooltip on the bottom" side="bottom">
+      <Tooltip content="Tooltip content" side="bottom">
         <button className="px-3 py-1 border rounded">Bottom</button>
       </Tooltip>
-      <Tooltip content="Tooltip on the right" side="right">
+      <Tooltip content="Tooltip content" side="right">
         <button className="px-3 py-1 border rounded">Right</button>
+      </Tooltip>
+    </div>
+  ),
+};
+
+export const DifferentAlignments: Story = {
+  decorators: [
+    (Story) => (
+      <div className="flex items-center justify-center min-h-[300px] w-full">
+        <Story />
+      </div>
+    ),
+  ],
+  render: () => (
+    <div className="flex flex-col items-center gap-8">
+      <Tooltip content="Tooltip content" side="bottom" align="start">
+        <button className="px-3 py-1 border rounded w-32">Align Start</button>
+      </Tooltip>
+      <Tooltip content="Tooltip content" side="bottom" align="center">
+        <button className="px-3 py-1 border rounded w-32">Align Center</button>
+      </Tooltip>
+      <Tooltip content="Tooltip content" side="bottom" align="end">
+        <button className="px-3 py-1 border rounded w-32">Align End</button>
       </Tooltip>
     </div>
   ),
@@ -75,13 +107,13 @@ export const DifferentSides: Story = {
 export const InlineText: Story = {
   render: () => (
     <p className="text-sm">
-      Tooltips are great because you can hide them even in the{" "}
-      <Tooltip content="Additional information inside text" side="top">
+      Text with{" "}
+      <Tooltip content="Tooltip content" side="top">
         <span className="font-bold underline cursor-help text-gi-primary">
-          middle of a sentence
+          inline tooltip
         </span>
-      </Tooltip>
-      , which doesn't clutter the UI.
+      </Tooltip>{" "}
+      inside a sentence.
     </p>
   ),
 };
@@ -89,7 +121,7 @@ export const InlineText: Story = {
 export const LongDelay: Story = {
   args: {
     children: "Delayed tooltip",
-    content: "Patience is a virtue!",
+    content: "Tooltip content",
     delay: 1000,
   },
   render: (args) => (
