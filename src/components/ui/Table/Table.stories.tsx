@@ -45,18 +45,16 @@ const meta = {
     getRowKey: { table: { disable: true }, control: false },
     emptyState: { control: "text", table: { category: "Content" } },
     actions: { control: false, table: { category: "Content" } },
-
     isSelectable: { control: "boolean", table: { category: "Selection" } },
     selectedRowKeys: { control: "object", table: { category: "Selection" } },
     onSelectedRowKeysChange: { table: { disable: true }, control: false },
-
-    pagination: { control: "object", table: { category: "Pagination" } },
-
+    pagination: { table: { disable: true } },
     isMobileScrollable: {
       control: "boolean",
       table: { category: "Appearance" },
     },
     dataTestId: { control: "text", table: { category: "Appearance" } },
+    allRowKeys: { table: { disable: true }, control: false },
   },
   args: {
     columns: MOCK_COLUMNS,
@@ -72,6 +70,7 @@ const meta = {
 
     const startIndex = (currentPage - 1) * PAGE_SIZE;
     const paginatedData = MOCK_DATA.slice(startIndex, startIndex + PAGE_SIZE);
+    const allRowKeys = MOCK_DATA.map((row) => row.id);
 
     return (
       <Table
@@ -80,6 +79,7 @@ const meta = {
         getRowKey={(row: RowData) => row.id}
         selectedRowKeys={selectedKeys}
         onSelectedRowKeysChange={setSelectedKeys}
+        allRowKeys={allRowKeys}
         pagination={{
           page: currentPage,
           totalPages: Math.ceil(TOTAL_ITEMS / PAGE_SIZE),
@@ -160,5 +160,12 @@ export const FixedWidthColumns: Story = {
     ],
     data: [{ id: "1", col1: "Short", col2: "Long content that might wrap" }],
     isSelectable: false,
+  },
+};
+
+export const LoadingState: Story = {
+  args: {
+    isLoading: true,
+    isSelectable: true,
   },
 };

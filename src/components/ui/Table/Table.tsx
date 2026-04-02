@@ -1,10 +1,20 @@
-import React, { type ForwardedRef, forwardRef } from "react";
+import { type ForwardedRef, forwardRef } from "react";
 import { cn } from "@/lib/utils";
 import { Badge } from "../Badge/Badge";
 import { Checkbox } from "../Checkbox/Checkbox";
 import { Pagination } from "../Pagination/Pagination";
 import { tableCellVariants, tableContainerVariants } from "./Table.methods";
 import type { TableProps } from "./Table.types";
+
+const SkeletonRow = ({ colsCount }: { colsCount: number }) => (
+  <tr className="animate-pulse">
+    {Array.from({ length: colsCount }).map((_, idx) => (
+      <td key={idx} className="px-4 py-5">
+        <div className="h-5 bg-gi-ash/60 rounded w-full" />
+      </td>
+    ))}
+  </tr>
+);
 
 const Table = forwardRef(
   <T,>(props: TableProps<T>, ref: ForwardedRef<HTMLDivElement>) => {
@@ -22,6 +32,7 @@ const Table = forwardRef(
       dataTestId,
       className,
       isLoading = false,
+      allRowKeys,
       ...rest
     } = props;
 
@@ -39,15 +50,17 @@ const Table = forwardRef(
     const handleSelectAll = (checked: boolean) => {
       if (!onSelectedRowKeysChange) return;
       const currentPageKeys = data.map((row) => getRowKey(row));
+      const allKeys = allRowKeys ?? currentPageKeys;
+
       if (checked) {
         const newKeys = [
           ...selectedRowKeys,
-          ...currentPageKeys.filter((key) => !selectedRowKeys.includes(key)),
+          ...allKeys.filter((key) => !selectedRowKeys.includes(key)),
         ];
         onSelectedRowKeysChange(newKeys);
       } else {
         onSelectedRowKeysChange(
-          selectedRowKeys.filter((key) => !currentPageKeys.includes(key)),
+          selectedRowKeys.filter((key) => !allKeys.includes(key)),
         );
       }
     };
@@ -83,12 +96,10 @@ const Table = forwardRef(
                     })}
                   >
                     <Checkbox
-                      {...({
-                        label: "",
-                        checked: isAllSelected,
-                        indeterminate: isIndeterminate,
-                        onCheckedChange: handleSelectAll,
-                      } as any)}
+                      label=""
+                      checked={isAllSelected}
+                      indeterminate={isIndeterminate}
+                      onCheckedChange={handleSelectAll}
                     />
                   </th>
                 )}
@@ -122,14 +133,9 @@ const Table = forwardRef(
 
             <tbody className="bg-white">
               {isLoading ? (
-                <tr>
-                  <td
-                    colSpan={totalColumns}
-                    className="p-12 text-center text-gi-gray italic border-y border-gi-dark-ash"
-                  >
-                    Loading...
-                  </td>
-                </tr>
+                Array.from({ length: 3 }).map((_, i) => (
+                  <SkeletonRow key={i} colsCount={totalColumns} />
+                ))
               ) : data.length === 0 ? (
                 <tr>
                   <td

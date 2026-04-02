@@ -28,4 +28,5 @@ export interface TableProps<T> extends HTMLAttributes<HTMLDivElement> {
   dataTestId?: string;
   isMobileScrollable?: boolean;
   isLoading?: boolean;
+  allRowKeys?: string[];
 }

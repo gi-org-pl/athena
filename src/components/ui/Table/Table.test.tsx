@@ -142,9 +142,10 @@ describe("<Table />", () => {
       expect(editButtons).toHaveLength(2);
     });
 
-    it("shows loading state when isLoading is true", () => {
+    it("shows loading skeleton when isLoading is true", () => {
       render(<Table {...defaultProps} isLoading />);
-      expect(screen.getByText("Loading...")).toBeInTheDocument();
+      expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
+      expect(document.querySelector(".animate-pulse")).toBeInTheDocument();
     });
   });
 
