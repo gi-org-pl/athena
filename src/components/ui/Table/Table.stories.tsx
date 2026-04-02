@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
-import { Table, type TableColumn } from "./Table";
+import { Table } from "./Table";
+import type { TableColumn } from "./Table.types";
 
 const PAGE_SIZE = 5;
 const TOTAL_ITEMS = 24;
@@ -39,17 +40,23 @@ const meta = {
   },
   tags: ["autodocs"],
   argTypes: {
+    columns: { control: "object", table: { category: "Content" } },
+    data: { control: "object", table: { category: "Content" } },
     getRowKey: { table: { disable: true }, control: false },
-    actions: { table: { disable: true }, control: false },
-    data: { table: { disable: true }, control: false },
-    selectedRowKeys: { table: { disable: true }, control: false },
+    emptyState: { control: "text", table: { category: "Content" } },
+    actions: { control: false, table: { category: "Content" } },
+
+    isSelectable: { control: "boolean", table: { category: "Selection" } },
+    selectedRowKeys: { control: "object", table: { category: "Selection" } },
     onSelectedRowKeysChange: { table: { disable: true }, control: false },
-    pagination: { table: { disable: true }, control: false },
-    emptyState: { table: { disable: true }, control: false },
-    isSelectable: { control: "boolean" },
-    isMobileScrollable: { control: "boolean" },
-    columns: { control: "object" },
-    dataTestId: { control: "text" },
+
+    pagination: { control: "object", table: { category: "Pagination" } },
+
+    isMobileScrollable: {
+      control: "boolean",
+      table: { category: "Appearance" },
+    },
+    dataTestId: { control: "text", table: { category: "Appearance" } },
   },
   args: {
     columns: MOCK_COLUMNS,
@@ -71,9 +78,6 @@ const meta = {
         {...args}
         data={paginatedData}
         getRowKey={(row: RowData) => row.id}
-        actions={() => (
-          <span className="text_primary font_medium">(actions)</span>
-        )}
         selectedRowKeys={selectedKeys}
         onSelectedRowKeysChange={setSelectedKeys}
         pagination={{
@@ -108,5 +112,53 @@ export const LargeDatasetSelection: Story = {
   args: {
     isSelectable: true,
     isMobileScrollable: false,
+  },
+};
+
+export const EmptyStateCustom: Story = {
+  args: {
+    data: [],
+    emptyState: "No records found",
+    isSelectable: false,
+  },
+};
+
+export const WithActions: Story = {
+  args: {
+    actions: () => <button className="text-gi-primary">Edit</button>,
+  },
+  render: (args) => {
+    const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+    return (
+      <Table
+        {...args}
+        data={MOCK_DATA.slice(0, 3)}
+        selectedRowKeys={selectedKeys}
+        onSelectedRowKeysChange={setSelectedKeys}
+      />
+    );
+  },
+};
+
+export const ColumnAlignment: Story = {
+  args: {
+    columns: [
+      { key: "col1", header: "Left", align: "left" },
+      { key: "col2", header: "Center", align: "center" },
+      { key: "col3", header: "Right", align: "right" },
+    ],
+    data: [{ id: "1", col1: "Left", col2: "Center", col3: "Right" }],
+    isSelectable: false,
+  },
+};
+
+export const FixedWidthColumns: Story = {
+  args: {
+    columns: [
+      { key: "col1", header: "Narrow", width: "100px" },
+      { key: "col2", header: "Wide", width: "300px" },
+    ],
+    data: [{ id: "1", col1: "Short", col2: "Long content that might wrap" }],
+    isSelectable: false,
   },
 };
