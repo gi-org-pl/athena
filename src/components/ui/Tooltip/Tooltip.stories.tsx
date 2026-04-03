@@ -28,12 +28,12 @@ const meta = {
       table: { category: "Content" },
     },
     side: {
-      control: "select",
+      control: "radio",
       options: ["top", "right", "bottom", "left"],
       table: { category: "Style" },
     },
     align: {
-      control: "select",
+      control: "radio",
       options: ["start", "center", "end"],
       table: { category: "Style" },
     },

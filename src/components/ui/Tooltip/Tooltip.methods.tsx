@@ -33,6 +33,7 @@ export const TooltipContent = ({
       {...props}
     >
       {children}
+
       <TooltipPrimitive.Arrow className="fill-gi-primary" />
     </TooltipPrimitive.Content>
   </TooltipPrimitive.Portal>

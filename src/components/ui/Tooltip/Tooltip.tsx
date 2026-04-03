@@ -23,8 +23,7 @@ export const Tooltip = forwardRef<HTMLSpanElement, TooltipProps>(
     },
     ref,
   ) => {
-    // start: -12 przesuwa w lewo, end: 12 przesuwa w lewo względem prawej krawędzi
-    const calculatedAlignOffset = align === "start" ? 12 : align === "end" ? 12 : 0;
+    const calculatedAlignOffset = align === "center" ? 0 : (side === "top" || side === "bottom" ? 14 : 4);
 
     return (
       <TooltipProvider delayDuration={delay}>

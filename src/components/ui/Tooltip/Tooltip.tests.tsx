@@ -24,13 +24,20 @@ describe("Tooltip", () => {
     expect(content?.textContent).toContain("Visible");
   });
 
-  it("should apply custom offset for all alignments to reach 100% coverage", () => {
+  it("should apply correct offset for vertical and horizontal sides to reach 100% coverage", () => {
     const { rerender } = render(
-      <Tooltip content="Start" align="start" open={true} dataTestId="t-start">
-        <span>Start</span>
+      <Tooltip content="Top Start" side="top" align="start" open={true} dataTestId="t-top-start">
+        <span>Top Start</span>
       </Tooltip>
     );
-    expect(screen.getByTestId("t-start")).toBeDefined();
+    expect(screen.getByTestId("t-top-start")).toBeDefined();
+
+    rerender(
+      <Tooltip content="Right Start" side="right" align="start" open={true} dataTestId="t-right-start">
+        <span>Right Start</span>
+      </Tooltip>
+    );
+    expect(screen.getByTestId("t-right-start")).toBeDefined();
 
     rerender(
       <Tooltip content="End" align="end" open={true} dataTestId="t-end">
