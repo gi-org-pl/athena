@@ -1,10 +1,17 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Tooltip } from "./Tooltip";
 
-const meta: Meta<typeof Tooltip> = {
+const meta = {
   title: "Tooltip",
   component: Tooltip,
   tags: ["autodocs"],
+  parameters: {
+    layout: "centered",
+  },
+  args: {
+    children: "Hover me",
+    content: "Tooltip",
+  },
   argTypes: {
     content: {
       control: "text",
@@ -34,16 +41,17 @@ const meta: Meta<typeof Tooltip> = {
       control: "number",
       table: { category: "State" },
     },
+    open: {
+      table: { disable: true },
+    },
   },
-};
+} satisfies Meta<typeof Tooltip>;
 
 export default meta;
-type Story = StoryObj<typeof Tooltip>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    children: "Hover me",
-    content: "Tooltip content",
     side: "top",
   },
   render: (args) => (
@@ -56,25 +64,21 @@ export const Default: Story = {
 };
 
 export const DifferentSides: Story = {
-  decorators: [
-    (Story) => (
-      <div className="flex items-center justify-center min-h-[300px] w-full">
-        <Story />
-      </div>
-    ),
-  ],
+  args: {
+    ...meta.args,
+  },
   render: () => (
     <div className="flex items-center gap-8">
-      <Tooltip content="Tooltip content" side="left">
+      <Tooltip content="Tooltip" side="left">
         <button className="px-3 py-1 border rounded">Left</button>
       </Tooltip>
-      <Tooltip content="Tooltip content" side="top">
+      <Tooltip content="Tooltip" side="top">
         <button className="px-3 py-1 border rounded">Top</button>
       </Tooltip>
-      <Tooltip content="Tooltip content" side="bottom">
+      <Tooltip content="Tooltip" side="bottom">
         <button className="px-3 py-1 border rounded">Bottom</button>
       </Tooltip>
-      <Tooltip content="Tooltip content" side="right">
+      <Tooltip content="Tooltip" side="right">
         <button className="px-3 py-1 border rounded">Right</button>
       </Tooltip>
     </div>
@@ -82,22 +86,18 @@ export const DifferentSides: Story = {
 };
 
 export const DifferentAlignments: Story = {
-  decorators: [
-    (Story) => (
-      <div className="flex items-center justify-center min-h-[300px] w-full">
-        <Story />
-      </div>
-    ),
-  ],
+  args: {
+    ...meta.args,
+  },
   render: () => (
     <div className="flex flex-col items-center gap-8">
-      <Tooltip content="Tooltip content" side="bottom" align="start">
+      <Tooltip content="Tooltip" side="bottom" align="start">
         <button className="px-3 py-1 border rounded w-32">Align Start</button>
       </Tooltip>
-      <Tooltip content="Tooltip content" side="bottom" align="center">
+      <Tooltip content="Tooltip" side="bottom" align="center">
         <button className="px-3 py-1 border rounded w-32">Align Center</button>
       </Tooltip>
-      <Tooltip content="Tooltip content" side="bottom" align="end">
+      <Tooltip content="Tooltip" side="bottom" align="end">
         <button className="px-3 py-1 border rounded w-32">Align End</button>
       </Tooltip>
     </div>
@@ -105,10 +105,13 @@ export const DifferentAlignments: Story = {
 };
 
 export const InlineText: Story = {
+  args: {
+    ...meta.args,
+  },
   render: () => (
     <p className="text-sm">
       Text with{" "}
-      <Tooltip content="Tooltip content" side="top">
+      <Tooltip content="Tooltip" side="top">
         <span className="font-bold underline cursor-help text-gi-primary">
           inline tooltip
         </span>
@@ -121,14 +124,12 @@ export const InlineText: Story = {
 export const LongDelay: Story = {
   args: {
     children: "Delayed tooltip",
-    content: "Tooltip content",
+    content: "Tooltip",
     delay: 1000,
   },
   render: (args) => (
     <Tooltip {...args}>
-      <button className="px-4 py-2 border rounded-md">
-        {args.children}
-      </button>
+      <button className="px-4 py-2 border rounded-md">{args.children}</button>
     </Tooltip>
   ),
 };
