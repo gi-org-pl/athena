@@ -133,7 +133,7 @@ const Table = forwardRef(
 
             <tbody className="bg-white">
               {isLoading ? (
-                Array.from({ length: 3 }).map((_, i) => (
+                Array.from({ length: 5 }).map((_, i) => (
                   <SkeletonRow key={i} colsCount={totalColumns} />
                 ))
               ) : data.length === 0 ? (

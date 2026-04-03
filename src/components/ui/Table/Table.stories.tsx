@@ -53,6 +53,10 @@ const meta = {
       control: "boolean",
       table: { category: "Appearance" },
     },
+    isLoading: {
+      control: "boolean",
+      table: { category: "Appearance" },
+    },
     dataTestId: { control: "text", table: { category: "Appearance" } },
     allRowKeys: { table: { disable: true }, control: false },
   },
