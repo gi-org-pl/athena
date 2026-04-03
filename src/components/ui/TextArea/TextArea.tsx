@@ -1,129 +1,99 @@
-import { cva } from "class-variance-authority";
-import { cn } from "@/lib/utils";
+import { type ChangeEvent, forwardRef } from "react";
+import type { TextAreaProps } from "./TextArea.types";
+import {
+  getCharacterCountClasses,
+  getHelperClasses,
+  getLabelClasses,
+  getTextAreaWrapperClasses,
+} from "./TextArea.types";
 
-const TextAreaVariants = cva(
-  "px-3 py-2 w-[346px] h-[122px] text-gi-primary rounded-3xl border-[1px] ",
-  {
-    variants: {
-      variant: {
-        default:
-          "border-gi-primary/10 hover:border-gi-primary/20 focus:border-gi-primary/20 focus:outline-1 duration-300 ease-in-out",
-        disabled:
-          "focus:ring-0 focus:outline-none text-gi-gray cursor-not-allowed",
-        error: "border-gi-red focus:ring-0 focus:outline-none",
-      },
+export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
+  (
+    {
+      dataTestId,
+      value,
+      onChange,
+      label,
+      placeholder,
+      helper,
+      errorText,
+      characterLimit,
+      isError = false,
+      isRequired = false,
+      isDisabled = false,
+      isResizable = false,
+      ...props
     },
-    defaultVariants: {
-      variant: "default",
-    },
+    ref,
+  ) => {
+    const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+      if (!isDisabled) {
+        onChange(event.target.value);
+      }
+    };
+
+    const showErrorText = isError && errorText;
+    const bottomText = showErrorText ? errorText : helper;
+    const charCount = Array.from(value).length;
+
+    return (
+      <div className="flex flex-col w-full max-w-[346px]">
+        {label && (
+          <label className={getLabelClasses(isDisabled)}>
+            {label}
+            {isRequired && (
+              <span className="text-gi-red ml-0.5" aria-hidden="true">
+                *
+              </span>
+            )}
+          </label>
+        )}
+
+        <textarea
+          ref={ref}
+          data-test-id={dataTestId}
+          value={value}
+          onChange={handleChange}
+          placeholder={placeholder}
+          disabled={isDisabled}
+          required={isRequired}
+          aria-invalid={isError}
+          aria-required={isRequired}
+          aria-describedby={
+            bottomText || characterLimit !== undefined
+              ? `${dataTestId ?? "textarea"}-description`
+              : undefined
+          }
+          className={getTextAreaWrapperClasses(
+            isError,
+            isDisabled,
+            isResizable,
+          )}
+          rows={4}
+          {...props}
+        />
+
+        {(bottomText !== undefined || characterLimit !== undefined) && (
+          <div
+            id={`${dataTestId ?? "textarea"}-description`}
+            className="flex justify-between items-baseline mt-2 w-full"
+          >
+            <span className={getHelperClasses(isError)}>
+              {showErrorText ? errorText : helper}
+            </span>
+            {characterLimit !== undefined && (
+              <span
+                className={getCharacterCountClasses(isError, isDisabled)}
+                aria-live="polite"
+              >
+                {charCount}/{characterLimit}
+              </span>
+            )}
+          </div>
+        )}
+      </div>
+    );
   },
 );
 
-type TextAreaVariant = "default" | "error" | "disabled";
-const labelVariants: Record<TextAreaVariant, string> = {
-  default: "text-gi-primary",
-  error: "text-gi-primary",
-  disabled: "text-gi-primary/50",
-};
-
-export interface TextAreaProps
-  extends Omit<React.ComponentProps<"textarea">, "onChange"> {
-  className?: string;
-  value?: string;
-  characterLimitVisibility?: boolean;
-  characterLimit?: number;
-  label?: string;
-  disabled?: boolean;
-  isRequired?: boolean;
-  isError?: boolean;
-  errorText?: string;
-  helper?: React.ReactNode;
-  onChange: (value: string) => void;
-  placeholder?: string;
-  dataTestId?: string;
-}
-
-export function TextArea({
-  className,
-  isError,
-  label,
-  disabled,
-  errorText,
-  helper,
-  isRequired,
-  value,
-  onChange,
-  characterLimit,
-  characterLimitVisibility,
-  dataTestId,
-  ...props
-}: TextAreaProps) {
-  const shouldShowErrorText = Boolean(isError && errorText);
-  const footerText = shouldShowErrorText ? errorText : helper;
-  const hasCharacterLimit = typeof characterLimit === "number";
-  const effectiveCharacterLimit = hasCharacterLimit
-    ? characterLimit
-    : undefined;
-  const rawValue = value ?? "";
-  const normalizedValue =
-    hasCharacterLimit && typeof effectiveCharacterLimit === "number"
-      ? rawValue.slice(0, effectiveCharacterLimit)
-      : rawValue;
-  const currentLength = normalizedValue.length;
-  const isFooterError = shouldShowErrorText;
-  const shouldShowCounter =
-    Boolean(characterLimitVisibility) && hasCharacterLimit;
-  const computedVariant = disabled ? "disabled" : isError ? "error" : "default";
-
-  function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>): void {
-    if (disabled) {
-      return;
-    }
-    const nextRawValue = event.target.value;
-    if (hasCharacterLimit && typeof characterLimit === "number") {
-      const limitedValue = nextRawValue.slice(0, characterLimit);
-      onChange(limitedValue);
-      return;
-    }
-
-    onChange(nextRawValue);
-  }
-  const footerClassName = cn(
-    "text-[14px]",
-    isFooterError ? "text-gi-red" : "text-gi-primary/50",
-  );
-
-  return (
-    <div className="flex flex-col gap-1.5">
-      <p className={cn("font-bold", labelVariants[computedVariant])}>
-        {label}
-        {isRequired && <span className="text-gi-red ml-1 size-4">*</span>}
-        {""}
-      </p>
-      <textarea
-        disabled={disabled}
-        value={normalizedValue}
-        required={isRequired}
-        onChange={handleChange}
-        maxLength={hasCharacterLimit ? characterLimit : undefined}
-        data-slot="textarea"
-        data-test-id={dataTestId}
-        className={cn(
-          TextAreaVariants({
-            variant: computedVariant,
-            className,
-          }),
-        )}
-        {...props}
-      />
-      <div className="flex justify-between items-start text-[14px] mt-1 min-h-4">
-        <p className={footerClassName}>{footerText}</p>
-        {shouldShowCounter ? (
-          <p className="text-gi-primary/50 text-[14px]">
-            {currentLength}/{effectiveCharacterLimit}
-          </p>
-        ) : null}
-      </div>
-    </div>
-  );
-}
+TextArea.displayName = "TextArea";
