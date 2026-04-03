@@ -7,20 +7,31 @@ const meta = {
   component: RadioGroup,
   tags: ["autodocs"],
   argTypes: {
-    defaultValue: { control: "text" },
-    disabled: { control: "boolean" },
-    required: { control: "boolean" },
+    defaultValue: {
+      control: "text",
+      table: { category: "Content" },
+    },
+    disabled: {
+      control: "boolean",
+      table: { category: "Style" },
+    },
+    required: {
+      control: "boolean",
+      table: { category: "Style" },
+    },
     orientation: {
       control: "inline-radio",
       options: ["horizontal", "vertical"],
-      description: "The orientation of the radio group",
+      table: { category: "Style" },
     },
     dir: {
       control: "radio",
       options: ["ltr", "rtl"],
+      table: { category: "Style" },
     },
     loop: {
       control: "boolean",
+      table: { disable: true },
     },
   },
 } satisfies Meta<typeof RadioGroup>;
