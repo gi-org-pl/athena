@@ -10,6 +10,9 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     setupFiles: ["./setupTests.ts"],
+    coverage: {
+      exclude: ["src/assets/**", "**/*.types.tsx"],
+    },
   },
   resolve: {
     alias: {

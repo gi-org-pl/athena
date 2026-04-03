@@ -3,8 +3,10 @@ import { fn } from "storybook/test";
 import Crown from "@/assets/icons/crown.svg";
 import { Button } from "./Button";
 
+const HTMLTYPES = ["default", "submit", "reset"] as const;
 const TYPES = ["primary", "outlined", "ghost"] as const;
 const VARIANTS = ["primary", "secondary", "danger"] as const;
+const SIZES = ["small", "regular"] as const;
 
 const meta = {
   title: "Button",
@@ -13,50 +15,78 @@ const meta = {
     layout: "centered",
   },
   argTypes: {
-    children: { control: "text" },
-    isLoading: { control: "boolean" },
-    disabled: { control: "boolean" },
-    isIconButton: { control: "boolean" },
+    children: {
+      table: { category: "Content" },
+      control: "text",
+    },
     LeftIcon: {
-      options: ["None", "Crown"],
+      table: { category: "Content" },
+      control: "boolean",
       mapping: {
-        None: undefined,
-        Crown: <Crown />,
+        true: <Crown />,
+        false: undefined,
       },
-      control: { type: "select" },
     },
     RightIcon: {
-      options: ["None", "Crown"],
+      table: { category: "Content" },
+      control: "boolean",
       mapping: {
-        None: undefined,
-        Crown: <Crown />,
+        true: <Crown />,
+        false: undefined,
       },
-      control: { type: "select" },
     },
     type: {
-      control: "inline-radio",
+      table: { category: "Style" },
+      control: "radio",
       options: TYPES,
     },
     variant: {
-      control: "inline-radio",
+      table: { category: "Style" },
+      control: "radio",
       options: VARIANTS,
     },
     size: {
-      control: "inline-radio",
-      options: ["regular", "small"],
+      table: { category: "Style" },
+      control: "radio",
+      options: SIZES,
     },
-    asChild: { control: "boolean" },
+    isLoading: {
+      table: { category: "Interactions" },
+      control: "boolean",
+    },
+    disabled: {
+      table: { category: "Interactions" },
+      control: "boolean",
+    },
+    isIconButton: {
+      table: { category: "Interactions" },
+      control: "boolean",
+    },
+    asChild: {
+      table: { disable: true },
+    },
+    htmlType: {
+      table: { category: "Interactions" },
+      control: "radio",
+      options: HTMLTYPES,
+    },
+    onClick: {
+      table: { disable: true },
+    },
   },
-  tags: ["autodocs"],
   args: {
     onClick: fn(),
     children: "Button",
-    LeftIcon: "None",
-    RightIcon: "None",
+    LeftIcon: false as any,
+    RightIcon: false as any,
     size: "regular",
     type: "primary",
     variant: "primary",
+    isLoading: false,
+    disabled: false,
+    isIconButton: false,
   },
+  tags: ["autodocs"],
 } satisfies Meta<typeof Button>;
 
 export default meta;
@@ -64,61 +94,83 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    children: "Default Button",
+    children: "Button",
   },
 };
 
-export const IconButton: Story = {
-  args: {
-    isIconButton: true,
-    LeftIcon: "Crown",
-    children: undefined,
-  },
+export const TypeShowcase: Story = {
+  name: "Type Showcase",
+  render: (args) => (
+    <div className="flex gap-4 items-center">
+      {TYPES.map((type) => (
+        <Button {...args} key={type} type={type}>
+          {type.charAt(0).toUpperCase() + type.slice(1)}
+        </Button>
+      ))}
+    </div>
+  ),
 };
 
-const ButtonMatrix = (args: any) => (
-  <div className="flex flex-col gap-8 p-6 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800">
-    {VARIANTS.map((variant) => (
-      <div key={variant} className="flex flex-col gap-3">
-        <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400">
-          {variant} Variant
-        </h3>
-        <div className="flex gap-4 items-center">
-          {TYPES.map((type) => (
-            <div
-              key={`${variant}-${type}`}
-              className="flex flex-col gap-2 items-center"
-            >
-              <Button {...args} type={type} variant={variant} />
-              <span className="text-[10px] text-gray-400 font-mono">
-                {type}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-    ))}
-  </div>
-);
-
-/* 3. System wide variations */
-export const AllVariations: Story = {
-  render: (args) => <ButtonMatrix {...args} />,
-  name: "System Matrix",
+export const VariantMatrix: Story = {
+  name: "Variant Matrix",
+  render: (args) => (
+    <div className="flex gap-4 items-center">
+      {VARIANTS.map((variant) => (
+        <Button {...args} key={variant} variant={variant}>
+          {variant.charAt(0).toUpperCase() + variant.slice(1)}
+        </Button>
+      ))}
+    </div>
+  ),
 };
 
-export const IconButtonMatrix: Story = {
-  render: (args) => <ButtonMatrix {...args} />,
-  args: {
-    isIconButton: true,
-    LeftIcon: "Crown",
-    children: undefined,
-  },
+export const SizeComparison: Story = {
+  name: "Size Comparison",
+  render: (args) => (
+    <div className="flex gap-4 items-center">
+      {SIZES.map((size) => (
+        <Button {...args} key={size} size={size}>
+          {size.charAt(0).toUpperCase() + size.slice(1)}
+        </Button>
+      ))}
+    </div>
+  ),
 };
 
-export const LoadingMatrix: Story = {
-  render: (args) => <ButtonMatrix {...args} />,
-  args: {
-    isLoading: true,
-  },
+export const IconCustomization: Story = {
+  name: "Icon Customization",
+  render: (args) => (
+    <div className="flex gap-4 items-center">
+      <Button {...args} LeftIcon={<Crown />}>
+        Left Icon
+      </Button>
+      <Button {...args} RightIcon={<Crown />}>
+        Right Icon
+      </Button>
+      <Button
+        {...args}
+        isIconButton
+        aria-label="Icon Button"
+        LeftIcon={<Crown />}
+        children={undefined}
+      />
+    </div>
+  ),
+};
+
+export const LoadingState: Story = {
+  name: "Loading State",
+  render: (args) => (
+    <div className="flex gap-4 items-center">
+      <Button {...args} isLoading>
+        Processing
+      </Button>
+      <Button {...args} isLoading type="outlined">
+        Loading
+      </Button>
+      <Button {...args} isLoading variant="danger">
+        Deleting
+      </Button>
+    </div>
+  ),
 };

@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 import { RadioGroup } from "./RadioGroup";
 import { RadioGroupItem } from "./RadioGroupItem/RadioGroupItem";
 
@@ -11,23 +10,17 @@ const meta = {
     defaultValue: { control: "text" },
     disabled: { control: "boolean" },
     required: { control: "boolean" },
-    name: { control: "text" },
     orientation: {
-      control: "radio",
-      options: ["horizontal", "vertical", undefined],
+      control: "inline-radio",
+      options: ["horizontal", "vertical"],
       description: "The orientation of the radio group",
-      defaultValue: undefined,
     },
     dir: {
       control: "radio",
       options: ["ltr", "rtl"],
-      description: "The reading direction of the radio group",
     },
     loop: {
       control: "boolean",
-      description:
-        "When true, keyboard navigation will loop from last to first, and vice versa.",
-      default: true,
     },
   },
 } satisfies Meta<typeof RadioGroup>;
@@ -37,12 +30,11 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    defaultValue: "item-1",
+    defaultValue: "option-one",
     orientation: "vertical",
   },
-
   render: (args) => (
-    <RadioGroup defaultValue="option-one" {...args}>
+    <RadioGroup {...args}>
       <div className="flex items-center space-x-2">
         <RadioGroupItem value="option-one" id="option-one" />
         <label
@@ -59,6 +51,15 @@ export const Default: Story = {
           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
           Option Two
+        </label>
+      </div>
+      <div className="flex items-center space-x-2">
+        <RadioGroupItem value="option-three" id="option-three" />
+        <label
+          htmlFor="option-three"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          Option Three
         </label>
       </div>
     </RadioGroup>
