@@ -16,7 +16,7 @@ export const tableContainerVariants = cva(
 );
 
 export const tableCellVariants = cva(
-  "px-4 py-5 transition-colors duration-300 ease font-bold whitespace-nowrap snap-start snap-always",
+  "px-4 py-5 transition-colors duration-300 ease font-bold whitespace-nowrap",
   {
     variants: {
       align: {
@@ -29,7 +29,7 @@ export const tableCellVariants = cva(
         body: "text-gi-primary font-bold",
       },
       mobileFullWidth: {
-        true: "min-w-[100cqw] w-[100cqw] sm:min-w-0 sm:w-auto",
+        true: "min-w-[100cqw] w-[100cqw] sm:min-w-0 sm:w-auto snap-start snap-always",
         false: "min-w-fit",
       },
     },

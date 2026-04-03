@@ -6,10 +6,22 @@ import { Pagination } from "../Pagination/Pagination";
 import { tableCellVariants, tableContainerVariants } from "./Table.methods";
 import type { TableProps } from "./Table.types";
 
-const SkeletonRow = ({ colsCount }: { colsCount: number }) => (
+const SkeletonRow = ({
+  colsCount,
+  isFirst = false,
+}: {
+  colsCount: number;
+  isFirst?: boolean;
+}) => (
   <tr className="animate-pulse">
     {Array.from({ length: colsCount }).map((_, idx) => (
-      <td key={idx} className="px-4 py-5">
+      <td
+        key={idx}
+        className={cn(
+          "px-4 py-5 border-b border-gi-dark-ash",
+          isFirst && "border-t border-gi-dark-ash",
+        )}
+      >
         <div className="h-5 bg-gi-ash/60 rounded w-full" />
       </td>
     ))}
@@ -134,7 +146,11 @@ const Table = forwardRef(
             <tbody className="bg-white">
               {isLoading ? (
                 Array.from({ length: 5 }).map((_, i) => (
-                  <SkeletonRow key={i} colsCount={totalColumns} />
+                  <SkeletonRow
+                    key={i}
+                    colsCount={totalColumns}
+                    isFirst={i === 0}
+                  />
                 ))
               ) : data.length === 0 ? (
                 <tr>
