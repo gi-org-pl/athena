@@ -1,13 +1,17 @@
-import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
-import * as React from "react";
+import { Root } from "@radix-ui/react-radio-group";
+import {
+  type ComponentPropsWithoutRef,
+  type ComponentRef,
+  forwardRef,
+} from "react";
 import { cn } from "@/lib/utils";
 
-const RadioGroup = React.forwardRef<
-  React.ElementRef<typeof RadioGroupPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>
+export const RadioGroup = forwardRef<
+  ComponentRef<typeof Root>,
+  ComponentPropsWithoutRef<typeof Root>
 >(({ className, orientation = "vertical", ...props }, ref) => {
   return (
-    <RadioGroupPrimitive.Root
+    <Root
       data-slot="radio-group"
       orientation={orientation}
       ref={ref}
@@ -23,6 +27,4 @@ const RadioGroup = React.forwardRef<
   );
 });
 
-RadioGroup.displayName = RadioGroupPrimitive.Root.displayName;
-
-export { RadioGroup };
+RadioGroup.displayName = "RadioGroup";
