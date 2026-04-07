@@ -10,8 +10,6 @@ export interface TableColumn<T> {
 
 export interface TablePagination {
   page: number;
-  totalPages: number;
-  totalElements: number;
   onChange: (page: number) => void;
 }
 
@@ -20,7 +18,6 @@ export interface TableProps<T> extends ComponentProps<"div"> {
   data: T[];
   getRowKey: (row: T) => string;
   isSelectable?: boolean;
-  selectedRowKeys?: string[];
   onSelectedRowKeysChange?: (keys: string[]) => void;
   actions?: (row: T) => ReactNode;
   pagination?: TablePagination;
@@ -28,7 +25,8 @@ export interface TableProps<T> extends ComponentProps<"div"> {
   dataTestId?: string;
   isMobileScrollable?: boolean;
   isLoading?: boolean;
-  allRowKeys?: string[];
+  loadingRowsCount?: number;
+  rowsPerPage?: number;
 }
 
 type TableAlign = "left" | "center" | "right";

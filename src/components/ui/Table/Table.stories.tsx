@@ -1,10 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useState } from "react";
 import { Table } from "./Table";
 import type { TableColumn, TableProps } from "./Table.types";
 
 const PAGE_SIZE = 5;
-const TOTAL_ITEMS = 24;
 
 interface RowData {
   id: string;
@@ -13,6 +11,7 @@ interface RowData {
 
 type TableStoryArgs = TableProps<RowData> & {
   showEmptyState?: boolean;
+  showActions?: boolean;
 };
 
 const generateColumns = (count: number): TableColumn<RowData>[] =>
@@ -34,7 +33,7 @@ const generateData = (count: number): RowData[] =>
   }));
 
 const MOCK_COLUMNS = generateColumns(8);
-const MOCK_DATA = generateData(TOTAL_ITEMS);
+const MOCK_DATA = generateData(24);
 
 const meta = {
   title: "Table",
@@ -42,12 +41,7 @@ const meta = {
   parameters: {
     layout: "padded",
     controls: {
-      exclude: [
-        "pagination",
-        "allRowKeys",
-        "onSelectedRowKeysChange",
-        "getRowKey",
-      ],
+      exclude: ["pagination", "onSelectedRowKeysChange", "getRowKey"],
     },
   },
   tags: ["autodocs"],
@@ -57,6 +51,8 @@ const meta = {
     getRowKey: { table: { disable: true }, control: false },
     emptyState: { control: "text", table: { category: "Content" } },
     showEmptyState: { control: "boolean", table: { category: "Content" } },
+    showActions: { control: "boolean", table: { category: "Content" } },
+    actions: { table: { disable: true }, control: false },
     isSelectable: { control: "boolean", table: { category: "Selection" } },
     onSelectedRowKeysChange: { table: { disable: true }, control: false },
     pagination: { table: { disable: true }, control: false },
@@ -68,8 +64,15 @@ const meta = {
       control: "boolean",
       table: { category: "Appearance" },
     },
+    loadingRowsCount: {
+      control: { type: "number", min: 1, step: 1 },
+      table: { category: "Appearance" },
+    },
+    rowsPerPage: {
+      control: { type: "number", min: 1, step: 1 },
+      table: { category: "Appearance" },
+    },
     dataTestId: { control: "text", table: { category: "Appearance" } },
-    allRowKeys: { table: { disable: true }, control: false },
   },
   args: {
     columns: MOCK_COLUMNS,
@@ -77,31 +80,29 @@ const meta = {
     getRowKey: (row: RowData) => row.id,
     isSelectable: true,
     isMobileScrollable: true,
+    rowsPerPage: PAGE_SIZE,
     dataTestId: "main_table",
     showEmptyState: false,
+    showActions: false,
   },
   render: (args: TableStoryArgs) => {
-    const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
-    const [currentPage, setCurrentPage] = useState(1);
-
-    const { showEmptyState = false, data = [], ...tableArgs } = args;
+    const {
+      showEmptyState = false,
+      showActions = false,
+      data = [],
+      ...tableArgs
+    } = args;
     const sourceData = showEmptyState ? [] : data;
-    const allRowKeys = MOCK_DATA.map((row) => row.id);
+    const actions = showActions
+      ? () => <button className="text-gi-primary">Edit</button>
+      : undefined;
 
     return (
       <Table
         {...tableArgs}
         data={sourceData}
         getRowKey={(row: RowData) => row.id}
-        selectedRowKeys={selectedKeys}
-        onSelectedRowKeysChange={setSelectedKeys}
-        allRowKeys={allRowKeys}
-        pagination={{
-          page: currentPage,
-          totalPages: Math.ceil(TOTAL_ITEMS / PAGE_SIZE),
-          totalElements: TOTAL_ITEMS,
-          onChange: setCurrentPage,
-        }}
+        actions={actions}
       />
     );
   },
@@ -141,18 +142,8 @@ export const EmptyStateCustom: Story = {
 
 export const WithActions: Story = {
   args: {
-    actions: () => <button className="text-gi-primary">Edit</button>,
-  },
-  render: (args) => {
-    const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
-    return (
-      <Table
-        {...args}
-        data={MOCK_DATA.slice(0, 3)}
-        selectedRowKeys={selectedKeys}
-        onSelectedRowKeysChange={setSelectedKeys}
-      />
-    );
+    showActions: true,
+    data: MOCK_DATA.slice(0, 3),
   },
 };
 
@@ -183,5 +174,6 @@ export const LoadingState: Story = {
   args: {
     isLoading: true,
     isSelectable: true,
+    loadingRowsCount: 8,
   },
 };

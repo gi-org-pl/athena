@@ -19,7 +19,18 @@ vi.mock("../Badge/Badge", () => ({
 }));
 
 vi.mock("../Pagination/Pagination", () => ({
-  Pagination: () => <nav data-testid="mock-pagination" />,
+  Pagination: ({ page, totalPages, onChange }: any) => (
+    <nav data-testid="mock-pagination">
+      <button
+        type="button"
+        data-testid="mock-pagination-next"
+        disabled={page >= totalPages}
+        onClick={() => onChange(page + 1)}
+      >
+        Next
+      </button>
+    </nav>
+  ),
 }));
 
 interface TestData {
@@ -45,14 +56,14 @@ describe("<Table />", () => {
   };
 
   describe("Branch Coverage", () => {
-    it("returns early if onSelectedRowKeysChange is missing (row click)", () => {
+    it("handles row click when onSelectedRowKeysChange is missing", () => {
       render(<Table {...defaultProps} isSelectable />);
       const checkboxes = screen.getAllByTestId("mock-checkbox");
 
       expect(() => fireEvent.click(checkboxes[1])).not.toThrow();
     });
 
-    it("returns early if onSelectedRowKeysChange is missing (header click)", () => {
+    it("handles header click when onSelectedRowKeysChange is missing", () => {
       render(<Table {...defaultProps} isSelectable />);
       const checkboxes = screen.getAllByTestId("mock-checkbox");
       expect(() => fireEvent.click(checkboxes[0])).not.toThrow();
@@ -177,11 +188,11 @@ describe("<Table />", () => {
         <Table
           {...defaultProps}
           isSelectable
-          selectedRowKeys={["row_1", "row_2"]}
           onSelectedRowKeysChange={onSelectedRowKeysChange}
         />,
       );
       const checkboxes = screen.getAllByTestId("mock-checkbox");
+      fireEvent.click(checkboxes[0]);
       fireEvent.click(checkboxes[1]);
       expect(onSelectedRowKeysChange).toHaveBeenCalledWith(["row_2"]);
     });
@@ -200,37 +211,17 @@ describe("<Table />", () => {
       expect(onSelectedRowKeysChange).toHaveBeenCalledWith(["row_1", "row_2"]);
     });
 
-    it("selects all available rows when allRowKeys is provided", () => {
-      const onSelectedRowKeysChange = vi.fn();
-      render(
-        <Table
-          {...defaultProps}
-          isSelectable
-          allRowKeys={["row_1", "row_2", "row_3", "row_4"]}
-          onSelectedRowKeysChange={onSelectedRowKeysChange}
-        />,
-      );
-      const checkboxes = screen.getAllByTestId("mock-checkbox");
-      fireEvent.click(checkboxes[0]);
-      expect(onSelectedRowKeysChange).toHaveBeenCalledWith([
-        "row_1",
-        "row_2",
-        "row_3",
-        "row_4",
-      ]);
-    });
-
     it("deselects all rows when header checkbox is unchecked and all are selected", () => {
       const onSelectedRowKeysChange = vi.fn();
       render(
         <Table
           {...defaultProps}
           isSelectable
-          selectedRowKeys={["row_1", "row_2"]}
           onSelectedRowKeysChange={onSelectedRowKeysChange}
         />,
       );
       const checkboxes = screen.getAllByTestId("mock-checkbox");
+      fireEvent.click(checkboxes[0]);
       fireEvent.click(checkboxes[0]);
       expect(onSelectedRowKeysChange).toHaveBeenCalledWith([]);
     });
@@ -240,10 +231,11 @@ describe("<Table />", () => {
         <Table
           {...defaultProps}
           isSelectable
-          selectedRowKeys={["row_1"]}
           onSelectedRowKeysChange={vi.fn()}
         />,
       );
+      const rowCheckbox = screen.getAllByTestId("mock-checkbox")[1];
+      fireEvent.click(rowCheckbox);
       const headerCheckbox = screen.getAllByTestId("mock-checkbox")[0];
       expect(headerCheckbox).not.toBeChecked();
     });
@@ -253,11 +245,11 @@ describe("<Table />", () => {
         <Table
           {...defaultProps}
           isSelectable
-          selectedRowKeys={["row_1", "row_2"]}
           onSelectedRowKeysChange={vi.fn()}
         />,
       );
       const headerCheckbox = screen.getAllByTestId("mock-checkbox")[0];
+      fireEvent.click(headerCheckbox);
       expect(headerCheckbox).toBeChecked();
     });
 
@@ -280,29 +272,42 @@ describe("<Table />", () => {
     });
 
     it("shows correct selection count in badge", () => {
-      render(
-        <Table {...defaultProps} isSelectable selectedRowKeys={["row_1"]} />,
-      );
+      render(<Table {...defaultProps} isSelectable />);
+      const rowCheckbox = screen.getAllByTestId("mock-checkbox")[1];
+      fireEvent.click(rowCheckbox);
       const badge = screen.getByTestId("mock-badge");
       expect(badge).toHaveTextContent("1/2");
     });
 
-    it("respects totalElements for badge when pagination provided", () => {
+    it("keeps data length denominator when pagination is provided", () => {
       render(
         <Table
           {...defaultProps}
           isSelectable
-          selectedRowKeys={["row_1", "row_2"]}
           pagination={{
             page: 1,
-            totalPages: 5,
-            totalElements: 100,
             onChange: vi.fn(),
           }}
         />,
       );
+      const headerCheckbox = screen.getAllByTestId("mock-checkbox")[0];
+      fireEvent.click(headerCheckbox);
       const badge = screen.getByTestId("mock-badge");
-      expect(badge).toHaveTextContent("2/100");
+      expect(badge).toHaveTextContent("2/2");
+    });
+
+    it("uses data length for badge denominator", () => {
+      render(
+        <Table
+          {...defaultProps}
+          isSelectable
+          data={[...mockData, { id: "row_3", name: "Third User" }]}
+        />,
+      );
+      const rowCheckbox = screen.getAllByTestId("mock-checkbox")[1];
+      fireEvent.click(rowCheckbox);
+      const badge = screen.getByTestId("mock-badge");
+      expect(badge).toHaveTextContent("1/3");
     });
   });
 
@@ -323,6 +328,58 @@ describe("<Table />", () => {
       const ref = vi.fn();
       render(<Table {...defaultProps} ref={ref} />);
       expect(ref).toHaveBeenCalled();
+    });
+  });
+
+  describe("Pagination visibility", () => {
+    it("shows pagination only when data length exceeds rowsPerPage", () => {
+      const { rerender } = render(<Table {...defaultProps} rowsPerPage={2} />);
+      expect(screen.queryByTestId("mock-pagination")).not.toBeInTheDocument();
+
+      rerender(
+        <Table
+          {...defaultProps}
+          data={[...mockData, { id: "row_3", name: "Third User" }]}
+          rowsPerPage={2}
+        />,
+      );
+      expect(screen.getByTestId("mock-pagination")).toBeInTheDocument();
+    });
+
+    it("uses internal pagination state when pagination prop is not provided", () => {
+      render(
+        <Table
+          {...defaultProps}
+          data={[...mockData, { id: "row_3", name: "Third User" }]}
+          rowsPerPage={2}
+        />,
+      );
+
+      expect(screen.getByText("John Doe")).toBeInTheDocument();
+      expect(screen.getByText("Jane Smith")).toBeInTheDocument();
+      expect(screen.queryByText("Third User")).not.toBeInTheDocument();
+
+      fireEvent.click(screen.getByTestId("mock-pagination-next"));
+
+      expect(screen.queryByText("John Doe")).not.toBeInTheDocument();
+      expect(screen.queryByText("Jane Smith")).not.toBeInTheDocument();
+      expect(screen.getByText("Third User")).toBeInTheDocument();
+    });
+
+    it("delegates page changes to external pagination.onChange", () => {
+      const onPaginationChange = vi.fn();
+
+      render(
+        <Table
+          {...defaultProps}
+          data={[...mockData, { id: "row_3", name: "Third User" }]}
+          rowsPerPage={2}
+          pagination={{ page: 1, onChange: onPaginationChange }}
+        />,
+      );
+
+      fireEvent.click(screen.getByTestId("mock-pagination-next"));
+      expect(onPaginationChange).toHaveBeenCalledWith(2);
     });
   });
 });

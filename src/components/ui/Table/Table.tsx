@@ -1,4 +1,4 @@
-import { type ForwardedRef, forwardRef, type JSX } from "react";
+import { type ForwardedRef, forwardRef, type JSX, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Badge } from "../Badge/Badge";
 import { Checkbox } from "../Checkbox/Checkbox";
@@ -38,7 +38,6 @@ const Table = forwardRef(
       data,
       getRowKey,
       isSelectable = false,
-      selectedRowKeys = [],
       onSelectedRowKeysChange,
       actions,
       pagination,
@@ -47,46 +46,72 @@ const Table = forwardRef(
       dataTestId,
       className,
       isLoading = false,
-      allRowKeys,
+      loadingRowsCount,
+      rowsPerPage = 5,
       ...rest
     } = props;
-    const rowKeysForSelection = allRowKeys ?? data.map((row) => getRowKey(row));
+    const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
+    const [internalPage, setInternalPage] = useState(1);
+    const rowKeysForSelection = data.map((row) => getRowKey(row));
+    const totalCount = data.length;
+    const normalizedRowsPerPage = Math.max(1, rowsPerPage);
+    const computedTotalPages =
+      Math.floor(totalCount / normalizedRowsPerPage) +
+      (totalCount % normalizedRowsPerPage !== 0 ? 1 : 0);
+    const totalPages = Math.max(1, computedTotalPages);
+    const activePageRaw = pagination?.page ?? internalPage;
+    const activePage = Math.min(Math.max(activePageRaw, 1), totalPages);
+    const pageStart = (activePage - 1) * normalizedRowsPerPage;
+    const pagedData = data.slice(pageStart, pageStart + normalizedRowsPerPage);
+    const visibleRows = isLoading ? data : pagedData;
 
     const handleSelectRow = (rowKey: string, checked: boolean) => {
-      if (!onSelectedRowKeysChange) return;
-      if (checked) {
-        onSelectedRowKeysChange([...selectedRowKeys, rowKey]);
-      } else {
-        onSelectedRowKeysChange(
-          selectedRowKeys.filter((key) => key !== rowKey),
-        );
-      }
+      const newKeys = checked
+        ? [...selectedRowKeys, rowKey]
+        : selectedRowKeys.filter((key) => key !== rowKey);
+
+      setSelectedRowKeys(newKeys);
+      onSelectedRowKeysChange?.(newKeys);
     };
 
     const handleSelectAll = (checked: boolean) => {
-      if (!onSelectedRowKeysChange) return;
-
+      let newKeys: string[] = [];
       if (checked) {
-        const newKeys = [
+        newKeys = [
           ...selectedRowKeys,
           ...rowKeysForSelection.filter(
             (key) => !selectedRowKeys.includes(key),
           ),
         ];
-        onSelectedRowKeysChange(newKeys);
       } else {
-        onSelectedRowKeysChange(
-          selectedRowKeys.filter((key) => !rowKeysForSelection.includes(key)),
+        newKeys = selectedRowKeys.filter(
+          (key) => !rowKeysForSelection.includes(key),
         );
       }
+
+      setSelectedRowKeys(newKeys);
+      onSelectedRowKeysChange?.(newKeys);
     };
 
     const isAllSelected =
       rowKeysForSelection.length > 0 &&
       rowKeysForSelection.every((key) => selectedRowKeys.includes(key));
-    const totalCount = pagination?.totalElements ?? data.length;
+    const isEmptyStateVisible = !isLoading && data.length === 0;
     const totalColumns =
       columns.length + (isSelectable ? 1 : 0) + (actions ? 1 : 0);
+    const skeletonRowsCount = Math.max(
+      1,
+      loadingRowsCount ?? normalizedRowsPerPage,
+    );
+    const isPaginationVisible = totalCount > normalizedRowsPerPage;
+    const handlePageChange = (page: number) => {
+      const nextPage = Math.min(Math.max(page, 1), totalPages);
+      if (pagination) {
+        pagination.onChange(nextPage);
+        return;
+      }
+      setInternalPage(nextPage);
+    };
 
     return (
       <div
@@ -97,7 +122,12 @@ const Table = forwardRef(
         {...rest}
       >
         <div className={tableContainerVariants({ isMobileScrollable })}>
-          <table className="w-max min-w-full border-separate border-spacing-y-0 text-sm">
+          <table
+            className={cn(
+              "min-w-full border-separate border-spacing-y-0 text-sm",
+              isEmptyStateVisible ? "w-full" : "w-max",
+            )}
+          >
             <thead>
               <tr className="bg-gi-ash">
                 {isSelectable && (
@@ -106,6 +136,11 @@ const Table = forwardRef(
                       variant: "header",
                       mobileFullWidth: false,
                     })}
+                    style={{
+                      width: "56px",
+                      minWidth: "56px",
+                      maxWidth: "56px",
+                    }}
                   >
                     <Checkbox
                       label=""
@@ -144,7 +179,7 @@ const Table = forwardRef(
 
             <tbody className="bg-white">
               {isLoading ? (
-                Array.from({ length: 5 }).map((_, i) => (
+                Array.from({ length: skeletonRowsCount }).map((_, i) => (
                   <SkeletonRow
                     key={i}
                     colsCount={totalColumns}
@@ -155,13 +190,15 @@ const Table = forwardRef(
                 <tr>
                   <td
                     colSpan={totalColumns}
-                    className="p-12 text-center text-gi-gray italic border-y border-gi-dark-ash"
+                    className="p-0 border-y border-gi-dark-ash"
                   >
-                    {emptyState || "No data available"}
+                    <div className="w-full min-h-52 flex items-center justify-center p-12 text-center text-gi-gray italic">
+                      {emptyState || "No data available"}
+                    </div>
                   </td>
                 </tr>
               ) : (
-                data.map((row, index) => {
+                visibleRows.map((row, index) => {
                   const rowKey = getRowKey(row);
                   const isSelected = selectedRowKeys.includes(rowKey);
                   return (
@@ -178,6 +215,11 @@ const Table = forwardRef(
                             "px-4 py-5 border-b border-gi-dark-ash",
                             index === 0 && "border-t border-gi-dark-ash",
                           )}
+                          style={{
+                            width: "56px",
+                            minWidth: "56px",
+                            maxWidth: "56px",
+                          }}
                         >
                           <Checkbox
                             label=""
@@ -242,11 +284,11 @@ const Table = forwardRef(
             )}
           </div>
           <div className="flex items-start">
-            {pagination && (
+            {isPaginationVisible && (
               <Pagination
-                page={pagination.page}
-                totalPages={pagination.totalPages}
-                onChange={pagination.onChange}
+                page={activePage}
+                totalPages={totalPages}
+                onChange={handlePageChange}
               />
             )}
           </div>
