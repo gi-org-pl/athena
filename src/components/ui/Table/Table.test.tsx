@@ -235,7 +235,7 @@ describe("<Table />", () => {
       expect(onSelectedRowKeysChange).toHaveBeenCalledWith([]);
     });
 
-    it("shows indeterminate state when some rows are selected", () => {
+    it("keeps header checkbox unchecked when only some rows are selected", () => {
       render(
         <Table
           {...defaultProps}

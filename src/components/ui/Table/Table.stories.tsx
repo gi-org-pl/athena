@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { Table } from "./Table";
-import type { TableColumn } from "./Table.types";
+import type { TableColumn, TableProps } from "./Table.types";
 
 const PAGE_SIZE = 5;
 const TOTAL_ITEMS = 24;
@@ -10,6 +10,10 @@ interface RowData {
   id: string;
   [key: string]: string;
 }
+
+type TableStoryArgs = TableProps<RowData> & {
+  showEmptyState?: boolean;
+};
 
 const generateColumns = (count: number): TableColumn<RowData>[] =>
   Array.from({ length: count }, (_, i) => ({
@@ -52,9 +56,8 @@ const meta = {
     data: { control: "object", table: { category: "Content" } },
     getRowKey: { table: { disable: true }, control: false },
     emptyState: { control: "text", table: { category: "Content" } },
-    actions: { control: false, table: { category: "Content" } },
+    showEmptyState: { control: "boolean", table: { category: "Content" } },
     isSelectable: { control: "boolean", table: { category: "Selection" } },
-    selectedRowKeys: { control: "object", table: { category: "Selection" } },
     onSelectedRowKeysChange: { table: { disable: true }, control: false },
     pagination: { table: { disable: true }, control: false },
     isMobileScrollable: {
@@ -70,24 +73,25 @@ const meta = {
   },
   args: {
     columns: MOCK_COLUMNS,
-    data: [],
+    data: MOCK_DATA.slice(0, PAGE_SIZE),
     getRowKey: (row: RowData) => row.id,
     isSelectable: true,
     isMobileScrollable: true,
     dataTestId: "main_table",
+    showEmptyState: false,
   },
-  render: (args) => {
+  render: (args: TableStoryArgs) => {
     const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
 
-    const startIndex = (currentPage - 1) * PAGE_SIZE;
-    const paginatedData = MOCK_DATA.slice(startIndex, startIndex + PAGE_SIZE);
+    const { showEmptyState = false, data = [], ...tableArgs } = args;
+    const sourceData = showEmptyState ? [] : data;
     const allRowKeys = MOCK_DATA.map((row) => row.id);
 
     return (
       <Table
-        {...args}
-        data={paginatedData}
+        {...tableArgs}
+        data={sourceData}
         getRowKey={(row: RowData) => row.id}
         selectedRowKeys={selectedKeys}
         onSelectedRowKeysChange={setSelectedKeys}
@@ -101,7 +105,7 @@ const meta = {
       />
     );
   },
-} satisfies Meta<typeof Table<RowData>>;
+} satisfies Meta<TableStoryArgs>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

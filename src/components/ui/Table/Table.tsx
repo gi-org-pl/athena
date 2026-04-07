@@ -3,8 +3,11 @@ import { cn } from "@/lib/utils";
 import { Badge } from "../Badge/Badge";
 import { Checkbox } from "../Checkbox/Checkbox";
 import { Pagination } from "../Pagination/Pagination";
-import { tableCellVariants, tableContainerVariants } from "./Table.methods";
-import type { TableProps } from "./Table.types";
+import {
+  type TableProps,
+  tableCellVariants,
+  tableContainerVariants,
+} from "./Table.types";
 
 const SkeletonRow = ({
   colsCount,
