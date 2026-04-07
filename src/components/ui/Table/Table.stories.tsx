@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { useState } from "react";
 import { Table } from "./Table";
 import type { TableColumn, TableProps } from "./Table.types";
 
@@ -49,25 +50,22 @@ const meta = {
     columns: { control: "object", table: { category: "Content" } },
     data: { control: "object", table: { category: "Content" } },
     getRowKey: { table: { disable: true }, control: false },
-    emptyState: { control: "text", table: { category: "Content" } },
-    showEmptyState: { control: "boolean", table: { category: "Content" } },
-    showActions: { control: "boolean", table: { category: "Content" } },
+    emptyState: { control: "text", table: { category: "Appearance" } },
+    showEmptyState: { control: "boolean", table: { category: "Flags" } },
+    showActions: { control: "boolean", table: { category: "Flags" } },
     actions: { table: { disable: true }, control: false },
-    isSelectable: { control: "boolean", table: { category: "Selection" } },
+    isSelectable: { control: "boolean", table: { category: "Flags" } },
     onSelectedRowKeysChange: { table: { disable: true }, control: false },
     pagination: { table: { disable: true }, control: false },
     isMobileScrollable: {
       control: "boolean",
-      table: { category: "Appearance" },
+      table: { category: "Flags" },
     },
     isLoading: {
       control: "boolean",
-      table: { category: "Appearance" },
+      table: { category: "Flags" },
     },
-    loadingRowsCount: {
-      control: { type: "number", min: 1, step: 1 },
-      table: { category: "Appearance" },
-    },
+    loadingRowsCount: { table: { disable: true }, control: false },
     rowsPerPage: {
       control: { type: "number", min: 1, step: 1 },
       table: { category: "Appearance" },
@@ -127,8 +125,29 @@ export const MobileScrollExperience: Story = {
 
 export const LargeDatasetSelection: Story = {
   args: {
+    data: MOCK_DATA,
     isSelectable: true,
     isMobileScrollable: false,
+  },
+};
+
+export const WithPagination: Story = {
+  args: {
+    data: MOCK_DATA,
+    isSelectable: false,
+    isMobileScrollable: false,
+    rowsPerPage: PAGE_SIZE,
+  },
+  render: (args: TableStoryArgs) => {
+    const [page, setPage] = useState(1);
+    return (
+      <Table
+        {...args}
+        data={MOCK_DATA}
+        getRowKey={(row: RowData) => row.id}
+        pagination={{ page, onChange: setPage }}
+      />
+    );
   },
 };
 
@@ -174,6 +193,5 @@ export const LoadingState: Story = {
   args: {
     isLoading: true,
     isSelectable: true,
-    loadingRowsCount: 8,
   },
 };

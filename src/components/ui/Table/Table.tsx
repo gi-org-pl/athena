@@ -156,7 +156,7 @@ const Table = forwardRef(
                     className={tableCellVariants({
                       align: column.align,
                       variant: "header",
-                      mobileFullWidth: isMobileScrollable,
+                      mobileFullWidth: isMobileScrollable && !isEmptyStateVisible,
                     })}
                   >
                     {column.header}
@@ -167,7 +167,7 @@ const Table = forwardRef(
                     className={tableCellVariants({
                       align: "right",
                       variant: "header",
-                      mobileFullWidth: isMobileScrollable,
+                      mobileFullWidth: isMobileScrollable && !isEmptyStateVisible,
                     })}
                   />
                 )}
@@ -186,17 +186,6 @@ const Table = forwardRef(
                     isFirst={i === 0}
                   />
                 ))
-              ) : data.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan={totalColumns}
-                    className="p-0 border-y border-gi-dark-ash"
-                  >
-                    <div className="w-full min-h-52 flex items-center justify-center p-12 text-center text-gi-gray italic">
-                      {emptyState || "No data available"}
-                    </div>
-                  </td>
-                </tr>
               ) : (
                 visibleRows.map((row, index) => {
                   const rowKey = getRowKey(row);
@@ -269,6 +258,11 @@ const Table = forwardRef(
               )}
             </tbody>
           </table>
+          {isEmptyStateVisible && (
+            <div className="sticky left-0 w-[100cqw] min-h-52 flex items-center justify-center p-12 text-center text-gi-gray italic border-y border-gi-dark-ash">
+              {emptyState || "No data available"}
+            </div>
+          )}
         </div>
 
         <div className="flex flex-row items-start justify-between w-full mt-2 px-1">
