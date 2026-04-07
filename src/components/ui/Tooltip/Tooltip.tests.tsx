@@ -1,7 +1,10 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { Tooltip } from "./Tooltip";
-import { TOOLTIP_ALIGNS, TOOLTIP_SIDES } from "./Tooltip.types";
+import type { TooltipAlign, TooltipSide } from "./Tooltip.types";
+
+const TOOLTIP_SIDES: TooltipSide[] = ["top", "right", "bottom", "left"];
+const TOOLTIP_ALIGNS: TooltipAlign[] = ["start", "center", "end"];
 
 global.ResizeObserver = class ResizeObserver {
   observe() {}

@@ -13,6 +13,3 @@ export interface TooltipProps
   dataTestId?: string;
   open?: boolean;
 }
-
-export const TOOLTIP_SIDES: TooltipSide[] = ["top", "right", "bottom", "left"];
-export const TOOLTIP_ALIGNS: TooltipAlign[] = ["start", "center", "end"];
