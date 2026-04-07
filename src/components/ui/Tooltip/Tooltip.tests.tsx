@@ -14,42 +14,59 @@ describe("Tooltip", () => {
     render(
       <Tooltip content="Visible" open={true} dataTestId="t-1">
         <button>Trigger</button>
-      </Tooltip>
+      </Tooltip>,
     );
 
-    const content = await waitFor(() => 
-      document.querySelector('[data-test-id="t-1"]')
+    const content = await waitFor(() =>
+      document.querySelector('[data-test-id="t-1"]'),
     );
-    
+
     expect(content?.textContent).toContain("Visible");
   });
 
   it("should apply correct offset for vertical and horizontal sides to reach 100% coverage", () => {
     const { rerender } = render(
-      <Tooltip content="Top Start" side="top" align="start" open={true} dataTestId="t-top-start">
+      <Tooltip
+        content="Top Start"
+        side="top"
+        align="start"
+        open={true}
+        dataTestId="t-top-start"
+      >
         <span>Top Start</span>
-      </Tooltip>
+      </Tooltip>,
     );
     expect(screen.getByTestId("t-top-start")).toBeDefined();
 
     rerender(
-      <Tooltip content="Right Start" side="right" align="start" open={true} dataTestId="t-right-start">
+      <Tooltip
+        content="Right Start"
+        side="right"
+        align="start"
+        open={true}
+        dataTestId="t-right-start"
+      >
         <span>Right Start</span>
-      </Tooltip>
+      </Tooltip>,
     );
     expect(screen.getByTestId("t-right-start")).toBeDefined();
 
     rerender(
       <Tooltip content="End" align="end" open={true} dataTestId="t-end">
         <span>End</span>
-      </Tooltip>
+      </Tooltip>,
     );
     expect(screen.getByTestId("t-end")).toBeDefined();
 
     rerender(
-      <Tooltip content="Center" align="center" open={true} dataTestId="t-center">
+      <Tooltip
+        content="Center"
+        align="center"
+        open={true}
+        dataTestId="t-center"
+      >
         <span>Center</span>
-      </Tooltip>
+      </Tooltip>,
     );
     expect(screen.getByTestId("t-center")).toBeDefined();
   });
@@ -58,7 +75,7 @@ describe("Tooltip", () => {
     const { container } = render(
       <Tooltip content="Label">
         <span>Trigger</span>
-      </Tooltip>
+      </Tooltip>,
     );
     expect(container.querySelector(".cursor-pointer")).toBeDefined();
   });

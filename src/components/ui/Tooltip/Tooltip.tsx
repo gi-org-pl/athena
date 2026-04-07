@@ -23,7 +23,11 @@ export const Tooltip = forwardRef<HTMLSpanElement, TooltipProps>(
     },
     ref,
   ) => {
-    const calculatedAlignOffset = align === "center" ? 0 : (side === "top" || side === "bottom" ? 14 : 4);
+    const calculatedAlignOffset =
+      align === "center" ? 0 : side === "top" || side === "bottom" ? 14 : 4;
+
+    const flippedAlign =
+      align === "start" ? "end" : align === "end" ? "start" : "center";
 
     return (
       <TooltipProvider delayDuration={delay}>
@@ -37,9 +41,9 @@ export const Tooltip = forwardRef<HTMLSpanElement, TooltipProps>(
               {children}
             </span>
           </TooltipTrigger>
-          <TooltipContent 
-            side={side} 
-            align={align} 
+          <TooltipContent
+            side={side}
+            align={flippedAlign}
             alignOffset={calculatedAlignOffset}
             data-test-id={dataTestId}
           >
