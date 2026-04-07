@@ -4,13 +4,12 @@ import { Table } from "./Table";
 import type { TableColumn } from "./Table.types";
 
 vi.mock("../Checkbox/Checkbox", () => ({
-  Checkbox: ({ checked, onCheckedChange, indeterminate }: any) => (
+  Checkbox: ({ checked, onCheckedChange }: any) => (
     <input
       type="checkbox"
       data-testid="mock-checkbox"
       checked={checked}
       onChange={(e) => onCheckedChange(e.target.checked)}
-      data-indeterminate={indeterminate}
     />
   ),
 }));
@@ -146,6 +145,7 @@ describe("<Table />", () => {
       render(<Table {...defaultProps} isLoading />);
       expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
       expect(document.querySelector(".animate-pulse")).toBeInTheDocument();
+      expect(document.querySelector("tbody td.border-b")).toBeInTheDocument();
     });
   });
 
@@ -200,6 +200,26 @@ describe("<Table />", () => {
       expect(onSelectedRowKeysChange).toHaveBeenCalledWith(["row_1", "row_2"]);
     });
 
+    it("selects all available rows when allRowKeys is provided", () => {
+      const onSelectedRowKeysChange = vi.fn();
+      render(
+        <Table
+          {...defaultProps}
+          isSelectable
+          allRowKeys={["row_1", "row_2", "row_3", "row_4"]}
+          onSelectedRowKeysChange={onSelectedRowKeysChange}
+        />,
+      );
+      const checkboxes = screen.getAllByTestId("mock-checkbox");
+      fireEvent.click(checkboxes[0]);
+      expect(onSelectedRowKeysChange).toHaveBeenCalledWith([
+        "row_1",
+        "row_2",
+        "row_3",
+        "row_4",
+      ]);
+    });
+
     it("deselects all rows when header checkbox is unchecked and all are selected", () => {
       const onSelectedRowKeysChange = vi.fn();
       render(
@@ -225,7 +245,7 @@ describe("<Table />", () => {
         />,
       );
       const headerCheckbox = screen.getAllByTestId("mock-checkbox")[0];
-      expect(headerCheckbox).toHaveAttribute("data-indeterminate", "true");
+      expect(headerCheckbox).not.toBeChecked();
     });
 
     it("shows checked state when all rows are selected", () => {
@@ -251,7 +271,6 @@ describe("<Table />", () => {
       );
       const headerCheckbox = screen.getAllByTestId("mock-checkbox")[0];
       expect(headerCheckbox).not.toBeChecked();
-      expect(headerCheckbox).toHaveAttribute("data-indeterminate", "false");
     });
 
     it("does nothing on select-all when onSelectedRowKeysChange is missing", () => {

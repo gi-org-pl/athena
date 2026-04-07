@@ -1,4 +1,4 @@
-import type { HTMLAttributes, ReactNode } from "react";
+import type { ComponentProps, ReactNode } from "react";
 
 export interface TableColumn<T> {
   key: string;
@@ -15,7 +15,7 @@ export interface TablePagination {
   onChange: (page: number) => void;
 }
 
-export interface TableProps<T> extends HTMLAttributes<HTMLDivElement> {
+export interface TableProps<T> extends ComponentProps<"div"> {
   columns: TableColumn<T>[];
   data: T[];
   getRowKey: (row: T) => string;

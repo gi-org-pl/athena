@@ -1,4 +1,4 @@
-import { type ForwardedRef, forwardRef } from "react";
+import { type ForwardedRef, forwardRef, type JSX } from "react";
 import { cn } from "@/lib/utils";
 import { Badge } from "../Badge/Badge";
 import { Checkbox } from "../Checkbox/Checkbox";
@@ -47,6 +47,7 @@ const Table = forwardRef(
       allRowKeys,
       ...rest
     } = props;
+    const rowKeysForSelection = allRowKeys ?? data.map((row) => getRowKey(row));
 
     const handleSelectRow = (rowKey: string, checked: boolean) => {
       if (!onSelectedRowKeysChange) return;
@@ -61,29 +62,25 @@ const Table = forwardRef(
 
     const handleSelectAll = (checked: boolean) => {
       if (!onSelectedRowKeysChange) return;
-      const currentPageKeys = data.map((row) => getRowKey(row));
-      const allKeys = allRowKeys ?? currentPageKeys;
 
       if (checked) {
         const newKeys = [
           ...selectedRowKeys,
-          ...allKeys.filter((key) => !selectedRowKeys.includes(key)),
+          ...rowKeysForSelection.filter(
+            (key) => !selectedRowKeys.includes(key),
+          ),
         ];
         onSelectedRowKeysChange(newKeys);
       } else {
         onSelectedRowKeysChange(
-          selectedRowKeys.filter((key) => !allKeys.includes(key)),
+          selectedRowKeys.filter((key) => !rowKeysForSelection.includes(key)),
         );
       }
     };
 
     const isAllSelected =
-      data.length > 0 &&
-      data.every((row) => selectedRowKeys.includes(getRowKey(row)));
-    const isIndeterminate =
-      !isAllSelected &&
-      data.some((row) => selectedRowKeys.includes(getRowKey(row)));
-
+      rowKeysForSelection.length > 0 &&
+      rowKeysForSelection.every((key) => selectedRowKeys.includes(key));
     const totalCount = pagination?.totalElements ?? data.length;
     const totalColumns =
       columns.length + (isSelectable ? 1 : 0) + (actions ? 1 : 0);
@@ -110,7 +107,6 @@ const Table = forwardRef(
                     <Checkbox
                       label=""
                       checked={isAllSelected}
-                      indeterminate={isIndeterminate}
                       onCheckedChange={handleSelectAll}
                     />
                   </th>
@@ -257,6 +253,6 @@ const Table = forwardRef(
   },
 ) as <T>(
   props: TableProps<T> & { ref?: ForwardedRef<HTMLDivElement> },
-) => React.JSX.Element;
+) => JSX.Element;
 
 export { Table };

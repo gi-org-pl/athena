@@ -37,6 +37,14 @@ const meta = {
   component: Table,
   parameters: {
     layout: "padded",
+    controls: {
+      exclude: [
+        "pagination",
+        "allRowKeys",
+        "onSelectedRowKeysChange",
+        "getRowKey",
+      ],
+    },
   },
   tags: ["autodocs"],
   argTypes: {
@@ -48,7 +56,7 @@ const meta = {
     isSelectable: { control: "boolean", table: { category: "Selection" } },
     selectedRowKeys: { control: "object", table: { category: "Selection" } },
     onSelectedRowKeysChange: { table: { disable: true }, control: false },
-    pagination: { table: { disable: true } },
+    pagination: { table: { disable: true }, control: false },
     isMobileScrollable: {
       control: "boolean",
       table: { category: "Appearance" },
