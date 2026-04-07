@@ -156,7 +156,8 @@ const Table = forwardRef(
                     className={tableCellVariants({
                       align: column.align,
                       variant: "header",
-                      mobileFullWidth: isMobileScrollable && !isEmptyStateVisible,
+                      mobileFullWidth:
+                        isMobileScrollable && !isEmptyStateVisible,
                     })}
                   >
                     {column.header}
@@ -167,7 +168,8 @@ const Table = forwardRef(
                     className={tableCellVariants({
                       align: "right",
                       variant: "header",
-                      mobileFullWidth: isMobileScrollable && !isEmptyStateVisible,
+                      mobileFullWidth:
+                        isMobileScrollable && !isEmptyStateVisible,
                     })}
                   />
                 )}
@@ -178,84 +180,82 @@ const Table = forwardRef(
             </thead>
 
             <tbody className="bg-white">
-              {isLoading ? (
-                Array.from({ length: skeletonRowsCount }).map((_, i) => (
-                  <SkeletonRow
-                    key={i}
-                    colsCount={totalColumns}
-                    isFirst={i === 0}
-                  />
-                ))
-              ) : (
-                visibleRows.map((row, index) => {
-                  const rowKey = getRowKey(row);
-                  const isSelected = selectedRowKeys.includes(rowKey);
-                  return (
-                    <tr
-                      key={rowKey}
-                      className="transition-colors duration-300 ease group hover:bg-gi-ash/10"
-                    >
-                      {isSelectable && (
-                        <td
-                          className={cn(
-                            tableCellVariants({
-                              mobileFullWidth: false,
-                            }),
-                            "px-4 py-5 border-b border-gi-dark-ash",
-                            index === 0 && "border-t border-gi-dark-ash",
-                          )}
-                          style={{
-                            width: "56px",
-                            minWidth: "56px",
-                            maxWidth: "56px",
-                          }}
-                        >
-                          <Checkbox
-                            label=""
-                            checked={isSelected}
-                            onCheckedChange={(checked) =>
-                              handleSelectRow(rowKey, checked === true)
-                            }
-                          />
-                        </td>
-                      )}
-                      {columns.map((column) => (
-                        <td
-                          key={`${rowKey}-${column.key}`}
-                          className={cn(
-                            tableCellVariants({
-                              align: column.align,
-                              variant: "body",
-                              mobileFullWidth: isMobileScrollable,
-                            }),
-                            "border-b border-gi-dark-ash",
-                            index === 0 && "border-t border-gi-dark-ash",
-                          )}
-                        >
-                          {column.render
-                            ? column.render(row)
-                            : (row as any)[column.key]}
-                        </td>
-                      ))}
-                      {actions && (
-                        <td
-                          className={cn(
-                            tableCellVariants({
-                              align: "right",
-                              variant: "body",
-                              mobileFullWidth: isMobileScrollable,
-                            }),
-                            "px-4 py-5 border-b border-gi-dark-ash font-medium text-gi-primary",
-                            index === 0 && "border-t border-gi-dark-ash",
-                          )}
-                        >
-                          {actions(row)}
-                        </td>
-                      )}
-                    </tr>
-                  );
-                })
-              )}
+              {isLoading
+                ? Array.from({ length: skeletonRowsCount }).map((_, i) => (
+                    <SkeletonRow
+                      key={i}
+                      colsCount={totalColumns}
+                      isFirst={i === 0}
+                    />
+                  ))
+                : visibleRows.map((row, index) => {
+                    const rowKey = getRowKey(row);
+                    const isSelected = selectedRowKeys.includes(rowKey);
+                    return (
+                      <tr
+                        key={rowKey}
+                        className="transition-colors duration-300 ease group hover:bg-gi-ash/10"
+                      >
+                        {isSelectable && (
+                          <td
+                            className={cn(
+                              tableCellVariants({
+                                mobileFullWidth: false,
+                              }),
+                              "px-4 py-5 border-b border-gi-dark-ash",
+                              index === 0 && "border-t border-gi-dark-ash",
+                            )}
+                            style={{
+                              width: "56px",
+                              minWidth: "56px",
+                              maxWidth: "56px",
+                            }}
+                          >
+                            <Checkbox
+                              label=""
+                              checked={isSelected}
+                              onCheckedChange={(checked) =>
+                                handleSelectRow(rowKey, checked === true)
+                              }
+                            />
+                          </td>
+                        )}
+                        {columns.map((column) => (
+                          <td
+                            key={`${rowKey}-${column.key}`}
+                            className={cn(
+                              tableCellVariants({
+                                align: column.align,
+                                variant: "body",
+                                mobileFullWidth: isMobileScrollable,
+                              }),
+                              "border-b border-gi-dark-ash",
+                              index === 0 && "border-t border-gi-dark-ash",
+                            )}
+                          >
+                            {column.render
+                              ? column.render(row)
+                              : (row as any)[column.key]}
+                          </td>
+                        ))}
+                        {actions && (
+                          <td
+                            className={cn(
+                              tableCellVariants({
+                                align: "right",
+                                variant: "body",
+                                mobileFullWidth: isMobileScrollable,
+                              }),
+                              "px-4 py-5 border-b border-gi-dark-ash font-medium text-gi-primary",
+                              index === 0 && "border-t border-gi-dark-ash",
+                            )}
+                          >
+                            {actions(row)}
+                          </td>
+                        )}
+                      </tr>
+                    );
+                  })}
             </tbody>
           </table>
           {isEmptyStateVisible && (
