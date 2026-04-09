@@ -15,12 +15,10 @@ const meta = {
   argTypes: {
     content: {
       control: "text",
-      description: "Text displayed in the tooltip",
       table: { category: "Content" },
     },
     children: {
       control: "text",
-      description: "Trigger element",
       table: { category: "Content" },
     },
     dataTestId: {
