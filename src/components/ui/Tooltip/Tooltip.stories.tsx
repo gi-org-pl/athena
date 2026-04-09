@@ -56,7 +56,7 @@ export const Default: Story = {
   },
   render: (args) => (
     <Tooltip {...args}>
-      <button className="px-4 py-2 border rounded-md hover:bg-slate-50">
+      <button className="px-4 py-2 border rounded-md hover:bg-slate-50 w-30">
         {args.children}
       </button>
     </Tooltip>
@@ -92,13 +92,13 @@ export const DifferentAlignments: Story = {
   render: () => (
     <div className="flex flex-col items-center gap-8">
       <Tooltip content="Tooltip" side="bottom" align="start">
-        <button className="px-3 py-1 border rounded w-32">Align Start</button>
+        <button className="px-3 py-1 border rounded w-30">Align Start</button>
       </Tooltip>
       <Tooltip content="Tooltip" side="bottom" align="center">
-        <button className="px-3 py-1 border rounded w-32">Align Center</button>
+        <button className="px-3 py-1 border rounded w-30">Align Center</button>
       </Tooltip>
       <Tooltip content="Tooltip" side="bottom" align="end">
-        <button className="px-3 py-1 border rounded w-32">Align End</button>
+        <button className="px-3 py-1 border rounded w-30">Align End</button>
       </Tooltip>
     </div>
   ),

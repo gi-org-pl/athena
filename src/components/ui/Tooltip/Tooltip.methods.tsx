@@ -1,10 +1,10 @@
 import {
+  Arrow,
+  Content,
+  Portal,
   Provider,
   Root,
   Trigger,
-  Content,
-  Portal,
-  Arrow,
 } from "@radix-ui/react-tooltip";
 import { type ComponentProps } from "react";
 import { cn } from "@/lib/utils";
@@ -20,9 +20,7 @@ export const TooltipRoot = Root;
 
 export const TooltipTrigger = ({
   ...props
-}: ComponentProps<typeof Trigger>) => (
-  <Trigger {...props} />
-);
+}: ComponentProps<typeof Trigger>) => <Trigger {...props} />;
 
 export const TooltipContent = ({
   className,
@@ -34,7 +32,7 @@ export const TooltipContent = ({
     <Content
       sideOffset={sideOffset}
       className={cn(
-        "bg-gi-primary text-white z-50 w-fit origin-[var(--radix-tooltip-content-transform-origin)] rounded-sm px-3 py-1.5 text-xs animate-in fade-in-0 zoom-in-95 duration-300 ease-in-out data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
+        "bg-gi-primary text-white z-50 w-fit rounded-sm px-3 py-1.5 text-xs animate-in fade-in-0 zoom-in-95 duration-300 ease-in-out",
         className,
       )}
       {...props}
