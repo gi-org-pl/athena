@@ -19,3 +19,4 @@ export { Switch } from "./components/ui/Switch/Switch";
 export { Table } from "./components/ui/Table/Table";
 export { Tabs } from "./components/ui/Tabs/Tabs";
 export { TextArea } from "./components/ui/TextArea/TextArea";
+export { Tooltip } from "./components/ui/Tooltip/Tooltip";
