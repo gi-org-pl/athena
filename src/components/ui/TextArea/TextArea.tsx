@@ -37,7 +37,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
     const charCount = Array.from(value).length;
 
     return (
-      <div className="flex flex-col w-full max-w-[346px]">
+      <div className="flex flex-col w-full">
         {label && (
           <label className={getLabelClasses(isDisabled)}>
             {label}
