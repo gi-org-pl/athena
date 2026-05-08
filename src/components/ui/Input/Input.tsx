@@ -105,7 +105,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
         <div
           className={cn(
-            "flex items-center w-full min-h-[40px] px-3 bg-white border rounded-[24px] transition-all duration-300 ease",
+            "flex items-center w-full min-h-10 px-3 bg-white border rounded-3xl transition-all duration-300 ease",
             !isError &&
               !isDisabled &&
               "border-gi-primary/10 hover:border-gi-primary/33 focus-within:border-gi-primary/33 cursor-text",
@@ -118,7 +118,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           {LeftIcon ? (
             <div
               className={cn(
-                "flex-shrink-0 mr-2 flex items-center",
+                "shrink-0 mr-2 flex items-center",
                 isDisabled ? "opacity-30" : "text-gi-primary",
               )}
             >
@@ -192,7 +192,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             <div
               data-testid="right-icon-container"
               className={cn(
-                "flex-shrink-0 ml-2 flex items-center",
+                "shrink-0 ml-2 flex items-center",
                 isDisabled ? "opacity-30" : "text-gi-primary",
               )}
             >
@@ -200,9 +200,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             </div>
           ) : null}
         </div>
-
-        <div className="min-h-[20px]">
-          {secondaryText && !isDisabled ? (
+        {secondaryText && !isDisabled ? (
+          <div className="min-h-5">
             <p
               id={descriptionId}
               className={cn(
@@ -212,8 +211,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             >
               {secondaryText}
             </p>
-          ) : null}
-        </div>
+          </div>
+        ) : null}
       </div>
     );
   },
