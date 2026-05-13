@@ -22,11 +22,11 @@ describe("<TextArea />", () => {
       expect(textarea).toHaveValue("");
     });
 
-    it("passes dataTestId to textarea as data-test-id", () => {
+    it("passes dataTestId to textarea as data-testid", () => {
       render(<TextArea {...baseProps} dataTestId="my-textarea" />);
 
       const textarea = screen.getByRole("textbox");
-      expect(textarea).toHaveAttribute("data-test-id", "my-textarea");
+      expect(textarea).toHaveAttribute("data-testid", "my-textarea");
     });
 
     it("renders label and required asterisk when isRequired is true", () => {

@@ -70,7 +70,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
         role="tablist"
         aria-orientation="horizontal"
         onKeyDown={handleKeyDown}
-        data-test-id={dataTestId}
+        data-testid={dataTestId}
         className={`relative border-b-4 border-slate-200 ${containerWidthClass} ${className}`}
         {...props}
       >

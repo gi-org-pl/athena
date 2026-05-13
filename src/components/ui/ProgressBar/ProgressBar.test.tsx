@@ -23,7 +23,7 @@ describe("<ProgressBar />", () => {
     it("should render with dataTestId", () => {
       render(<ProgressBar value={75} dataTestId="test-progress" />);
       const progressBar = screen.getByRole("progressbar");
-      expect(progressBar).toHaveAttribute("data-test-id", "test-progress");
+      expect(progressBar).toHaveAttribute("data-testid", "test-progress");
     });
   });
 

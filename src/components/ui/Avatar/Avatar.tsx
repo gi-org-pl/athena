@@ -40,7 +40,7 @@ export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
         role={role}
         aria-label={label}
         data-slot="avatar"
-        data-test-id={dataTestId}
+        data-testid={dataTestId}
         className={cn(avatarVariants({ size, className }))}
         {...props}
       >

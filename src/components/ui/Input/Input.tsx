@@ -172,7 +172,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               onBlur={handleBlur}
               disabled={isDisabled}
               placeholder={placeholder}
-              data-test-id={dataTestId}
+              data-testid={dataTestId}
               aria-invalid={!!isError}
               aria-describedby={
                 secondaryText && !isDisabled ? descriptionId : undefined

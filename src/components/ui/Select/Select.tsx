@@ -66,7 +66,7 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
                 ref={ref}
                 role="button"
                 tabIndex={isDisabled ? -1 : 0}
-                data-test-id={dataTestId}
+                data-testid={dataTestId}
                 className={cn(
                   "flex w-full items-center justify-between gap-2 rounded-full bg-gi-ash px-3 py-2 text-gi-primary font-bold transition-all duration-300 ease",
                   size === "small" ? "h-8" : "h-10",

@@ -126,7 +126,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
           aria-modal="true"
           aria-labelledby={titleId}
           tabIndex={-1}
-          data-test-id={dataTestId}
+          data-testid={dataTestId}
           className={cn(
             modalVariants({ state: isOpen ? "open" : "closed" }),
             className,

@@ -14,7 +14,7 @@ export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
       <div
         ref={ref}
         data-slot="progress-bar"
-        data-test-id={dataTestId}
+        data-testid={dataTestId}
         className={cn(progressBarVariants({ size, className }))}
         role="progressbar"
         aria-valuenow={clampedValue}

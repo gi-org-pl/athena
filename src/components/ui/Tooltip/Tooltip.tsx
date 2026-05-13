@@ -51,7 +51,7 @@ export const Tooltip = forwardRef<HTMLSpanElement, TooltipProps>(
             side={side}
             align={radixAlign}
             alignOffset={offset}
-            data-test-id={dataTestId}
+            data-testid={dataTestId}
           >
             {content}
           </TooltipContent>

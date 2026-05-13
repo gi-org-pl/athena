@@ -23,7 +23,7 @@ describe("Badge Component", () => {
     it("should apply default styling variants", () => {
       render(<Badge dataTestId="badge-default">Default</Badge>);
 
-      const wrapper = document.querySelector('[data-test-id="badge-default"]');
+      const wrapper = document.querySelector('[data-testid="badge-default"]');
       const styledSpan = wrapper?.firstElementChild;
 
       expect(styledSpan).toHaveClass("bg-gi-ash", "text-gi-primary");

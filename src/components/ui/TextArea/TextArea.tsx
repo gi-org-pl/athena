@@ -107,7 +107,7 @@ export function TextArea({
         onChange={handleChange}
         maxLength={hasCharacterLimit ? characterLimit : undefined}
         data-slot="textarea"
-        data-test-id={dataTestId}
+        data-testid={dataTestId}
         className={cn(
           TextAreaVariants({
             variant: computedVariant,

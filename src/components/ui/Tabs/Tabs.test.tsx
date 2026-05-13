@@ -21,7 +21,7 @@ describe("<Tabs />", () => {
 
     const tablist = screen.getByRole("tablist");
     expect(tablist).toBeInTheDocument();
-    expect(tablist).toHaveAttribute("data-test-id", "test-tabs");
+    expect(tablist).toHaveAttribute("data-testid", "test-tabs");
 
     const tabs = screen.getAllByRole("tab");
     expect(tabs).toHaveLength(3);
