@@ -2,7 +2,6 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { Tooltip } from "./Tooltip";
 
-
 global.ResizeObserver = class ResizeObserver {
   observe() {}
   unobserve() {}
