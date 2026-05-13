@@ -1,6 +1,8 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { configure, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { Tooltip } from "./Tooltip";
+
+configure({ testIdAttribute: "data-test-id" });
 
 global.ResizeObserver = class ResizeObserver {
   observe() {}
@@ -78,7 +80,7 @@ describe("Tooltip", () => {
         <button>Trigger</button>
       </Tooltip>,
     );
-    const content = await waitFor(() => screen.getByTestId("t-delay"));
-    expect(content.textContent).toBe("Delayed");
+    const tooltip = await waitFor(() => screen.getByTestId("t-delay"));
+    expect(tooltip).toHaveTextContent("Delayed");
   });
 });
