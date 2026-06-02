@@ -21,8 +21,15 @@ export default defineConfig({
     }),
     dts({
       include: ["src"],
+      exclude: [
+        "src/**/*.test.ts",
+        "src/**/*.test.tsx",
+        "src/**/*.tests.ts",
+        "src/**/*.tests.tsx",
+        "src/**/*.stories.tsx",
+      ],
       tsconfigPath: "./tsconfig.app.json",
-      rollupTypes: true,
+      rollupTypes: false,
     }),
   ],
   resolve: {
@@ -32,9 +39,56 @@ export default defineConfig({
   },
   build: {
     copyPublicDir: false,
+    cssCodeSplit: true,
     lib: {
-      entry: path.resolve(__dirname, "src/main.ts"),
+      entry: {
+        athena: path.resolve(__dirname, "src/main.ts"),
+        avatar: path.resolve(__dirname, "src/components/ui/Avatar/Avatar.tsx"),
+        badge: path.resolve(__dirname, "src/components/ui/Badge/Badge.tsx"),
+        button: path.resolve(__dirname, "src/components/ui/Button/Button.tsx"),
+        "button-select": path.resolve(
+          __dirname,
+          "src/components/ui/ButtonSelect/ButtonSelect.tsx",
+        ),
+        checkbox: path.resolve(__dirname, "src/components/ui/Checkbox/Checkbox.tsx"),
+        "info-message": path.resolve(
+          __dirname,
+          "src/components/ui/InfoMessage/InfoMessage.tsx",
+        ),
+        input: path.resolve(__dirname, "src/components/ui/Input/Input.tsx"),
+        modal: path.resolve(__dirname, "src/components/ui/Modal/Modal.tsx"),
+        pagination: path.resolve(
+          __dirname,
+          "src/components/ui/Pagination/Pagination.tsx",
+        ),
+        "progress-bar": path.resolve(
+          __dirname,
+          "src/components/ui/ProgressBar/ProgressBar.tsx",
+        ),
+        "radio-group": path.resolve(
+          __dirname,
+          "src/components/ui/RadioGroup/RadioGroup.tsx",
+        ),
+        "radio-group-item": path.resolve(
+          __dirname,
+          "src/components/ui/RadioGroup/RadioGroupItem/RadioGroupItem.tsx",
+        ),
+        section: path.resolve(__dirname, "src/components/ui/Section/Section.tsx"),
+        "action-list": path.resolve(
+          __dirname,
+          "src/components/ui/Select/ActionList/ActionList.tsx",
+        ),
+        select: path.resolve(__dirname, "src/components/ui/Select/Select.tsx"),
+        switch: path.resolve(__dirname, "src/components/ui/Switch/Switch.tsx"),
+        table: path.resolve(__dirname, "src/components/ui/Table/Table.tsx"),
+        tabs: path.resolve(__dirname, "src/components/ui/Tabs/Tabs.tsx"),
+        textarea: path.resolve(__dirname, "src/components/ui/TextArea/TextArea.tsx"),
+        tooltip: path.resolve(__dirname, "src/components/ui/Tooltip/Tooltip.tsx"),
+        styles: path.resolve(__dirname, "src/styles.ts"),
+        theme: path.resolve(__dirname, "src/theme.ts"),
+      },
       formats: ["es"],
+      fileName: (_format, entryName) => `${entryName}.js`,
     },
     rollupOptions: {
       external: [
