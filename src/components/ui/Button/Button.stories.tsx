@@ -5,8 +5,15 @@ import { Button } from "./Button";
 
 const HTMLTYPES = ["default", "submit", "reset"] as const;
 const TYPES = ["primary", "outlined", "ghost"] as const;
-const VARIANTS = ["primary", "secondary", "danger"] as const;
-const SIZES = ["small", "regular"] as const;
+const VARIANTS = [
+  "primary",
+  "secondary",
+  "danger",
+  "ngoPrimary",
+  "ngoSecondary",
+  "ngoOption",
+] as const;
+const SIZES = ["small", "regular", "ngo-small", "ngo-regular"] as const;
 
 const meta = {
   title: "Button",
@@ -170,6 +177,23 @@ export const LoadingState: Story = {
       </Button>
       <Button {...args} isLoading variant="danger">
         Deleting
+      </Button>
+    </div>
+  ),
+};
+
+export const NGOStyles: Story = {
+  name: "NGO Styles",
+  render: (args) => (
+    <div className="flex gap-4 items-center">
+      <Button {...args} size="ngo-regular" variant="ngoPrimary">
+        NGO Primary
+      </Button>
+      <Button {...args} size="ngo-regular" variant="ngoSecondary">
+        NGO Secondary
+      </Button>
+      <Button {...args} size="ngo-regular" variant="ngoOption">
+        NGO Option
       </Button>
     </div>
   ),

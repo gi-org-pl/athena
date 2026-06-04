@@ -1,6 +1,8 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { configure, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { Tooltip } from "./Tooltip";
+
+configure({ testIdAttribute: "data-test-id" });
 
 global.ResizeObserver = class ResizeObserver {
   observe() {}
