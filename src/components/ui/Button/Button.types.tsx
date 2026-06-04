@@ -29,10 +29,15 @@ export const buttonVariants = cva(
         primary: "",
         secondary: "",
         danger: "",
+        ngoSecondary: "",
+        ngoPrimary: "",
+        ngoOption: "",
       },
       size: {
-        regular: "h-10 px-4 py-2 has-[>svg]:px-3",
         small: "h-8 px-3 text-xs gap-1.5 has-[>svg]:px-2.5",
+        regular: "h-10 px-4 py-2 has-[>svg]:px-3",
+        "ngo-small": "h-8 px-3 text-xs gap-2 has-[>svg]:px-3",
+        "ngo-regular": "h-10 px-4 py-2 has-[>svg]:px-4"
       },
       isIconButton: {
         true: "p-0",
@@ -44,6 +49,24 @@ export const buttonVariants = cva(
         variant: "primary",
         className:
           "bg-gi-primary text-white hover:bg-gi-primary-hover data-[disabled=true]:bg-gi-gray data-[disabled=true]:text-white",
+      },
+            {
+        type: "primary",
+        variant: "ngoPrimary",
+        className:
+          "bg-gi-navy text-white hover:bg-gi-navy-hover data-[disabled=true]:bg-gi-gray data-[disabled=true]:text-white",
+      },
+      {
+        type: "primary",
+        variant: "ngoSecondary",
+        className:
+          "bg-gi-blue text-white hover:bg-gi-blue-hover data-[disabled=true]:bg-gi-gray data-[disabled=true]:text-white",
+      },
+      {
+        type: "primary",
+        variant: "ngoOption",
+        className:
+          "bg-gi-light-gray-dark text-gi-navy hover:bg-gi-dark-ash data-[disabled=true]:bg-gi-gray data-[disabled=true]:text-gi-navy",
       },
       {
         type: "primary",
@@ -76,6 +99,24 @@ export const buttonVariants = cva(
           "border-gi-red text-gi-red bg-transparent hover:bg-gi-red/10 data-[disabled=true]:border-gi-gray-hover data-[disabled=true]:text-gi-gray",
       },
       {
+        type: "outlined",
+        variant: "ngoSecondary",
+        className:
+          "border-gi-blue text-gi-blue bg-transparent hover:bg-gi-blue/10 data-[disabled=true]:border-gi-gray-hover data-[disabled=true]:text-gi-gray",
+      },
+      {
+        type: "outlined",
+        variant: "ngoPrimary",
+        className:
+          "border-gi-navy text-gi-navy bg-transparent hover:bg-gi-navy/10 data-[disabled=true]:border-gi-gray-hover data-[disabled=true]:text-gi-gray",
+      },
+      {
+        type: "outlined",
+        variant: "ngoOption",
+        className:
+          "border-gi-light-gray-dark text-gi-navy bg-transparent hover:bg-gi-dark-ash/10 data-[disabled=true]:border-gi-gray-hover data-[disabled=true]:text-gi-gray",
+      },
+      {
         type: "ghost",
         variant: "primary",
         className:
@@ -92,6 +133,24 @@ export const buttonVariants = cva(
         variant: "danger",
         className:
           "bg-gi-red/10 text-gi-red hover:bg-gi-red/33 data-[disabled=true]:bg-gi-gray/10 data-[disabled=true]:text-gi-gray",
+      },
+      {
+        type: "ghost",
+        variant: "ngoSecondary",
+        className:
+          "bg-gi-blue/10 text-gi-blue hover:bg-gi-blue/33 data-[disabled=true]:bg-gi-gray/10 data-[disabled=true]:text-gi-gray",
+      },
+      {
+        type: "ghost",
+        variant: "ngoPrimary",
+        className:
+          "bg-gi-navy/10 text-gi-navy hover:bg-gi-navy/33 data-[disabled=true]:bg-gi-gray/10 data-[disabled=true]:text-gi-gray",
+      },
+      {
+        type: "ghost",
+        variant: "ngoOption",
+        className:
+          "bg-gi-light-gray-dark/10 text-gi-navy hover:bg-gi-dark-ash data-[disabled=true]:bg-gi-gray/10 data-[disabled=true]:text-gi-gray",
       },
       {
         isIconButton: true,
