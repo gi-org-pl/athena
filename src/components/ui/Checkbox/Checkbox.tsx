@@ -55,3 +55,5 @@ export const Checkbox = ({
 };
 
 Checkbox.displayName = "Checkbox";
+
+export default Checkbox;

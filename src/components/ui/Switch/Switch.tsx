@@ -29,3 +29,5 @@ export const Switch = forwardRef<
 ));
 
 Switch.displayName = "Switch";
+
+export default Switch;

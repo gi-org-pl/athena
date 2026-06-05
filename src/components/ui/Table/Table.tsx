@@ -255,3 +255,5 @@ function Table<T>({
 }
 
 export { Table };
+
+export default Table;

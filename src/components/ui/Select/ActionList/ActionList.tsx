@@ -33,3 +33,5 @@ export const ActionList = forwardRef<HTMLDivElement, ActionListProps>(
 );
 
 ActionList.displayName = "ActionList";
+
+export default ActionList;

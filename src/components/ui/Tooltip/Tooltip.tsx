@@ -62,3 +62,5 @@ export const Tooltip = forwardRef<HTMLSpanElement, TooltipProps>(
 );
 
 Tooltip.displayName = "Tooltip";
+
+export default Tooltip;

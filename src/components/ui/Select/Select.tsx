@@ -110,3 +110,5 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
 );
 
 Select.displayName = "Select";
+
+export default Select;
