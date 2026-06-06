@@ -162,9 +162,7 @@
       "import": "./dist/tooltip.js",
       "types": "./dist/components/ui/Tooltip/Tooltip.d.ts"
     },
-    "./css": "./dist/theme.css",
-    "./theme.css": "./dist/theme.css",
-    "./styles.css": "./dist/styles.css",
-    "./athena.css": "./dist/styles.css"
+    "./css": "./src/index.css",
+    "./theme": "./src/index.css"
   }
 }
