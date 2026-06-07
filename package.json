@@ -162,7 +162,6 @@
       "import": "./dist/tooltip.js",
       "types": "./dist/components/ui/Tooltip/Tooltip.d.ts"
     },
-    "./css": "./src/index.css",
-    "./theme": "./src/index.css"
+    "./css": "./src/index.css"
   }
 }
