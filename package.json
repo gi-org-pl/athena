@@ -82,6 +82,7 @@
       "import": "./dist/athena.js",
       "types": "./dist/index.d.ts"
     },
-    "./athena.css": "./dist/athena.css"
+    "./athena.css": "./dist/athena.css",
+    "./css": "./src/index.css"
   }
 }
