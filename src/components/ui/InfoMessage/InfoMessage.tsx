@@ -43,5 +43,3 @@ export const InfoMessage = forwardRef<HTMLDivElement, InfoMessageProps>(
 );
 
 InfoMessage.displayName = "InfoMessage";
-
-export default InfoMessage;

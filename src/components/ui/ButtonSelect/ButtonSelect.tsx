@@ -49,5 +49,3 @@ export const ButtonSelect = ({
   );
 };
 ButtonSelect.displayName = "Button Select";
-
-export default ButtonSelect;

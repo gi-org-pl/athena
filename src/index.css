@@ -1,9 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@source "./components/**/*.{ts,tsx}";
-@source "../dist/**/*.js";
-
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -65,12 +62,12 @@
   --color-gi-orange-hover: #b47b1e;
   --color-gi-blue: #3279e4;
   --color-gi-blue-hover: #2861b6;
-  --color-gi-navy: #2c4160;
-  --color-gi-navy-hover: #22324a;
-  --color-gi-blue-soft: #4f72a5;
-  --color-gi-blue-lightest: #ddebff;
-  --color-gi-light-gray: #f0f2f4;
-  --color-gi-light-gray-dark: #dce0e6;
+  --color-gi-navy: #2C4160;
+  --color-gi-navy-hover: #22324A;
+  --color-gi-blue-soft: #4F72A5;
+  --color-gi-blue-lightest: #DDEBFF;
+  --color-gi-light-gray: #F0F2F4;
+  --color-gi-light-gray-dark: #DCE0E6;
 }
 
 :root {
