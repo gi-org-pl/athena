@@ -13,6 +13,7 @@
     "lint": "npx @biomejs/biome lint",
     "lint:fix": "npx @biomejs/biome check --write",
     "prepare": "husky",
+    "postinstall": "yarn build",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build"
   },
