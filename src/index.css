@@ -1,7 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@source "./components/**/*.{ts,tsx}";
+@source "./components/**/*.tsx";
+@source "./components/**/*.ts";
 @source "../dist/**/*.js";
 
 @custom-variant dark (&:is(.dark *));
@@ -42,35 +43,32 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-}
-
-@theme {
-  --color-gi-dark-primary: #001e24;
-  --color-gi-primary: #004554;
-  --color-gi-primary-hover: #003743;
-  --color-gi-light-primary: #005669;
-  --color-gi-secondary: #007994;
-  --color-gi-secondary-hover: #006176;
-  --color-gi-dark-gray: #324c52;
-  --color-gi-gray: #98a5a8;
-  --color-gi-gray-hover: #7a8486;
-  --color-gi-dark-ash: #d3d9da;
-  --color-gi-ash: #ecf0f2;
-  --color-gi-ash-hover: #bdc0c2;
-  --color-gi-red: #e43235;
-  --color-gi-red-hover: #b6282a;
-  --color-gi-green: #489c21;
-  --color-gi-green-hover: #3a7d1a;
-  --color-gi-orange: #e19a26;
-  --color-gi-orange-hover: #b47b1e;
-  --color-gi-blue: #3279e4;
-  --color-gi-blue-hover: #2861b6;
-  --color-gi-navy: #2c4160;
-  --color-gi-navy-hover: #22324a;
-  --color-gi-blue-soft: #4f72a5;
-  --color-gi-blue-lightest: #ddebff;
-  --color-gi-light-gray: #f0f2f4;
-  --color-gi-light-gray-dark: #dce0e6;
+  --color-gi-dark-primary: var(--gi-dark-primary);
+  --color-gi-primary: var(--gi-primary);
+  --color-gi-primary-hover: var(--gi-primary-hover);
+  --color-gi-light-primary: var(--gi-light-primary);
+  --color-gi-secondary: var(--gi-secondary);
+  --color-gi-secondary-hover: var(--gi-secondary-hover);
+  --color-gi-dark-gray: var(--gi-dark-gray);
+  --color-gi-gray: var(--gi-gray);
+  --color-gi-gray-hover: var(--gi-gray-hover);
+  --color-gi-dark-ash: var(--gi-dark-ash);
+  --color-gi-ash: var(--gi-ash);
+  --color-gi-ash-hover: var(--gi-ash-hover);
+  --color-gi-red: var(--gi-red);
+  --color-gi-red-hover: var(--gi-red-hover);
+  --color-gi-green: var(--gi-green);
+  --color-gi-green-hover: var(--gi-green-hover);
+  --color-gi-orange: var(--gi-orange);
+  --color-gi-orange-hover: var(--gi-orange-hover);
+  --color-gi-blue: var(--gi-blue);
+  --color-gi-blue-hover: var(--gi-blue-hover);
+  --color-gi-navy: var(--gi-navy);
+  --color-gi-navy-hover: var(--gi-navy-hover);
+  --color-gi-blue-soft: var(--gi-blue-soft);
+  --color-gi-blue-lightest: var(--gi-blue-lightest);
+  --color-gi-light-gray: var(--gi-light-gray);
+  --color-gi-light-gray-dark: var(--gi-light-gray-dark);
 }
 
 :root {
@@ -106,6 +104,32 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --gi-dark-primary: oklch(0.2159 0.0378 213.04);
+  --gi-primary: oklch(0.360529 0.06495 218.4126);
+  --gi-primary-hover: oklch(0.3108 0.0557 217.61);
+  --gi-light-primary: oklch(0.4189 0.076 219.48);
+  --gi-secondary: oklch(0.5332 0.0975 220.61);
+  --gi-secondary-hover: oklch(0.455353 0.08256 219.3898);
+  --gi-dark-gray: oklch(0.398 0.0331 213.7);
+  --gi-gray: oklch(0.7126 0.0154 213.12);
+  --gi-gray-hover: oklch(0.6057 0.0122 211.04);
+  --gi-dark-ash: oklch(0.881 0.0067 208.78);
+  --gi-ash: oklch(0.9527 0.0051 228.82);
+  --gi-ash-hover: oklch(0.806 0.0044 236.51);
+  --gi-red: oklch(0.601 0.2132 25.79);
+  --gi-red-hover: oklch(0.5097 0.1783 25.68);
+  --gi-green: oklch(0.6166 0.1744 138.04);
+  --gi-green-hover: oklch(0.5258 0.1468 137.82);
+  --gi-orange: oklch(0.7387 0.1464 73.45);
+  --gi-orange-hover: oklch(0.6265 0.1232 73.69);
+  --gi-blue: oklch(0.5891 0.1775 258.78);
+  --gi-blue-hover: oklch(0.5021 0.1473 258.57);
+  --gi-navy: oklch(0.3726 0.0599 257.97);
+  --gi-navy-hover: oklch(0.3149 0.0483 258.28);
+  --gi-blue-soft: oklch(0.548 0.0897 257.71);
+  --gi-blue-lightest: oklch(0.9357 0.031 257.23);
+  --gi-light-gray: oklch(0.9602 0.0034 247.86);
+  --gi-light-gray-dark: oklch(0.9054 0.0092 258.34);
 }
 
 .dark {
