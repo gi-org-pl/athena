@@ -28,5 +28,3 @@ export const RadioGroup = forwardRef<
 });
 
 RadioGroup.displayName = "RadioGroup";
-
-export default RadioGroup;

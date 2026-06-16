@@ -114,5 +114,3 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
 );
 
 Tabs.displayName = "Tabs";
-
-export default Tabs;

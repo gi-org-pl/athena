@@ -112,5 +112,3 @@ export const Pagination = forwardRef<HTMLElement, PaginationProps>(
 );
 
 Pagination.displayName = "Pagination";
-
-export default Pagination;
