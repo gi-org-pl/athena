@@ -80,7 +80,7 @@
   "exports": {
     ".": {
       "import": "./dist/athena.js",
-      "types": "./dist/main.d.ts"
+      "types": "./dist/index.d.ts"
     },
     "./athena.css": "./src/index.css"
     }
