@@ -1,5 +1,5 @@
 import { forwardRef, useId } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "../../../lib/utils";
 import type { SectionProps } from "./Section.types";
 
 export const Section = forwardRef<HTMLElement, SectionProps>(

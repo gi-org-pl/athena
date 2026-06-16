@@ -4,7 +4,7 @@ import {
   type ElementRef,
   forwardRef,
 } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "../../../lib/utils";
 
 export const Switch = forwardRef<
   ElementRef<typeof Root>,

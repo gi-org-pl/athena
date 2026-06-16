@@ -1,5 +1,5 @@
 import { cva } from "class-variance-authority";
-import { cn } from "@/lib/utils";
+import { cn } from "../../../lib/utils";
 
 const TextAreaVariants = cva(
   "px-3 py-2 w-[346px] h-[122px] text-gi-primary rounded-3xl border-[1px] ",

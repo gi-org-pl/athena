@@ -1,6 +1,6 @@
 import { Indicator, Root } from "@radix-ui/react-checkbox";
 import { useId } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "../../../lib/utils";
 import type { CheckboxProps } from "./Checkbox.types";
 
 export const Checkbox = ({
