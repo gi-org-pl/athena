@@ -35,6 +35,16 @@ jobs:
       - name: Build
         run: yarn build
 
+      - name: Build Storybook
+        run: yarn storybook:build
+
+      - name: Upload Storybook artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: storybook-build
+          if-no-files-found: error
+          path: storybook-static
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
