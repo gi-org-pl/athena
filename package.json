@@ -1,10 +1,10 @@
 {
-  "name": "athena",
-  "private": true,
+  "name": "@gi-org-pl/athena",
+  "private": false,
   "version": "0.0.0",
   "type": "module",
-  "license": "proprietary",
-  "main": "index.js",
+  "license": "UNLICENSED",
+  "main": "./dist/athena.js",
   "author": "generacja-innowacja",
   "scripts": {
     "build": "vite build",
@@ -14,7 +14,8 @@
     "lint:fix": "npx @biomejs/biome check --write",
     "prepare": "husky",
     "storybook": "storybook dev -p 6006",
-    "storybook:build": "storybook build"
+    "storybook:build": "storybook build",
+    "release:version": "node scripts/set-release-version.mjs"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.3.3",
@@ -78,7 +79,28 @@
     ]
   },
   "exports": {
-    ".": "./src/main.ts",
-    "./athena.css": "./src/index.css"
-  }
+    ".": {
+      "types": "./dist/main.d.ts",
+      "import": "./dist/athena.js"
+    },
+    "./athena.css": "./dist/athena.css"
+  },
+  "description": "Generacja Innowacja React component library.",
+  "module": "./dist/athena.js",
+  "types": "./dist/main.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gi-org-pl/athena.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gi-org-pl/athena/issues"
+  },
+  "homepage": "https://github.com/gi-org-pl/athena#readme"
 }
