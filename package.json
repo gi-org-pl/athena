@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "license": "proprietary",
+  "packageManager": "yarn@1.22.22",
   "main": "index.js",
   "author": "generacja-innowacja",
   "scripts": {
