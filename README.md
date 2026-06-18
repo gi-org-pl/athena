@@ -180,3 +180,18 @@ yarn storybook:build  # Build Storybook for production deployment
 - [Vitest Documentation](https://vitest.dev/) - Vitest testing framework documentation
 - [BiomeJS Documentation](https://biomejs.dev/) - BiomeJS linter and formatter documentation
 - [Storybook Documentation](https://storybook.js.org/) - Storybook component development and visual testing documentation
+
+## Installing from npm
+
+Athena is published as `@gi-org-pl/athena` whenever changes are pushed to the `main` branch.
+
+```bash
+npm install @gi-org-pl/athena
+```
+
+Import components and styles from the package instead of importing directly from this repository:
+
+```tsx
+import { Button } from "@gi-org-pl/athena";
+import "@gi-org-pl/athena/athena.css";
+```
