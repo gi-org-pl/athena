@@ -78,10 +78,7 @@
     ]
   },
   "exports": {
-    ".": {
-      "import": "./dist/athena.js",
-      "types": "./dist/index.d.ts"
-    },
-    "./athena.css": "./dist/athena.css"
-    }
+    ".": "./src/main.ts",
+    "./athena.css": "./src/index.css"
+  }
 }

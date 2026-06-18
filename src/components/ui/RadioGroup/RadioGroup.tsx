@@ -4,7 +4,7 @@ import {
   type ComponentRef,
   forwardRef,
 } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "../../../lib/utils";
 
 export const RadioGroup = forwardRef<
   ComponentRef<typeof Root>,

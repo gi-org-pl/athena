@@ -37,7 +37,7 @@ export const buttonVariants = cva(
         small: "h-8 px-3 text-xs gap-1.5 has-[>svg]:px-2.5",
         regular: "h-10 px-4 py-2 has-[>svg]:px-3",
         "ngo-small": "h-8 px-3 text-xs gap-2 has-[>svg]:px-3",
-        "ngo-regular": "h-10 px-4 py-2 has-[>svg]:px-4"
+        "ngo-regular": "h-10 px-4 py-2 has-[>svg]:px-4",
       },
       isIconButton: {
         true: "p-0",
@@ -50,7 +50,7 @@ export const buttonVariants = cva(
         className:
           "bg-gi-primary text-white hover:bg-gi-primary-hover data-[disabled=true]:bg-gi-gray data-[disabled=true]:text-white",
       },
-            {
+      {
         type: "primary",
         variant: "ngoPrimary",
         className:

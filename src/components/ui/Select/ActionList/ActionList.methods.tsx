@@ -7,7 +7,7 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { type ComponentProps } from "react";
 
-import { cn } from "@/lib/utils";
+import { cn } from "../../../../lib/utils";
 
 export function DropdownMenu({ ...props }: ComponentProps<typeof Root>) {
   return <Root data-slot="dropdown-menu" {...props} />;

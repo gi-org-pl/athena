@@ -1,6 +1,6 @@
 import { forwardRef, useCallback, useRef, useState } from "react";
-import ChevronDown from "@/assets/icons/chevron-down-icon.svg";
-import { cn } from "@/lib/utils";
+import ChevronDown from "../../../assets/icons/chevron-down-icon.svg";
+import { cn } from "../../../lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,

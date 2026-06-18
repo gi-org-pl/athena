@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "../../../../lib/utils";
 import { DropdownMenuItem } from "./ActionList.methods";
 import type { ActionListProps } from "./ActionList.types";
 
