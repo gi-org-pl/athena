@@ -120,6 +120,35 @@ yarn storybook:build  # Build Storybook for production
 
 5. Export new component in the [main.ts file](src\main.ts)
 
+
+## Consuming the package
+
+Athena is published as a React component library. Install it alongside React and React DOM in the consuming application:
+
+```bash
+yarn add athena react react-dom
+```
+
+Import components from the package root and include the bundled stylesheet once in your application entry point:
+
+```tsx
+import { Button } from "athena";
+import "athena/athena.css";
+
+export function Example() {
+  return <Button>Save</Button>;
+}
+```
+
+The package exposes ESM, CommonJS, TypeScript declaration, and CSS entry points from `dist` after running `yarn build`:
+
+- `athena` resolves to `dist/athena.js` for ESM consumers.
+- `athena` resolves to `dist/athena.umd.cjs` for CommonJS consumers.
+- TypeScript resolves declarations from `dist/index.d.ts`.
+- `athena/athena.css` resolves to `dist/athena.css`.
+
+React and React DOM are peer dependencies, so consuming applications must provide compatible versions. They remain in this repository's dev dependencies for local development, testing, and Storybook.
+
 ## Build
 
 This project uses Vite for building the library. The build process generates optimized static assets for production deployment.

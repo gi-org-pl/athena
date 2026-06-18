@@ -34,17 +34,21 @@ export default defineConfig({
     copyPublicDir: false,
     lib: {
       entry: path.resolve(__dirname, "src/main.ts"),
-      formats: ["es"],
+      formats: ["es", "umd"],
+      name: "Athena",
+      fileName: (format) => (format === "es" ? "athena.js" : "athena.umd.cjs"),
     },
     rollupOptions: {
-      external: [
-        "react",
-        "react/jsx-runtime",
-        "tailwindcss",
-        "tailwind-merge",
-        "react-dom",
-        "@tailwindcss/vite",
-      ],
+      external: ["react", "react/jsx-runtime", "react-dom"],
+      output: {
+        globals: {
+          react: "React",
+          "react-dom": "ReactDOM",
+          "react/jsx-runtime": "ReactJSXRuntime",
+        },
+        assetFileNames: (assetInfo) =>
+          assetInfo.names.includes("style.css") ? "athena.css" : "[name][extname]",
+      },
     },
   },
 });
