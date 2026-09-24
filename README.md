@@ -1,4 +1,4 @@
-![project header](.github/image/header.png)
+![Athena header](https://raw.githubusercontent.com/gi-org-pl/athena/main/.github/image/header.png)
 
 # Athena
 
