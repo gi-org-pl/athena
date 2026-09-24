@@ -95,6 +95,28 @@ jobs:
       - name: Run Biome (lint, format, imports)
         run: yarn lint:ci
 
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          cache: yarn
+          cache-dependency-path: yarn.lock
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run typecheck
+        run: yarn typecheck
+
   storybook:
     name: Build Storybook
     runs-on: ubuntu-latest
