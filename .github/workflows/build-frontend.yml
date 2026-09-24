@@ -92,8 +92,8 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Run lint
-        run: yarn run lint
+      - name: Run Biome (lint, format, imports)
+        run: yarn lint:ci
 
   typecheck:
     name: Typecheck

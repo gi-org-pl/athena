@@ -102,7 +102,10 @@ yarn typecheck        # Type-check the project with TypeScript (tsc -b)
 yarn test             # Run unit tests with Vitest
 yarn test:coverage    # Run tests with coverage report
 yarn lint             # Run Biome linter
-yarn lint:fix         # Fix linting issues automatically
+yarn lint:fix         # Fix lint, formatting and import order automatically
+yarn lint:ci          # Check lint, formatting and import order (read-only, used in CI)
+yarn format           # Format files with Biome
+yarn format:check     # Check formatting without writing
 yarn storybook        # Run Storybook in development mode
 yarn storybook:build  # Build Storybook for production
 ```
@@ -150,8 +153,13 @@ Run linting with:
 
 ```bash
 yarn lint              # Check for linting issues
-yarn lint:fix          # Automatically fix linting and formatting issues
+yarn lint:fix          # Automatically fix linting, formatting and import order
+yarn lint:ci           # Check linting, formatting and import order without writing (same as CI)
+yarn format            # Format files
+yarn format:check      # Check formatting without writing
 ```
+
+All scripts use the Biome version locked in `yarn.lock`, so local runs and CI always use the same Biome binary.
 
 The project is configured with custom linting rules in `biome.json`, including complexity checks, style rules, and correctness validations for TypeScript files.
 
