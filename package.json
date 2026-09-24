@@ -10,8 +10,11 @@
     "build": "vite build",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
-    "lint": "npx @biomejs/biome lint",
-    "lint:fix": "npx @biomejs/biome check --write",
+    "lint": "biome lint",
+    "lint:fix": "biome check --write",
+    "lint:ci": "biome ci",
+    "format": "biome format --write",
+    "format:check": "biome format",
     "prepare": "husky",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build"
