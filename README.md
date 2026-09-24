@@ -208,7 +208,7 @@ A scope is optional: `feat(button): add loading state`.
 
 The `version` field in `package.json` is not updated in the repository; semantic-release sets it only in the published package.
 
-Publishing uses [npm trusted publishing](https://docs.npmjs.com/trusted-publishers): GitHub Actions authenticates to npm with a short-lived OIDC token, so no npm token is stored in the repository. The trusted publisher is configured in the package settings on npmjs.com (organization `gi-org-pl`, repository `gi-org-pl/athena`, workflow `release.yml`).
+Publishing uses [npm trusted publishing](https://docs.npmjs.com/trusted-publishers): GitHub Actions authenticates to npm with a short-lived OIDC token, so no npm token is stored in the repository. The trusted publisher is configured in the package settings on npmjs.com (organization `gi-org-pl`, repository `athena`, workflow `release.yml`).
 
 ## Testing
 
