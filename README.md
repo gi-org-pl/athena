@@ -98,6 +98,7 @@ Open [http://localhost:6006](http://localhost:6006) with your browser to see the
 
 ```bash
 yarn build            # Build for production
+yarn typecheck        # Type-check the project with TypeScript (tsc -b)
 yarn test             # Run unit tests with Vitest
 yarn test:coverage    # Run tests with coverage report
 yarn lint             # Run Biome linter

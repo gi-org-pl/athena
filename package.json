@@ -8,6 +8,7 @@
   "author": "generacja-innowacja",
   "scripts": {
     "build": "vite build",
+    "typecheck": "tsc -b",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
     "lint": "npx @biomejs/biome lint",
