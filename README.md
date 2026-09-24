@@ -138,6 +138,25 @@ Only `dist` is included in the package (`files` in `package.json`).
 
 ## Using Athena in an app
 
+### Installation
+
+Athena is published to [GitHub Packages](https://github.com/gi-org-pl/athena/pkgs/npm/athena) as `@gi-org-pl/athena`.
+
+1. Point the `@gi-org-pl` scope to GitHub Packages in the app's `.npmrc`:
+
+   ```ini
+   @gi-org-pl:registry=https://npm.pkg.github.com
+   //npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+   ```
+
+2. Set `NODE_AUTH_TOKEN` to a GitHub token with the `read:packages` scope. Locally, use a [personal access token (classic)](https://github.com/settings/tokens). In GitHub Actions, use `secrets.GITHUB_TOKEN` and give the app's repository access in the package settings.
+
+3. Install the package:
+
+   ```shell
+   yarn add @gi-org-pl/athena
+   ```
+
 ### Requirements
 
 The app provides these peer dependencies:
@@ -155,7 +174,7 @@ The app must build its CSS with Tailwind CSS v4 (e.g. `@tailwindcss/vite` or `@t
 Import Athena's CSS in the app's main CSS file, **instead of** `@import "tailwindcss";`:
 
 ```css
-@import "athena/athena.css";
+@import "@gi-org-pl/athena/athena.css";
 ```
 
 `athena.css` imports Tailwind, defines Athena's theme and tells Tailwind to scan `dist/athena.js`, so the app's Tailwind generates every utility class Athena's components use.
@@ -163,7 +182,7 @@ Import Athena's CSS in the app's main CSS file, **instead of** `@import "tailwin
 ### Components
 
 ```tsx
-import { Button } from "athena";
+import { Button } from "@gi-org-pl/athena";
 
 export const Example = () => <Button>Click me</Button>;
 ```
@@ -178,6 +197,25 @@ yarn pack --filename athena.tgz
 # in the app
 yarn add file:/path/to/athena/athena.tgz
 ```
+
+## Releases
+
+Releases are fully automated with [semantic-release](https://semantic-release.gitbook.io/). Every push to `main` runs the `release` workflow, which:
+
+1. determines the next version from the commit messages since the last release,
+2. builds the package and publishes it to GitHub Packages,
+3. creates a `vX.Y.Z` git tag and a GitHub Release with generated release notes.
+
+The version is derived from [Conventional Commits](https://www.conventionalcommits.org/). Pull requests are squash-merged, so **the PR title** becomes the commit message:
+
+| PR title                                         | Release         |
+| ------------------------------------------------ | --------------- |
+| `fix: ...`, `perf: ...`, `refactor: ...`         | patch (`1.0.x`) |
+| `feat: ...`                                      | minor (`1.x.0`) |
+| `BREAKING CHANGE:` in the commit body            | major (`x.0.0`) |
+| `chore: ...`, `ci: ...`, `docs: ...`, `test: ...`| no release      |
+
+The `version` field in `package.json` is not updated in the repository; semantic-release sets it only in the published package.
 
 ## Testing
 
