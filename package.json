@@ -2,7 +2,7 @@
   "name": "@gi-org-pl/athena",
   "version": "0.0.0",
   "type": "module",
-  "license": "proprietary",
+  "license": "UNLICENSED",
   "main": "./dist/athena.js",
   "module": "./dist/athena.js",
   "types": "./dist/index.d.ts",
