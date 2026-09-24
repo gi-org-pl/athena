@@ -5,12 +5,67 @@
       "@semantic-release/commit-analyzer",
       {
         "preset": "conventionalcommits",
-        "releaseRules": [{ "type": "refactor", "release": "patch" }]
+        "releaseRules": [
+          {
+            "type": "refactor",
+            "release": "patch"
+          }
+        ]
       }
     ],
     [
       "@semantic-release/release-notes-generator",
-      { "preset": "conventionalcommits" }
+      {
+        "preset": "conventionalcommits",
+        "presetConfig": {
+          "types": [
+            {
+              "type": "feat",
+              "section": "Features"
+            },
+            {
+              "type": "fix",
+              "section": "Bug Fixes"
+            },
+            {
+              "type": "perf",
+              "section": "Performance Improvements"
+            },
+            {
+              "type": "revert",
+              "section": "Reverts"
+            },
+            {
+              "type": "refactor",
+              "section": "Code Refactoring"
+            },
+            {
+              "type": "docs",
+              "hidden": true
+            },
+            {
+              "type": "style",
+              "hidden": true
+            },
+            {
+              "type": "test",
+              "hidden": true
+            },
+            {
+              "type": "build",
+              "hidden": true
+            },
+            {
+              "type": "ci",
+              "hidden": true
+            },
+            {
+              "type": "chore",
+              "hidden": true
+            }
+          ]
+        }
+      }
     ],
     "@semantic-release/npm",
     "@semantic-release/github"
