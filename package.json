@@ -23,7 +23,8 @@
     "url": "https://github.com/gi-org-pl/athena/issues"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "access": "public",
+    "provenance": true
   },
   "scripts": {
     "build": "vite build",

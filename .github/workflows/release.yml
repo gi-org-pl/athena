@@ -20,7 +20,8 @@ jobs:
       contents: write
       issues: write
       pull-requests: write
-      packages: write
+      # npm trusted publishing (OIDC) and provenance attestations
+      id-token: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -45,4 +46,6 @@ jobs:
         run: yarn release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Only needed until npm trusted publishing is configured for the
+          # package; semantic-release uses OIDC first and falls back to it.
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

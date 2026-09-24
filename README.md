@@ -140,22 +140,11 @@ Only `dist` is included in the package (`files` in `package.json`).
 
 ### Installation
 
-Athena is published to [GitHub Packages](https://github.com/gi-org-pl/athena/pkgs/npm/athena) as `@gi-org-pl/athena`.
+Athena is published to npm as [`@gi-org-pl/athena`](https://www.npmjs.com/package/@gi-org-pl/athena). It's a public package, so no registry configuration or token is needed:
 
-1. Point the `@gi-org-pl` scope to GitHub Packages in the app's `.npmrc`:
-
-   ```ini
-   @gi-org-pl:registry=https://npm.pkg.github.com
-   //npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
-   ```
-
-2. Set `NODE_AUTH_TOKEN` to a GitHub token with the `read:packages` scope. Locally, use a [personal access token (classic)](https://github.com/settings/tokens). In GitHub Actions, use `secrets.GITHUB_TOKEN` and give the app's repository access in the package settings.
-
-3. Install the package:
-
-   ```shell
-   yarn add @gi-org-pl/athena
-   ```
+```shell
+yarn add @gi-org-pl/athena
+```
 
 ### Requirements
 
@@ -203,7 +192,7 @@ yarn add file:/path/to/athena/athena.tgz
 Releases are fully automated with [semantic-release](https://semantic-release.gitbook.io/). Every push to `main` runs the `release` workflow, which:
 
 1. determines the next version from the commit messages since the last release,
-2. builds the package and publishes it to GitHub Packages,
+2. builds the package and publishes it to [npm](https://www.npmjs.com/package/@gi-org-pl/athena) with [provenance](https://docs.npmjs.com/generating-provenance-statements),
 3. creates a `vX.Y.Z` git tag and a GitHub Release with generated release notes.
 
 The version is derived from [Conventional Commits](https://www.conventionalcommits.org/). Pull requests are squash-merged, so **the PR title** becomes the commit message on `main`. The `pr-title` workflow fails for PR titles that don't follow the format:
@@ -218,6 +207,8 @@ The version is derived from [Conventional Commits](https://www.conventionalcommi
 A scope is optional: `feat(button): add loading state`.
 
 The `version` field in `package.json` is not updated in the repository; semantic-release sets it only in the published package.
+
+Publishing uses [npm trusted publishing](https://docs.npmjs.com/trusted-publishers): GitHub Actions authenticates to npm with a short-lived OIDC token, so no npm token is stored in the repository. The trusted publisher is configured in the package settings on npmjs.com (organization `gi-org-pl`, repository `athena`, workflow `release.yml`).
 
 ## Testing
 
