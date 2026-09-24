@@ -1,0 +1,38 @@
+name: pr-title
+
+on:
+  pull_request:
+    branches: [develop, main]
+    types: [opened, edited, synchronize, reopened]
+
+permissions: {}
+
+jobs:
+  conventional-title:
+    name: Conventional PR title
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # PRs are squash-merged with the PR title as the commit message, and
+      # semantic-release derives the next version from it.
+      - name: Check PR title
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          pattern='^(feat|fix|perf|refactor|revert|docs|style|test|build|ci|chore)(\([a-z0-9._/-]+\))?!?: [^ ].*$'
+          revert_pattern='^Revert ".+"$'
+          if [[ "$TITLE" =~ $pattern || "$TITLE" =~ $revert_pattern ]]; then
+            echo "PR title follows Conventional Commits: $TITLE"
+            exit 0
+          fi
+          {
+            echo "### PR title does not follow Conventional Commits"
+            echo
+            echo "Got: \`$TITLE\`"
+            echo
+            echo "Expected \`type(optional-scope): description\`, e.g. \`feat(button): add loading state\` or \`fix!: drop React 18 support\`."
+            echo
+            echo "Allowed types: feat, fix, perf, refactor, revert, docs, style, test, build, ci, chore. GitHub's default \`Revert \"...\"\` title is accepted too."
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "::error title=Invalid PR title::PR title does not follow Conventional Commits (type(scope): description). See the job summary."
+          exit 1

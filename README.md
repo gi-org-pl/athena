@@ -206,14 +206,16 @@ Releases are fully automated with [semantic-release](https://semantic-release.gi
 2. builds the package and publishes it to GitHub Packages,
 3. creates a `vX.Y.Z` git tag and a GitHub Release with generated release notes.
 
-The version is derived from [Conventional Commits](https://www.conventionalcommits.org/). Pull requests are squash-merged, so **the PR title** becomes the commit message:
+The version is derived from [Conventional Commits](https://www.conventionalcommits.org/). Pull requests are squash-merged, so **the PR title** becomes the commit message on `main`. The `pr-title` workflow fails for PR titles that don't follow the format:
 
-| PR title                                         | Release         |
-| ------------------------------------------------ | --------------- |
-| `fix: ...`, `perf: ...`, `refactor: ...`         | patch (`1.0.x`) |
-| `feat: ...`                                      | minor (`1.x.0`) |
-| `BREAKING CHANGE:` in the commit body            | major (`x.0.0`) |
-| `chore: ...`, `ci: ...`, `docs: ...`, `test: ...`| no release      |
+| PR title                                                  | Release         |
+| --------------------------------------------------------- | --------------- |
+| `fix: ...`, `perf: ...`, `refactor: ...`, `revert: ...`   | patch (`1.0.x`) |
+| `feat: ...`                                               | minor (`1.x.0`) |
+| `feat!: ...`, `fix(button)!: ...` (any type with `!`)     | major (`x.0.0`) |
+| `chore: ...`, `ci: ...`, `docs: ...`, `test: ...`, ...    | no release      |
+
+A scope is optional: `feat(button): add loading state`.
 
 The `version` field in `package.json` is not updated in the repository; semantic-release sets it only in the published package.
 
