@@ -94,3 +94,32 @@ jobs:
 
       - name: Run lint
         run: yarn run lint
+
+  storybook:
+    name: Build Storybook
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          cache: yarn
+          cache-dependency-path: yarn.lock
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build Storybook
+        run: yarn storybook:build --quiet
+
+      - name: Upload Storybook artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: storybook-static
+          if-no-files-found: error
+          path: storybook-static
