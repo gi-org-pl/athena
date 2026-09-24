@@ -126,9 +126,58 @@ yarn storybook:build  # Build Storybook for production
 
 ## Build
 
-This project uses Vite for building the library. The build process generates optimized static assets for production deployment.
+This project uses Vite in library mode. `yarn build` generates the `dist` directory:
 
-Build the project with `yarn build`, you'll see the built library in the `dist` directory.
+| File               | Description                                                                    |
+| ------------------ | ------------------------------------------------------------------------------ |
+| `dist/athena.js`   | ES module with all components. Dependencies are not bundled.                   |
+| `dist/index.d.ts`  | TypeScript declarations                                                        |
+| `dist/athena.css`  | Theme and Tailwind entry, compiled by the consuming app's Tailwind (see below)  |
+
+Only `dist` is included in the package (`files` in `package.json`).
+
+## Using Athena in an app
+
+### Requirements
+
+The app provides these peer dependencies:
+
+| Dependency   | Version |
+| ------------ | ------- |
+| React        | ^19     |
+| React DOM    | ^19     |
+| Tailwind CSS | ^4      |
+
+The app must build its CSS with Tailwind CSS v4 (e.g. `@tailwindcss/vite` or `@tailwindcss/postcss`).
+
+### Styles
+
+Import Athena's CSS in the app's main CSS file, **instead of** `@import "tailwindcss";`:
+
+```css
+@import "athena/athena.css";
+```
+
+`athena.css` imports Tailwind, defines Athena's theme and tells Tailwind to scan `dist/athena.js`, so the app's Tailwind generates every utility class Athena's components use.
+
+### Components
+
+```tsx
+import { Button } from "athena";
+
+export const Example = () => <Button>Click me</Button>;
+```
+
+### Testing the package locally
+
+To try local changes in an app before they are released:
+
+```shell
+yarn build
+yarn pack --filename athena.tgz
+# in the app
+yarn add file:/path/to/athena/athena.tgz
+```
 
 ## Testing
 
