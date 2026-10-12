@@ -1,13 +1,31 @@
 import {
   Content,
   Item,
+  ItemIndicator,
   Portal,
+  RadioGroup,
+  RadioItem,
   Root,
   Trigger,
 } from "@radix-ui/react-dropdown-menu";
 import { type ComponentProps } from "react";
 
 import { cn } from "../../../../lib/utils";
+
+type DropdownMenuItemVariant = "default" | "danger";
+
+const getItemClassName = (
+  variant: DropdownMenuItemVariant,
+  className?: string,
+) =>
+  cn(
+    "relative flex cursor-pointer items-center gap-1 rounded-lg px-3 py-1.5 text-sm outline-none select-none transition-colors text-gi-primary",
+    "data-[highlighted]:bg-gi-ash data-[highlighted]:text-gi-primary",
+    "data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8",
+    variant === "danger" &&
+      "text-gi-red data-[highlighted]:bg-red-50 data-[highlighted]:text-gi-red",
+    className,
+  );
 
 export function DropdownMenu({ ...props }: ComponentProps<typeof Root>) {
   return <Root data-slot="dropdown-menu" {...props} />;
@@ -49,22 +67,44 @@ export function DropdownMenuItem({
   ...props
 }: ComponentProps<typeof Item> & {
   inset?: boolean;
-  variant?: "default" | "danger";
+  variant?: DropdownMenuItemVariant;
 }) {
   return (
     <Item
       data-slot="dropdown-menu-item"
       data-inset={inset}
       data-variant={variant}
-      className={cn(
-        "relative flex cursor-pointer items-center gap-1 rounded-lg px-3 py-1.5 text-sm outline-none select-none transition-colors text-gi-primary",
-        "data-[highlighted]:bg-gi-ash data-[highlighted]:text-gi-primary",
-        "data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8",
-        variant === "danger" &&
-          "text-gi-red data-[highlighted]:bg-red-50 data-[highlighted]:text-gi-red",
-        className,
-      )}
+      className={getItemClassName(variant, className)}
       {...props}
     />
   );
+}
+
+export function DropdownMenuRadioGroup({
+  ...props
+}: ComponentProps<typeof RadioGroup>) {
+  return <RadioGroup data-slot="dropdown-menu-radio-group" {...props} />;
+}
+
+export function DropdownMenuRadioItem({
+  className,
+  variant = "default",
+  ...props
+}: ComponentProps<typeof RadioItem> & {
+  variant?: DropdownMenuItemVariant;
+}) {
+  return (
+    <RadioItem
+      data-slot="dropdown-menu-radio-item"
+      data-variant={variant}
+      className={getItemClassName(variant, className)}
+      {...props}
+    />
+  );
+}
+
+export function DropdownMenuItemIndicator({
+  ...props
+}: ComponentProps<typeof ItemIndicator>) {
+  return <ItemIndicator data-slot="dropdown-menu-item-indicator" {...props} />;
 }
