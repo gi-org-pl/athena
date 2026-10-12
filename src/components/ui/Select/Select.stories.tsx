@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { type ComponentProps, useState } from "react";
 import AddIcon from "@/assets/icons/add-icon.svg";
 import DeleteIcon from "@/assets/icons/delete-icon.svg";
 import EditIcon from "@/assets/icons/edit-icon.svg";
@@ -87,6 +88,40 @@ export const Default: Story = {
   args: {
     placeholder: "Text",
   },
+};
+
+const AGES = ["Under 18", "18-24", "25-34", "35-44"];
+
+const AgeField = (args: ComponentProps<typeof Select>) => {
+  const [age, setAge] = useState("18-24");
+
+  return (
+    <Select {...args} value={age}>
+      <ActionList
+        items={AGES.map((option) => ({
+          label: option,
+          isSelected: option === age,
+          onClick: () => setAge(option),
+        }))}
+      />
+    </Select>
+  );
+};
+
+export const WithSelectedItem: Story = {
+  args: {
+    ...Default.args,
+    placeholder: "Age",
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "A `Select` used as a field. Each item of the `ActionList` passes `isSelected`, so the open list marks the current value with a check mark, exposes it as checked and starts there with the keyboard.",
+      },
+    },
+  },
+  render: (args) => <AgeField {...args} />,
 };
 
 export const HoverTrigger: Story = {

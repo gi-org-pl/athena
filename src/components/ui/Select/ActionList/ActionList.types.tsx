@@ -3,6 +3,7 @@ export interface ActionItem {
   icon?: React.ReactElement;
   onClick?: () => void;
   variant?: "default" | "danger";
+  isSelected?: boolean;
 }
 
 export interface ActionListProps {

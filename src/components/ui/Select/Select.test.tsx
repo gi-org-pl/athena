@@ -5,7 +5,9 @@ import {
   screen,
   waitFor,
 } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { ActionList } from "./ActionList/ActionList";
 import { Select } from "./Select";
 
 if (typeof window.PointerEvent === "undefined") {
@@ -20,6 +22,10 @@ global.ResizeObserver = class {
 
 vi.mock("@/assets/icons/chevron-down-icon.svg", () => ({
   default: () => <span data-testid="chevron" />,
+}));
+
+vi.mock("@/assets/icons/check-icon.svg", () => ({
+  default: () => <svg data-testid="check-icon" />,
 }));
 
 describe("<Select /> - Full Coverage", () => {
@@ -171,6 +177,104 @@ describe("<Select /> - Full Coverage", () => {
 
       const clickEvent = fireEvent.click(trigger);
       expect(clickEvent).toBe(false);
+    });
+  });
+
+  describe("With a list that has a selected item", () => {
+    const ages = ["Under 18", "18-24", "25-34"];
+    const renderField = (value?: string, onChoose = vi.fn()) => {
+      render(
+        <Select value={value} placeholder="Age">
+          <ActionList
+            items={ages.map((age) => ({
+              label: age,
+              isSelected: age === value,
+              onClick: () => onChoose(age),
+            }))}
+          />
+        </Select>,
+      );
+      return onChoose;
+    };
+
+    it("puts focus on the selected item when the list is opened with the keyboard", async () => {
+      const user = userEvent.setup();
+      renderField("18-24");
+
+      screen.getByRole("button").focus();
+      await user.keyboard("{Enter}");
+
+      await waitFor(() =>
+        expect(
+          screen.getByRole("menuitemradio", { name: "18-24" }),
+        ).toHaveFocus(),
+      );
+      expect(
+        screen.getByRole("menuitemradio", { name: "18-24" }),
+      ).toBeChecked();
+    });
+
+    it("puts focus on the selected item when the list is opened with the pointer", async () => {
+      const user = userEvent.setup();
+      renderField("25-34");
+
+      await user.click(screen.getByRole("button"));
+
+      await waitFor(() =>
+        expect(
+          screen.getByRole("menuitemradio", { name: "25-34" }),
+        ).toHaveFocus(),
+      );
+    });
+
+    it("starts on the first item with the keyboard when nothing is selected", async () => {
+      const user = userEvent.setup();
+      renderField();
+
+      screen.getByRole("button").focus();
+      await user.keyboard("{Enter}");
+
+      await waitFor(() =>
+        expect(
+          screen.getByRole("menuitemradio", { name: "Under 18" }),
+        ).toHaveFocus(),
+      );
+      for (const item of screen.getAllByRole("menuitemradio")) {
+        expect(item).not.toBeChecked();
+      }
+    });
+
+    it("moves on from the selected item with the arrow keys", async () => {
+      const user = userEvent.setup();
+      renderField("18-24");
+
+      screen.getByRole("button").focus();
+      await user.keyboard("{Enter}");
+      await waitFor(() =>
+        expect(
+          screen.getByRole("menuitemradio", { name: "18-24" }),
+        ).toHaveFocus(),
+      );
+      await user.keyboard("{ArrowDown}");
+
+      expect(
+        screen.getByRole("menuitemradio", { name: "25-34" }),
+      ).toHaveFocus();
+    });
+
+    it("calls onClick of the chosen item and closes the list", async () => {
+      const user = userEvent.setup();
+      const onChoose = renderField("18-24");
+
+      await user.click(screen.getByRole("button"));
+      await user.click(
+        await screen.findByRole("menuitemradio", { name: "25-34" }),
+      );
+
+      expect(onChoose).toHaveBeenCalledExactlyOnceWith("25-34");
+      await waitFor(() =>
+        expect(screen.queryByRole("menuitemradio")).not.toBeInTheDocument(),
+      );
     });
   });
 });
