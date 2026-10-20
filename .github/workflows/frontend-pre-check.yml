@@ -1,12 +1,12 @@
 name: frontend-pre-check
 
-# AI pre-check of every pull request that is ready for review: an isolated
+# AI pre-check of every pull request: an isolated
 # reviewer reads the diff against gi-tech-standards and this repository's
 # README, comments on real findings and posts one "Pre-check" summary of the
 # technical decisions. The workflow, the reviewer's instructions and the
 # process live in gi-tech-standards
-# (docs/frontend/pre-check/PROCESS.md). Until the
-# organisation secret CLAUDE_CODE_OAUTH_TOKEN exists, every run is skipped. It
+# (docs/frontend/pre-check/PROCESS.md). A pull request it does
+# not pre-check (fork, draft, bot, no secret) fails the check. It
 # is advisory: a person still approves; automation reads the frontend-pre-check / review
 # check of the head commit, never the label.
 on:
@@ -15,7 +15,7 @@ on:
     # checks, and a new base branch changes the diff (see the job's if).
     types: [opened, synchronize, reopened, ready_for_review, converted_to_draft, edited]
   # The merge queue needs every required check on its entries; the pre-check
-  # ends green there at once, because the pull request was checked already.
+  # passes there when the queued pull requests passed on their heads.
   merge_group:
 
 permissions: {}
@@ -32,9 +32,11 @@ jobs:
       issues: write
       # The gate counts the pre-check runs of the last hour.
       actions: read
+      # The review job reads the pull requests' checks for a merge queue entry.
+      checks: read
     # A full commit SHA: the reusable workflow takes its scripts and the
     # reviewer's instructions from the same commit, so this pins all of it.
     # Bump it in a reviewed pull request to adopt a newer version.
-    uses: gi-org-pl/gi-tech-standards/.github/workflows/frontend-pre-check.yml@7eb495bdacff938773ace7c02d49c6744f20c851 # gi-org-pl/gi-tech-standards#19
+    uses: gi-org-pl/gi-tech-standards/.github/workflows/frontend-pre-check.yml@ef81e5311ad3cba486bd50da1f8352ece04b646e # gi-org-pl/gi-tech-standards#19
     secrets:
       CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
