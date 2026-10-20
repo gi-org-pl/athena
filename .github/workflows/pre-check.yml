@@ -5,12 +5,14 @@ name: pre-check
 # README, comments on real findings and posts one "Pre-check" summary of the
 # technical decisions. The workflow, the reviewer's instructions and the
 # process live in gi-tech-standards (docs/process/PRE_CHECK.md). Until the
-# organisation secret CLAUDE_CODE_OAUTH_TOKEN exists, every run is skipped.
+# organisation secret CLAUDE_CODE_OAUTH_TOKEN exists, every run is skipped. It
+# is advisory: a person still approves; automation reads the pre-check / review
+# check of the head commit, never the label.
 on:
   pull_request:
     # edited: the description carries the design comparison the reviewer
     # checks, and a new base branch changes the diff (see the job's if).
-    types: [opened, synchronize, reopened, ready_for_review, edited]
+    types: [opened, synchronize, reopened, ready_for_review, converted_to_draft, edited]
   # The merge queue needs every required check on its entries; the pre-check
   # ends green there at once, because the pull request was checked already.
   merge_group:
@@ -27,6 +29,11 @@ jobs:
       contents: read
       pull-requests: write
       issues: write
-    uses: gi-org-pl/gi-tech-standards/.github/workflows/pre-check.yml@main
+      # The gate counts the pre-check runs of the last hour.
+      actions: read
+    # A full commit SHA: the reusable workflow takes its scripts and the
+    # reviewer's instructions from the same commit, so this pins all of it.
+    # Bump it in a reviewed pull request to adopt a newer version.
+    uses: gi-org-pl/gi-tech-standards/.github/workflows/pre-check.yml@4dc31ff9ca1c89c881c9aef4a213a6427a4e0535 # gi-org-pl/gi-tech-standards#19
     secrets:
       CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
