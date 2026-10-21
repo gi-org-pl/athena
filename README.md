@@ -243,6 +243,10 @@ All scripts use the Biome version locked in `yarn.lock`, so local runs and CI al
 
 The project is configured with custom linting rules in `biome.json`, including complexity checks, style rules, and correctness validations for TypeScript files.
 
+## Pre-check
+
+Every pull request from a branch of this repository that is ready for review gets an AI pre-check (`.github/workflows/frontend-pre-check.yml`): an isolated reviewer checks the diff against [gi-tech-standards](https://github.com/gi-org-pl/gi-tech-standards) and this README, comments on real findings, and posts one **Pre-check** comment with the technical decisions of the pull request and what to test by hand. One label - `pre-check: clean`, `pre-check: advisory` (only non-blocking findings), `pre-check: changes` or `pre-check: human review` (CI, dependencies, build configuration, changes without a reviewable diff, or a diff too large to review) - and the check `frontend-pre-check / review` show the outcome; the check passes only for "clean" and "advisory", and fails for a pull request that was not pre-checked. The pre-check is advisory: a person still approves, and automation reads the check of the head commit, never the label. The workflow and the reviewer's instructions live in [frontend-workflows](https://github.com/gi-org-pl/frontend-workflows), described in its [pre-check process](https://github.com/gi-org-pl/frontend-workflows/blob/main/docs/pre-check/PROCESS.md). Pull requests from forks and bots get no pre-check, because GitHub gives their runs no secrets: the check fails for them, and a person reviews and merges them. The reviewer does not open Figma: when the issue links a design, the pull request description has to show the changed components (their stories) next to the Figma frames, and the pre-check checks that this comparison is there.
+
 ## Visual testing
 
 This library uses Storybook for visual testing and component development. Storybook provides an isolated environment to develop, test, and document UI components independently.

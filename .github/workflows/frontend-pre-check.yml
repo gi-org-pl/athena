@@ -1,0 +1,42 @@
+name: frontend-pre-check
+
+# AI pre-check of every pull request: an isolated
+# reviewer reads the diff against gi-tech-standards and this repository's
+# README, comments on real findings and posts one "Pre-check" summary of the
+# technical decisions. The workflow, the reviewer's instructions and the
+# process live in gi-org-pl/frontend-workflows
+# (docs/pre-check/PROCESS.md). A pull request it does
+# not pre-check (fork, draft, bot, no secret) fails the check. It
+# is advisory: a person still approves; automation reads the frontend-pre-check / review
+# check of the head commit, never the label.
+on:
+  pull_request:
+    # edited: the description carries the design comparison the reviewer
+    # checks, and a new base branch changes the diff (see the job's if).
+    types: [opened, synchronize, reopened, ready_for_review, converted_to_draft, edited]
+  # The merge queue needs every required check on its entries; the pre-check
+  # passes there when the queued pull requests passed on their heads.
+  merge_group:
+
+permissions: {}
+
+jobs:
+  frontend-pre-check:
+    name: frontend-pre-check
+    # Only an edit of the description or a new base branch counts, not the title.
+    # Skipped here, the run leaves the last frontend-pre-check / review result alone.
+    if: github.event.action != 'edited' || github.event.changes.body != null || github.event.changes.base != null
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      # The gate counts the pre-check runs of the last hour.
+      actions: read
+      # The review job reads the pull requests' checks for a merge queue entry.
+      checks: read
+    # A full commit SHA: the reusable workflow takes its scripts and the
+    # reviewer's instructions from the same commit, so this pins all of it.
+    # Bump it in a reviewed pull request to adopt a newer version.
+    uses: gi-org-pl/frontend-workflows/.github/workflows/frontend-pre-check.yml@b5ba37ff2809596ab8e068c9fc33289e63261c67 # head of gi-org-pl/frontend-workflows#2 (unmerged); re-pin to its merge commit or v1.0.0
+    secrets:
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
