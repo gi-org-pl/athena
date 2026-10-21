@@ -37,6 +37,6 @@ jobs:
     # A full commit SHA: the reusable workflow takes its scripts and the
     # reviewer's instructions from the same commit, so this pins all of it.
     # Bump it in a reviewed pull request to adopt a newer version.
-    uses: gi-org-pl/frontend-workflows/.github/workflows/frontend-pre-check.yml@2cf416c69f8048f9bc373caf7cc3502300b20f2f # gi-org-pl/frontend-workflows#2, re-pinned after its merge
+    uses: gi-org-pl/frontend-workflows/.github/workflows/frontend-pre-check.yml@14f0430107020a5b44e4e59c547089f841e751bb # gi-org-pl/frontend-workflows#2, re-pinned after its merge
     secrets:
       CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
