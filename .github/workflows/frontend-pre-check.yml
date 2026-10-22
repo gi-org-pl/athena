@@ -5,7 +5,9 @@ name: frontend-pre-check
 # README, comments on real findings and posts one "Pre-check" summary of the
 # technical decisions. The workflow, the reviewer's instructions and the
 # process live in gi-org-pl/frontend-workflows
-# (docs/pre-check/PROCESS.md). A pull request it does
+# (docs/pre-check/PROCESS.md). A pull request that needs a person passes
+# the check with a warning, because a ruleset on main requires an approval of
+# the most recent push - that approval is the gate. A pull request it does
 # not pre-check (fork, draft, bot, no secret) fails the check. It
 # is advisory: a person still approves; automation reads the frontend-pre-check / review
 # check of the head commit, never the label.
@@ -37,6 +39,6 @@ jobs:
     # A full commit SHA: the reusable workflow takes its scripts and the
     # reviewer's instructions from the same commit, so this pins all of it.
     # Bump it in a reviewed pull request to adopt a newer version.
-    uses: gi-org-pl/frontend-workflows/.github/workflows/frontend-pre-check.yml@2e43cb7df119f47a1258cc4ffa01921925a9c58a # v1.1.0
+    uses: gi-org-pl/frontend-workflows/.github/workflows/frontend-pre-check.yml@e7a0d8c17bfe2ad1e97cb692d5d63f2ff2870999 # v2.0.0
     secrets:
       CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
