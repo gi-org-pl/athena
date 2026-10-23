@@ -16,6 +16,10 @@ on:
     # edited: the description carries the design comparison the reviewer
     # checks, and a new base branch changes the diff (see the job's if).
     types: [opened, synchronize, reopened, ready_for_review, converted_to_draft, edited]
+  # A review derives the check of the head again from the stored result, with
+  # no new review: an approval of the head turns "needs a person" green.
+  pull_request_review:
+    types: [submitted, dismissed, edited]
   # The merge queue needs every required check on its entries; the pre-check
   # passes there when the queued pull requests passed on their heads.
   merge_group:
@@ -25,9 +29,10 @@ permissions: {}
 jobs:
   frontend-pre-check:
     name: frontend-pre-check
-    # Only an edit of the description or a new base branch counts, not the title.
+    # Of the pull request edits, only one of the description or of the base branch
+    # counts, not the title; review events always run.
     # Skipped here, the run leaves the last frontend-pre-check / review result alone.
-    if: github.event.action != 'edited' || github.event.changes.body != null || github.event.changes.base != null
+    if: github.event_name == 'pull_request_review' || github.event.action != 'edited' || github.event.changes.body != null || github.event.changes.base != null
     permissions:
       contents: read
       pull-requests: write
@@ -39,6 +44,6 @@ jobs:
     # A full commit SHA: the reusable workflow takes its scripts and the
     # reviewer's instructions from the same commit, so this pins all of it.
     # Bump it in a reviewed pull request to adopt a newer version.
-    uses: gi-org-pl/frontend-workflows/.github/workflows/frontend-pre-check.yml@e7a0d8c17bfe2ad1e97cb692d5d63f2ff2870999 # v2.0.0
+    uses: gi-org-pl/frontend-workflows/.github/workflows/frontend-pre-check.yml@08a4fc357e1bd27fd889fad434e26ebc3806b142 # v2.1.0
     secrets:
       CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
