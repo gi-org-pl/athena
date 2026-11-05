@@ -1,151 +1,38 @@
 name: frontend-ci
 
+# Lint (Biome in its read-only CI mode), typecheck, unit tests, the library
+# build and the Storybook build of every pull request into develop or main,
+# and of every push to main: a run on main saves the dependency cache that
+# every new pull request then starts from. The jobs live in
+# gi-org-pl/frontend-workflows (docs/ci/CI.md); publishing stays in
+# release.yml.
 on:
   pull_request:
     branches: [develop, main]
     types: [opened, synchronize, reopened]
+  push:
+    branches: [main]
 
-permissions:
-  contents: read
+permissions: {}
 
+# A newer push to a pull request replaces its running checks; runs on main
+# are left to finish.
 concurrency:
   group: frontend-ci-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  build:
-    name: Build Frontend
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version: 24.x
-          cache: yarn
-          cache-dependency-path: yarn.lock
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Build
-        run: yarn build
-
-      - name: Upload build artifact
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: frontend-build
-          if-no-files-found: error
-          path: dist
-
-  unit:
-    name: Test Unit
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+  frontend-ci:
     permissions:
       contents: read
+      # The coverage comment on the pull request, from a job of its own that
+      # runs no code of the pull request.
       pull-requests: write
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version: 24.x
-          cache: yarn
-          cache-dependency-path: yarn.lock
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Build
-        run: yarn build
-
-      - name: Run unit tests with coverage
-        run: yarn run test:coverage
-
-      - uses: kcjpop/coverage-comments@ac79baad7d79ea4be568de114b38ffb8faeb1ef6 # v2.2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          coverage-file: "./coverage/clover.xml"
-
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version: 24.x
-          cache: yarn
-          cache-dependency-path: yarn.lock
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Run Biome (lint, format, imports)
-        run: yarn lint:ci
-
-  typecheck:
-    name: Typecheck
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version: 24.x
-          cache: yarn
-          cache-dependency-path: yarn.lock
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Run typecheck
-        run: yarn typecheck
-
-  storybook:
-    name: Build Storybook
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version: 24.x
-          cache: yarn
-          cache-dependency-path: yarn.lock
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Build Storybook
-        run: yarn storybook:build --quiet
-
-      - name: Upload Storybook artifact
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: storybook-static
-          if-no-files-found: error
-          path: storybook-static
+    # A full commit SHA: the reusable workflow takes its setup and scripts
+    # from the same commit, so this pins all of it. Bump it in a reviewed
+    # pull request to adopt a newer version.
+    uses: gi-org-pl/frontend-workflows/.github/workflows/frontend-ci.yml@61861793f41d502a0f5a6034ed16e4d55f4d0588 # pre-release, frontend-workflows#13
+    with:
+      lint_script: lint:ci
+      build_artifact_path: dist
+      storybook_script: storybook:build --quiet
