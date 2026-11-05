@@ -31,7 +31,7 @@ jobs:
     # A full commit SHA: the reusable workflow takes its setup and scripts
     # from the same commit, so this pins all of it. Bump it in a reviewed
     # pull request to adopt a newer version.
-    uses: gi-org-pl/frontend-workflows/.github/workflows/frontend-ci.yml@29abab77b99adfdf42027db9865463b86fda4d95 # pre-release, frontend-workflows#13
+    uses: gi-org-pl/frontend-workflows/.github/workflows/frontend-ci.yml@63a12350b08cefb69c9afe6d570c0d20719c009d # v2.2.0
     with:
       lint_script: lint:ci
       build_artifact_path: dist
