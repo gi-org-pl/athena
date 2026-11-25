@@ -71,7 +71,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
       const getTabStops = () =>
         Array.from(
           modal.querySelectorAll<HTMLElement>(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]), [contenteditable]:not([contenteditable="false"])',
           ),
         );
 

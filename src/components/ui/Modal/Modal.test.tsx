@@ -331,6 +331,22 @@ describe("Modal", () => {
       expect(screen.getByRole("textbox", { name: "Second" })).toHaveFocus();
     });
 
+    it("lets Tab move on from an editable element to the next field", async () => {
+      render(
+        <Modal {...baseProps}>
+          <div contentEditable suppressContentEditableWarning>
+            Notes
+          </div>
+          <input aria-label="Name" />
+        </Modal>,
+      );
+
+      screen.getByText("Notes").focus();
+      await userEvent.tab();
+
+      expect(screen.getByRole("textbox", { name: "Name" })).toHaveFocus();
+    });
+
     it("keeps Tab inside the dialog from the chosen element", async () => {
       const Dialog = () => {
         const save = useRef<HTMLButtonElement>(null);
