@@ -261,6 +261,57 @@ describe("Modal", () => {
       expect(screen.getByRole("button", { name: "Close modal" })).toHaveFocus();
     });
 
+    it("keeps Shift+Tab inside the dialog from a chosen element that is not a tab stop", async () => {
+      const Dialog = () => {
+        const heading = useRef<HTMLSpanElement>(null);
+
+        return (
+          <Modal
+            {...baseProps}
+            title={
+              <span ref={heading} tabIndex={-1}>
+                Heading
+              </span>
+            }
+            initialFocusRef={heading}
+            actions={<button type="button">Save</button>}
+          />
+        );
+      };
+
+      render(<Dialog />);
+
+      expect(screen.getByText("Heading")).toHaveFocus();
+
+      await userEvent.tab({ shift: true });
+
+      expect(screen.getByRole("button", { name: "Save" })).toHaveFocus();
+    });
+
+    it("moves Tab from a chosen element that is not a tab stop to the first tab stop", async () => {
+      const Dialog = () => {
+        const heading = useRef<HTMLSpanElement>(null);
+
+        return (
+          <Modal
+            {...baseProps}
+            title={
+              <span ref={heading} tabIndex={-1}>
+                Heading
+              </span>
+            }
+            initialFocusRef={heading}
+            actions={<button type="button">Save</button>}
+          />
+        );
+      };
+
+      render(<Dialog />);
+      await userEvent.tab();
+
+      expect(screen.getByRole("button", { name: "Close modal" })).toHaveFocus();
+    });
+
     it("keeps Tab inside the dialog from the chosen element", async () => {
       const Dialog = () => {
         const save = useRef<HTMLButtonElement>(null);

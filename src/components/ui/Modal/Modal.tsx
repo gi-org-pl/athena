@@ -89,6 +89,20 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
           return;
         }
 
+        // The focus can stand on an element that is not a tab stop - an
+        // initial focus target with tabIndex -1, or the dialog itself. Tab
+        // then goes to the first tab stop and Shift+Tab to the last, so that
+        // it never leaves the dialog.
+        const isOnTabStop = Array.from(focusableElements).includes(
+          document.activeElement as HTMLElement,
+        );
+
+        if (!isOnTabStop) {
+          e.preventDefault();
+          (e.shiftKey ? lastElement : firstElement)?.focus();
+          return;
+        }
+
         if (e.shiftKey) {
           if (document.activeElement === firstElement) {
             e.preventDefault();
