@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { useRef } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { Modal } from "./Modal";
 
@@ -191,5 +192,96 @@ describe("Modal", () => {
     fireEvent.transitionEnd(overlay);
 
     expect(screen.getByRole("dialog")).toBeInTheDocument();
+  });
+
+  describe("the close button", () => {
+    it('is named "Close modal" when no label is given', () => {
+      render(<Modal {...baseProps} />);
+
+      expect(
+        screen.getByRole("button", { name: "Close modal" }),
+      ).toBeInTheDocument();
+    });
+
+    it("is named by the label the app gives", () => {
+      render(<Modal {...baseProps} closeLabel="Zamknij" />);
+
+      expect(
+        screen.getByRole("button", { name: "Zamknij" }),
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByRole("button", { name: "Close modal" }),
+      ).not.toBeInTheDocument();
+    });
+
+    it("draws its ring on keyboard focus only", () => {
+      render(<Modal {...baseProps} />);
+
+      const closeButton = screen.getByRole("button", { name: "Close modal" });
+
+      expect(closeButton).toHaveClass("focus-visible:ring-2");
+      expect(closeButton.className).not.toMatch(/(^|s)focus:ring/);
+    });
+  });
+
+  describe("the first focus", () => {
+    it("goes to the first focusable element when no element is chosen", () => {
+      render(
+        <Modal {...baseProps} actions={<button type="button">Save</button>} />,
+      );
+
+      expect(screen.getByRole("button", { name: "Close modal" })).toHaveFocus();
+    });
+
+    it("goes to the chosen element", () => {
+      const Dialog = () => {
+        const save = useRef<HTMLButtonElement>(null);
+
+        return (
+          <Modal
+            {...baseProps}
+            initialFocusRef={save}
+            actions={
+              <button ref={save} type="button">
+                Save
+              </button>
+            }
+          />
+        );
+      };
+
+      render(<Dialog />);
+
+      expect(screen.getByRole("button", { name: "Save" })).toHaveFocus();
+    });
+
+    it("falls back to the first focusable element when the chosen one is not there", () => {
+      render(<Modal {...baseProps} initialFocusRef={{ current: null }} />);
+
+      expect(screen.getByRole("button", { name: "Close modal" })).toHaveFocus();
+    });
+
+    it("keeps Tab inside the dialog from the chosen element", async () => {
+      const Dialog = () => {
+        const save = useRef<HTMLButtonElement>(null);
+
+        return (
+          <Modal
+            {...baseProps}
+            initialFocusRef={save}
+            actions={
+              <button ref={save} type="button">
+                Save
+              </button>
+            }
+          />
+        );
+      };
+
+      render(<Dialog />);
+      await userEvent.tab();
+
+      expect(screen.getByRole("button", { name: "Close modal" })).toHaveFocus();
+    });
   });
 });

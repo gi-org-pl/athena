@@ -29,6 +29,8 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
       onClose,
       className,
       dataTestId,
+      closeLabel = "Close modal",
+      initialFocusRef,
       ...props
     },
     ref,
@@ -71,7 +73,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
       const firstElement = focusableElements[0];
       const lastElement = focusableElements[focusableElements.length - 1];
 
-      firstElement?.focus();
+      (initialFocusRef?.current ?? firstElement)?.focus();
 
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape" && isClosable) {
@@ -106,7 +108,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
         document.removeEventListener("keydown", handleKeyDown);
         previouslyFocusedElement.current?.focus();
       };
-    }, [isOpen, isRendered, isClosable, onClose]);
+    }, [isOpen, isRendered, isClosable, onClose, initialFocusRef]);
 
     if (!isRendered) return null;
 
@@ -153,8 +155,8 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
               <button
                 type="button"
                 onClick={onClose}
-                aria-label="Close modal"
-                className="flex items-center cursor-pointer justify-center size-8 rounded-full shrink-0 transition hover:bg-gi-secondary/10 focus:outline-none focus:ring-2 focus:ring-gi-secondary/40 focus:ring-offset-2"
+                aria-label={closeLabel}
+                className="flex items-center cursor-pointer justify-center size-8 rounded-full shrink-0 transition hover:bg-gi-secondary/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-gi-secondary/40 focus-visible:ring-offset-2"
               >
                 <XIcon className="size-5 fill-gi-primary" />
               </button>

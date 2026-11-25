@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { useRef } from "react";
 import { useArgs } from "storybook/preview-api";
 import { fn } from "storybook/test";
 import { Button } from "../Button/Button";
@@ -54,6 +55,11 @@ const meta = {
       table: { category: "Status" },
       control: "boolean",
     },
+    closeLabel: {
+      table: { category: "Content" },
+      control: "text",
+    },
+    initialFocusRef: { table: { disable: true } },
     actions: { table: { disable: true } },
     onClose: { table: { disable: true } },
   },
@@ -108,6 +114,48 @@ export const Default: Story = {
         isOpen={isOpen}
         onClose={handleClose}
         actions={renderedActions}
+      />
+    );
+  },
+};
+
+// The close button named in the language of the app.
+export const TranslatedCloseLabel: Story = {
+  ...Default,
+  args: {
+    title: "Informacje",
+    description: "Opis tego, co pokazuje karta.",
+    closeLabel: "Zamknij",
+    primaryAction: "",
+    secondaryAction: "",
+  },
+};
+
+// A dialog that explains something opens on its main action, not on the
+// close button.
+export const FocusOnMainAction: Story = {
+  args: {
+    title: "Informacje",
+    description: "Opis tego, co pokazuje karta.",
+    closeLabel: "Zamknij",
+  },
+  render: function Render(args) {
+    const [{ isOpen }, updateArgs] = useArgs();
+    const mainAction = useRef<HTMLButtonElement>(null);
+
+    const handleClose = () => updateArgs({ isOpen: false });
+
+    return (
+      <Modal
+        {...args}
+        isOpen={isOpen}
+        onClose={handleClose}
+        initialFocusRef={mainAction}
+        actions={
+          <Button ref={mainAction} onClick={handleClose}>
+            Zamknij
+          </Button>
+        }
       />
     );
   },
