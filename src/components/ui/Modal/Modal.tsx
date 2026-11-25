@@ -71,7 +71,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
       const getTabStops = () =>
         Array.from(
           modal.querySelectorAll<HTMLElement>(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]), [contenteditable]:not([contenteditable="false"])',
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]), [contenteditable]:not([contenteditable="false"]):not([tabindex="-1"])',
           ),
         );
 
@@ -101,32 +101,33 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
         // goes to the last one, and Tab from the last tab stop or from
         // anything after it goes to the first one. Whatever lies between is
         // left to the browser, whether the list knows it as a tab stop or not.
+        // A focus outside this dialog - in a dialog opened over it - is not
+        // this dialog's to move.
         const active = document.activeElement;
-        const isInside = active instanceof Node && modal.contains(active);
+
+        if (!(active instanceof Node) || !modal.contains(active)) return;
 
         if (e.shiftKey) {
           const isAtStart =
             active === firstElement ||
-            (isInside &&
-              Boolean(
-                active.compareDocumentPosition(firstElement) &
-                  Node.DOCUMENT_POSITION_FOLLOWING,
-              ));
+            Boolean(
+              active.compareDocumentPosition(firstElement) &
+                Node.DOCUMENT_POSITION_FOLLOWING,
+            );
 
-          if (!isInside || isAtStart) {
+          if (isAtStart) {
             e.preventDefault();
             lastElement?.focus();
           }
         } else {
           const isAtEnd =
             active === lastElement ||
-            (isInside &&
-              Boolean(
-                active.compareDocumentPosition(lastElement) &
-                  Node.DOCUMENT_POSITION_PRECEDING,
-              ));
+            Boolean(
+              active.compareDocumentPosition(lastElement) &
+                Node.DOCUMENT_POSITION_PRECEDING,
+            );
 
-          if (!isInside || isAtEnd) {
+          if (isAtEnd) {
             e.preventDefault();
             firstElement?.focus();
           }

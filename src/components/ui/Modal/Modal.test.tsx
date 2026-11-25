@@ -363,6 +363,41 @@ describe("Modal", () => {
       expect(screen.getByRole("textbox", { name: "Name" })).toHaveFocus();
     });
 
+    it("wraps Tab from the last field when an editable element left out of the order follows it", async () => {
+      render(
+        <Modal {...baseProps}>
+          <input aria-label="Name" />
+          <div contentEditable tabIndex={-1} suppressContentEditableWarning>
+            Notes
+          </div>
+        </Modal>,
+      );
+
+      screen.getByRole("textbox", { name: "Name" }).focus();
+      await userEvent.tab();
+
+      expect(screen.getByRole("button", { name: "Close modal" })).toHaveFocus();
+    });
+
+    it("lets Tab move through a dialog opened over another one", async () => {
+      render(
+        <>
+          <Modal {...baseProps} title="Below" closeLabel="Close below" />
+          <Modal
+            {...baseProps}
+            title="Above"
+            closeLabel="Close above"
+            actions={<button type="button">Confirm</button>}
+          />
+        </>,
+      );
+
+      screen.getByRole("button", { name: "Close above" }).focus();
+      await userEvent.tab();
+
+      expect(screen.getByRole("button", { name: "Confirm" })).toHaveFocus();
+    });
+
     it("keeps Tab inside the dialog from the chosen element", async () => {
       const Dialog = () => {
         const save = useRef<HTMLButtonElement>(null);
