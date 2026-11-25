@@ -66,14 +66,16 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
 
       previouslyFocusedElement.current = document.activeElement as HTMLElement;
 
-      const focusableElements = modal.querySelectorAll<HTMLElement>(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-      );
+      // The tab stops are read again at every key press: content the dialog
+      // draws after it opens takes part in the trap as well.
+      const getTabStops = () =>
+        Array.from(
+          modal.querySelectorAll<HTMLElement>(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+          ),
+        );
 
-      const firstElement = focusableElements[0];
-      const lastElement = focusableElements[focusableElements.length - 1];
-
-      (initialFocusRef?.current ?? firstElement)?.focus();
+      (initialFocusRef?.current ?? getTabStops()[0])?.focus();
 
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape" && isClosable) {
@@ -82,6 +84,10 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
         }
 
         if (e.key !== "Tab") return;
+
+        const focusableElements = getTabStops();
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
 
         if (focusableElements.length === 0) {
           e.preventDefault();
@@ -93,7 +99,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
         // initial focus target with tabIndex -1, or the dialog itself. Tab
         // then goes to the first tab stop and Shift+Tab to the last, so that
         // it never leaves the dialog.
-        const isOnTabStop = Array.from(focusableElements).includes(
+        const isOnTabStop = focusableElements.includes(
           document.activeElement as HTMLElement,
         );
 

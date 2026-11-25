@@ -312,6 +312,25 @@ describe("Modal", () => {
       expect(screen.getByRole("button", { name: "Close modal" })).toHaveFocus();
     });
 
+    it("lets Tab move on from a field the dialog draws after it opened", async () => {
+      const { rerender } = render(
+        <Modal {...baseProps}>
+          <input aria-label="Second" />
+        </Modal>,
+      );
+
+      rerender(
+        <Modal {...baseProps}>
+          <input aria-label="First" />
+          <input aria-label="Second" />
+        </Modal>,
+      );
+      await userEvent.click(screen.getByRole("textbox", { name: "First" }));
+      await userEvent.tab();
+
+      expect(screen.getByRole("textbox", { name: "Second" })).toHaveFocus();
+    });
+
     it("keeps Tab inside the dialog from the chosen element", async () => {
       const Dialog = () => {
         const save = useRef<HTMLButtonElement>(null);
