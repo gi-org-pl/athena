@@ -95,27 +95,38 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
           return;
         }
 
-        // The focus can stand on an element that is not a tab stop - an
-        // initial focus target with tabIndex -1, or the dialog itself. Tab
-        // then goes to the first tab stop and Shift+Tab to the last, so that
-        // it never leaves the dialog.
-        const isOnTabStop = focusableElements.includes(
-          document.activeElement as HTMLElement,
-        );
-
-        if (!isOnTabStop) {
-          e.preventDefault();
-          (e.shiftKey ? lastElement : firstElement)?.focus();
-          return;
-        }
+        // The browser moves the focus by itself, except where it would leave
+        // the dialog: Shift+Tab from the first tab stop or from anything
+        // before it - an initial target with tabIndex -1, the dialog itself -
+        // goes to the last one, and Tab from the last tab stop or from
+        // anything after it goes to the first one. Whatever lies between is
+        // left to the browser, whether the list knows it as a tab stop or not.
+        const active = document.activeElement;
+        const isInside = active instanceof Node && modal.contains(active);
 
         if (e.shiftKey) {
-          if (document.activeElement === firstElement) {
+          const isAtStart =
+            active === firstElement ||
+            (isInside &&
+              Boolean(
+                active.compareDocumentPosition(firstElement) &
+                  Node.DOCUMENT_POSITION_FOLLOWING,
+              ));
+
+          if (!isInside || isAtStart) {
             e.preventDefault();
             lastElement?.focus();
           }
         } else {
-          if (document.activeElement === lastElement) {
+          const isAtEnd =
+            active === lastElement ||
+            (isInside &&
+              Boolean(
+                active.compareDocumentPosition(lastElement) &
+                  Node.DOCUMENT_POSITION_PRECEDING,
+              ));
+
+          if (!isInside || isAtEnd) {
             e.preventDefault();
             firstElement?.focus();
           }

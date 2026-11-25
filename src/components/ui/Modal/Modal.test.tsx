@@ -347,6 +347,22 @@ describe("Modal", () => {
       expect(screen.getByRole("textbox", { name: "Name" })).toHaveFocus();
     });
 
+    it("lets Tab move on from a summary to the next field", async () => {
+      render(
+        <Modal {...baseProps}>
+          <details open>
+            <summary>More</summary>
+            <input aria-label="Name" />
+          </details>
+        </Modal>,
+      );
+
+      screen.getByText("More").focus();
+      await userEvent.tab();
+
+      expect(screen.getByRole("textbox", { name: "Name" })).toHaveFocus();
+    });
+
     it("keeps Tab inside the dialog from the chosen element", async () => {
       const Dialog = () => {
         const save = useRef<HTMLButtonElement>(null);
