@@ -29,6 +29,8 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
       onClose,
       className,
       dataTestId,
+      closeLabel = "Close modal",
+      initialFocusRef,
       ...props
     },
     ref,
@@ -64,14 +66,16 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
 
       previouslyFocusedElement.current = document.activeElement as HTMLElement;
 
-      const focusableElements = modal.querySelectorAll<HTMLElement>(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-      );
+      // The tab stops are read again at every key press: content the dialog
+      // draws after it opens takes part in the trap as well.
+      const getTabStops = () =>
+        Array.from(
+          modal.querySelectorAll<HTMLElement>(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]), [contenteditable]:not([contenteditable="false"]):not([tabindex="-1"])',
+          ),
+        );
 
-      const firstElement = focusableElements[0];
-      const lastElement = focusableElements[focusableElements.length - 1];
-
-      firstElement?.focus();
+      (initialFocusRef?.current ?? getTabStops()[0])?.focus();
 
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape" && isClosable) {
@@ -81,19 +85,49 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
 
         if (e.key !== "Tab") return;
 
+        const focusableElements = getTabStops();
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
         if (focusableElements.length === 0) {
           e.preventDefault();
           modal.focus();
           return;
         }
 
+        // The browser moves the focus by itself, except where it would leave
+        // the dialog: Shift+Tab from the first tab stop or from anything
+        // before it - an initial target with tabIndex -1, the dialog itself -
+        // goes to the last one, and Tab from the last tab stop or from
+        // anything after it goes to the first one. Whatever lies between is
+        // left to the browser, whether the list knows it as a tab stop or not.
+        // A focus outside this dialog - in a dialog opened over it - is not
+        // this dialog's to move.
+        const active = document.activeElement;
+
+        if (!(active instanceof Node) || !modal.contains(active)) return;
+
         if (e.shiftKey) {
-          if (document.activeElement === firstElement) {
+          const isAtStart =
+            active === firstElement ||
+            Boolean(
+              active.compareDocumentPosition(firstElement) &
+                Node.DOCUMENT_POSITION_FOLLOWING,
+            );
+
+          if (isAtStart) {
             e.preventDefault();
             lastElement?.focus();
           }
         } else {
-          if (document.activeElement === lastElement) {
+          const isAtEnd =
+            active === lastElement ||
+            Boolean(
+              active.compareDocumentPosition(lastElement) &
+                Node.DOCUMENT_POSITION_PRECEDING,
+            );
+
+          if (isAtEnd) {
             e.preventDefault();
             firstElement?.focus();
           }
@@ -106,7 +140,7 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
         document.removeEventListener("keydown", handleKeyDown);
         previouslyFocusedElement.current?.focus();
       };
-    }, [isOpen, isRendered, isClosable, onClose]);
+    }, [isOpen, isRendered, isClosable, onClose, initialFocusRef]);
 
     if (!isRendered) return null;
 
@@ -153,8 +187,8 @@ export const Modal = forwardRef<HTMLDivElement, ModalProps>(
               <button
                 type="button"
                 onClick={onClose}
-                aria-label="Close modal"
-                className="flex items-center cursor-pointer justify-center size-8 rounded-full shrink-0 transition hover:bg-gi-secondary/10 focus:outline-none focus:ring-2 focus:ring-gi-secondary/40 focus:ring-offset-2"
+                aria-label={closeLabel}
+                className="flex items-center cursor-pointer justify-center size-8 rounded-full shrink-0 transition hover:bg-gi-secondary/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-gi-secondary/40 focus-visible:ring-offset-2"
               >
                 <XIcon className="size-5 fill-gi-primary" />
               </button>

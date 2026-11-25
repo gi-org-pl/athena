@@ -1,5 +1,5 @@
 import { cva } from "class-variance-authority";
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes, ReactNode, RefObject } from "react";
 
 export interface ModalProps
   extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
@@ -12,6 +12,10 @@ export interface ModalProps
   isCloseOnOverlayClick?: boolean;
   onClose: () => void;
   dataTestId?: string;
+  /** The accessible name of the close button, in the language of the app. Default: "Close modal". */
+  closeLabel?: string;
+  /** The element that takes the focus when the dialog opens, e.g. its main action. Default: the first focusable element. */
+  initialFocusRef?: RefObject<HTMLElement | null>;
 }
 
 export const overlayVariants = cva(
